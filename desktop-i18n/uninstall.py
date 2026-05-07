@@ -190,7 +190,7 @@ def repack_and_write(extracted_dir: Path, asar_path: Path):
 
 def main():
     print("=" * 60)
-    print("Claude Desktop 汉化补丁 - 卸载（智能版）")
+    print("Claude Desktop 汉化补丁 - 卸载")
     print("=" * 60)
 
     if os.name != "nt":

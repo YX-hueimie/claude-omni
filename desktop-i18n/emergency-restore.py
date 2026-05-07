@@ -3,8 +3,8 @@ desktop-i18n 紧急还原: 从 _backup/<version>/ byte-identical 还原 asar + c
 另外删 resources/zh-CN.json (i18n 独立的资源文件,跟 asar 解耦)。
 
 跟 uninstall.bat 的区别:
-- emergency 不管其他补丁,整个 asar 抹回原版 (Path A only),最简单粗暴
-- uninstall 智能区分 Path A/B,会保留同时装着的其他 desktop-* 补丁
+- emergency 整个 asar + claude.exe 抹回备份, 会同时擦掉同时装着的其他 desktop-* 补丁
+- uninstall 走 marker strip 只剥本档 marker + 删 zh-CN.json, 保留其他 desktop-* 补丁
 
 什么时候用 emergency: install / uninstall 出问题、Claude 打不开时,最后兜底。
 正常情况优先用 uninstall.bat (会保留其他 desktop-* 补丁不动)。
