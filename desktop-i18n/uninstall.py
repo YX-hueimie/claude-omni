@@ -1,12 +1,12 @@
 """
-Claude Desktop 汉化补丁 - 卸载脚本（智能版，跟其他 desktop-* 补丁共存）
+Claude Desktop 汉化补丁 - 卸载脚本（marker strip 单路径，跟其他 desktop-* 补丁共存）
 
-策略：
-- Path A (byte-identical 快路径): asar 里只有本补丁 → 直接 shutil.copy2 备份回当前位置
-- Path B (marker strip 慢路径):  asar 里还装着其他补丁 (font 等) → 解 asar →
-                                  剥 I18N_PATCH START/END 段 + 还原 jyt() → 重 pack → 写回
+策略：永远走 marker strip —— 解 asar → 剥 I18N_PATCH START/END 段 + 还原 jyt() →
+       重 pack → 写回；claude.exe 不动（保持当前 fuse-off 跟 asar 匹配）；
+       删 resources/zh-CN.json（i18n 独立资源文件）。
+       不依赖 _backup（备份在装本补丁之前可能已经被其他补丁污染过，不可信）。
 
-两路都会删 resources/zh-CN.json（i18n 独立的资源文件，跟 asar 解耦）。
+完全擦回原版用 emergency-restore.bat（那个会同时擦掉所有其他 desktop-* 补丁，单独兜底入口）。
 
 要求：管理员权限。依赖：Python 3、Node.js（npx 调 @electron/asar）
 """
@@ -32,7 +32,7 @@ PATCH_END = "// === I18N_PATCH_INPLACE_v1 END ==="
 OLD_PATCH_MARKER = "// === I18N_PATCH_INPLACE_v1 ==="  # 单标记格式残留
 LOCALE_MARKER = "/* === LOCALE_PATCH_v1 === */"  # 早期注入格式残留
 
-# 检测到这些 marker 之一 → 走 Path B (保留其他补丁)
+# 这些 marker 出现 → 单标记残留剥时跳过（避免误伤其他补丁）
 OTHER_PATCH_MARKERS = [
     "// === FONT_PATCH_INPLACE_v1 START ===",  # desktop-font 主 marker
     "// === FONT_PATCH_INPLACE_v1 ===",          # desktop-font 旧单标记
@@ -88,25 +88,28 @@ def find_claude_app():
     return candidates[0][0], candidates[0][1]
 
 
-def extract_and_check_others(asar_path: Path):
-    """解 asar 到临时目录，看 index.js 里是否还有其他补丁 marker。
-    返回 (extracted_dir, has_others: bool)。临时目录留给上层用。"""
+def extract_asar(asar_path: Path) -> Path:
+    """解 asar 到临时目录, 返回路径。"""
     extracted = SCRIPT_DIR / "_extracted_tmp"
     if extracted.exists():
         shutil.rmtree(extracted, ignore_errors=True)
     run(["npx", "--yes", "@electron/asar", "extract", str(asar_path), str(extracted)],
         capture=True, shell=True)
+    return extracted
 
-    index_js = extracted / ".vite" / "build" / "index.js"
+
+def index_js_has_i18n_marker(extracted_dir: Path) -> bool:
+    """看 index.js 里是否还有 I18N_PATCH 相关 marker (含 jyt 注入特征)。"""
+    index_js = extracted_dir / ".vite" / "build" / "index.js"
     if not index_js.exists():
-        return extracted, False
-
+        return False
     text = index_js.read_text(encoding="utf-8")
-    found = [m for m in OTHER_PATCH_MARKERS if m in text]
-    if found:
-        print(f"  检测到其他补丁标记: {found}")
-        return extracted, True
-    return extracted, False
+    if PATCH_START in text or OLD_PATCH_MARKER in text or LOCALE_MARKER in text:
+        return True
+    # jyt 注入特征: try{xxx="zh-CN";}catch(_e){}
+    if re.search(r'try\{\w+="zh-CN";\}catch\(_e\)\{\}', text):
+        return True
+    return False
 
 
 def strip_i18n_marker_and_jyt(extracted_dir: Path):
@@ -198,31 +201,8 @@ def main():
         relaunch_as_admin()
         return
 
-    if not BACKUP_DIR.exists():
-        print(f"找不到备份目录: {BACKUP_DIR}")
-        input("按回车退出...")
-        return
-
     version_dir, src_app = find_claude_app()
     print(f"\n当前 Claude 版本目录: {version_dir}")
-
-    sub = BACKUP_DIR / version_dir
-    if not sub.exists():
-        backups = [d for d in BACKUP_DIR.iterdir() if d.is_dir()]
-        if not backups:
-            print("备份目录里啥也没有。")
-            input("按回车退出...")
-            return
-        backups.sort(key=lambda d: d.name, reverse=True)
-        sub = backups[0]
-        print(f"当前版本没找到匹配备份，用最近的: {sub.name}")
-
-    exe_bak = sub / "claude.exe"
-    asar_bak = sub / "app.asar"
-    if not exe_bak.exists() or not asar_bak.exists():
-        print(f"备份文件缺失: {sub}")
-        input("按回车退出...")
-        return
 
     claude_exe = src_app / "claude.exe"
     asar_path = src_app / "resources" / "app.asar"
@@ -238,46 +218,36 @@ def main():
         subprocess.run(["takeown", "/F", str(target)], **SP_ENC)
         subprocess.run(["icacls", str(target), "/grant", "administrators:F"], **SP_ENC)
 
-    print("\n检测当前 asar 里是否还装着其他补丁...")
-    extracted, has_others = extract_and_check_others(asar_path)
+    print("\n解 asar、剥 I18N_PATCH 标记 + 还原 jyt()、重 pack...")
+    extracted = extract_asar(asar_path)
 
-    if not has_others:
-        # Path A: 没其他补丁，byte-identical 快路径
-        print("\n[Path A] 没有其他补丁，直接 byte-identical 还原备份")
+    if not index_js_has_i18n_marker(extracted):
+        print("  index.js 里没找到 I18N_PATCH 相关 marker —— 看起来本补丁没装,或之前已经卸过 asar 部分。")
+        print("  仍然检查 zh-CN.json 是否需要清理...")
         shutil.rmtree(extracted, ignore_errors=True)
-        print("  还原 claude.exe...")
-        shutil.copy2(exe_bak, claude_exe)
-        print("  还原 app.asar...")
-        shutil.copy2(asar_bak, asar_path)
-        path_taken = "Path A (byte-identical)"
     else:
-        # Path B: 还有其他补丁，剥本 marker + 还原 jyt 后重 pack
-        # 关键: claude.exe 不动! 备份的 exe 是 fuse-on (会校验 asar 完整性),
-        # 跟 strip 后但仍带其他补丁的 asar 不匹配, 启动时校验失败 → Claude 打不开。
-        # 当前 claude.exe 已经是 fuse-off (装其他补丁时改过), 跟当前 asar 匹配, 保持原状。
-        print("\n[Path B] 检测到其他补丁，只剥 I18N_PATCH 标记 + 还原 jyt()，保留其他补丁")
-        print("  跳过 claude.exe 还原（保持当前 fuse-off 状态以匹配 asar）")
         strip_i18n_marker_and_jyt(extracted)
         repack_and_write(extracted, asar_path)
-        path_taken = "Path B (marker strip + jyt 还原)"
+        # 注意: claude.exe 不还原, 保持当前 fuse-off 状态。
 
-    # 不论 Path A/B 都删 resources/zh-CN.json（i18n 独立资源文件）
+    # 删 resources/zh-CN.json（i18n 独立资源文件，跟 asar 解耦，单独清理）
     if zh_path.exists():
         try:
             print(f"\n删 resources/zh-CN.json...")
             zh_path.unlink()
         except Exception as e:
             print(f"  [警告] 删除失败: {e}")
+    else:
+        print(f"\n  resources/zh-CN.json 不存在, 跳过")
 
     print()
     print("=" * 60)
-    print(f"✓ 已卸载汉化补丁 - {path_taken}")
+    print("✓ 已卸载汉化补丁 (marker strip + 删 zh-CN.json)")
     print("=" * 60)
     print()
-    if has_others:
-        print("其他补丁保留，未受影响。")
-    else:
-        print("原版已 byte-identical 还原。")
+    print("其他装着的 desktop-* 补丁保留, 未受影响。")
+    print("如需完整擦回原版 (会同时擦掉所有其他 desktop-* 补丁),")
+    print("用 emergency-restore.bat。")
     print()
     input("按回车退出...")
 
