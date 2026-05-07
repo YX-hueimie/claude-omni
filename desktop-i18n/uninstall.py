@@ -252,9 +252,11 @@ def main():
         path_taken = "Path A (byte-identical)"
     else:
         # Path B: 还有其他补丁，剥本 marker + 还原 jyt 后重 pack
+        # 关键: claude.exe 不动! 备份的 exe 是 fuse-on (会校验 asar 完整性),
+        # 跟 strip 后但仍带其他补丁的 asar 不匹配, 启动时校验失败 → Claude 打不开。
+        # 当前 claude.exe 已经是 fuse-off (装其他补丁时改过), 跟当前 asar 匹配, 保持原状。
         print("\n[Path B] 检测到其他补丁，只剥 I18N_PATCH 标记 + 还原 jyt()，保留其他补丁")
-        print("  还原 claude.exe...")
-        shutil.copy2(exe_bak, claude_exe)
+        print("  跳过 claude.exe 还原（保持当前 fuse-off 状态以匹配 asar）")
         strip_i18n_marker_and_jyt(extracted)
         repack_and_write(extracted, asar_path)
         path_taken = "Path B (marker strip + jyt 还原)"
