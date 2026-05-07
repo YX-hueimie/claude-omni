@@ -210,6 +210,7 @@ DESKTOP_PATCHES = [
         "subtitle": "字体",
         "desc": "Anthropic Serif + 思源宋体",
         "asar_marker": "FONT_PATCH_INPLACE_v1",
+        "has_emergency": True,
     },
     {
         "id": "desktop-i18n",
@@ -218,6 +219,7 @@ DESKTOP_PATCHES = [
         "subtitle": "中文化",
         "desc": "Claude Desktop 全 UI 中文化",
         "asar_marker": "I18N_PATCH_INPLACE_v1",
+        "has_emergency": True,
     },
     {
         "id": "desktop-devtools",
@@ -226,6 +228,7 @@ DESKTOP_PATCHES = [
         "subtitle": "DevTools",
         "desc": "启用开发者工具 + 重绑快捷键",
         "asar_marker": "DEVTOOLS_PATCH_v1",
+        "has_emergency": True,
     },
 ]
 
@@ -1133,6 +1136,13 @@ function makeDesktopCard(d, disabled){
       () => runAction(d.id, 'install', d.name));
     if(disabled) btn.disabled = true;
     actions.appendChild(btn);
+  }
+  if(d.has_emergency){
+    actions.appendChild(makeBtn('紧急还原', 'btn-ghost', () => {
+      if(confirm('emergency-restore 会从 _backup/ 字节级还原 asar / claude.exe。同时装着的其他 desktop-* 补丁会一起被擦掉,慎用。继续?')){
+        runAction(d.id, 'emergency', d.name);
+      }
+    }));
   }
   c.appendChild(actions);
   return c;
