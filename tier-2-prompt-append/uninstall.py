@@ -164,7 +164,18 @@ def main():
 
     if not has_l2:
         print()
-        print("没找到 L2_APPEND_PATCH marker, 没装过本 patch / 已卸载, 退出")
+        print("没找到 L2_APPEND_PATCH marker, asar 已是无本 patch 状态")
+        # 即使 asar 干净也要清理 tier marker (panel 通过这个文件判断装/卸状态)
+        tier_marker = Path(os.path.expanduser("~/.claude/.claude-omni-tier"))
+        if tier_marker.exists():
+            cur = tier_marker.read_text(encoding="utf-8").strip()
+            if cur == "tier-2":
+                tier_marker.unlink()
+                print(f"  ✓ 清理 ~/.claude/.claude-omni-tier 状态文件")
+        print()
+        print("=" * 60)
+        print("✓ tier-2 uninstall 完成 (asar 无需改动)")
+        print("=" * 60)
         input("按回车退出...")
         return
 
