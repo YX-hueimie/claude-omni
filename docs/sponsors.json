@@ -48,7 +48,12 @@
 
   "_comment_sponsors": "实名赞助者 — 每条: name (显示名), tier (gold/silver/bronze/backers), avatar (URL或本地路径,留空用默认头像; backers 档不显示头像), url (个人主页/github 链接,可选), message (一句留言,可选; backers 档不显示留言)",
 
-  "sponsors": [],
+  "sponsors": [
+    {
+      "name": "0xh3y3",
+      "tier": "bronze"
+    }
+  ],
 
   "_comment_anonymous": "匿名赞助 — 按档计数, 显示成 \"5 位匿名好友\"",
   "anonymous_count": {
