@@ -1,0 +1,60 @@
+{
+  "_comment_1": "赞助数据文件 — 改动这个文件后跑 python docs/build-sponsors.py 重新生成 sponsors.html",
+  "_comment_2": "afdian_url / afdian_qr / wechat_qr 三个填好之后能在 sponsors.html 顶部显示赞助入口",
+  "_comment_3": "qr 图片放在 docs/ 目录下,JSON 里写文件名(相对 docs/ 路径); 没有就留空字符串",
+  "_comment_4": "tiers 按金额从高到低排列, 金额单位人民币元; backers 档 (<¥10) 不显示头像/留言, 只列名字, 用 avatar_size=0 标记",
+
+  "afdian_url": "https://ifdian.net/a/yxhueimie",
+  "afdian_qr": "qr-afdian.jpg",
+  "wechat_qr": "qr-wechat.jpg",
+
+  "_comment_maintenance": "维护成本说明 — 显示在 sponsors.html hero 之下作为 callout box; 留空则不显示",
+  "maintenance_note": "**为什么赞助：** 这项目实测靠 Claude Pro / Max plan 跑（每月几百块），订阅断了研究就停摆。\n\n赞助够升 Max 的话能跑更深的实验、出更多对比数据、给你们更新得快点。没赞助也维护，但节奏慢一档。",
+
+
+  "tiers": [
+    {
+      "id": "gold",
+      "label": "金主",
+      "min_yuan": 500,
+      "avatar_size": 96,
+      "color": "#c96442"
+    },
+    {
+      "id": "silver",
+      "label": "银主",
+      "min_yuan": 100,
+      "max_yuan": 500,
+      "avatar_size": 64,
+      "color": "#87867f"
+    },
+    {
+      "id": "bronze",
+      "label": "铜主",
+      "min_yuan": 10,
+      "max_yuan": 100,
+      "avatar_size": 40,
+      "color": "#b08534"
+    },
+    {
+      "id": "backers",
+      "label": "致谢",
+      "min_yuan": 1,
+      "max_yuan": 10,
+      "avatar_size": 0,
+      "color": "#5e5d59"
+    }
+  ],
+
+  "_comment_sponsors": "实名赞助者 — 每条: name (显示名), tier (gold/silver/bronze/backers), avatar (URL或本地路径,留空用默认头像; backers 档不显示头像), url (个人主页/github 链接,可选), message (一句留言,可选; backers 档不显示留言)",
+
+  "sponsors": [],
+
+  "_comment_anonymous": "匿名赞助 — 按档计数, 显示成 \"5 位匿名好友\"",
+  "anonymous_count": {
+    "gold": 0,
+    "silver": 0,
+    "bronze": 0,
+    "backers": 0
+  }
+}

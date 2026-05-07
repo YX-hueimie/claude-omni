@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>赞助者 · claude-omni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parchment:#f5f4ed;
+  --ivory:#faf9f5;
+  --near-black:#141413;
+  --terracotta:#c96442;
+  --coral:#d97757;
+  --olive-gray:#5e5d59;
+  --stone-gray:#87867f;
+  --charcoal-warm:#4d4c48;
+  --warm-sand:#e8e6dc;
+  --border-cream:#e8e5d6;
+  --border-warm:#d8d4c2;
+  --serif:"Lora","Noto Serif SC",Georgia,serif;
+  --sans:"Inter","Noto Serif SC",system-ui,Arial,sans-serif;
+  --mono:"JetBrains Mono","Cascadia Code","SF Mono",Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--sans);font-size:15.5px;line-height:1.7;
+  color:var(--charcoal-warm);background:var(--parchment);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:880px;margin:0 auto;padding:48px 36px 80px}
+.topbar{
+  margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:12px;color:var(--stone-gray);
+}
+.topbar a{
+  color:var(--terracotta);text-decoration:none;
+  background:var(--warm-sand);padding:6px 12px;border-radius:7px;
+  box-shadow:0 0 0 1px var(--border-warm);
+}
+.topbar a:hover{background:#dcd8c7}
+
+.hero{
+  text-align:center;padding:24px 0 36px;
+  border-bottom:1px solid var(--border-cream);
+  margin-bottom:36px;
+}
+.hero h1{
+  font-family:var(--serif);font-weight:500;font-size:36px;
+  color:var(--near-black);line-height:1.2;letter-spacing:-.01em;
+  margin-bottom:12px;
+}
+.hero p.lead{
+  color:var(--olive-gray);font-style:italic;font-family:var(--serif);
+  font-size:17px;max-width:520px;margin:0 auto 24px;
+}
+
+.cta{
+  display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;
+}
+.cta a.btn{
+  display:inline-block;padding:10px 22px;border-radius:8px;
+  background:var(--terracotta);color:var(--ivory);
+  text-decoration:none;font-weight:500;font-size:14px;
+  box-shadow:0 0 0 1px var(--terracotta);
+  transition:background .15s;
+}
+.cta a.btn:hover{background:#a8533a}
+.cta a.btn-secondary{
+  background:var(--warm-sand);color:var(--charcoal-warm);
+  box-shadow:0 0 0 1px var(--border-warm);
+}
+.cta a.btn-secondary:hover{background:#dcd8c7}
+
+.qr-row{
+  margin-top:28px;display:flex;flex-wrap:wrap;gap:24px;justify-content:center;
+}
+.qr-card{
+  background:var(--ivory);border:1px solid var(--border-cream);
+  border-radius:10px;padding:16px;text-align:center;
+}
+.qr-card img{display:block;width:240px;height:240px;object-fit:contain;margin:0 auto 10px}
+.qr-card .qr-label{font-size:12px;color:var(--stone-gray);font-family:var(--mono)}
+
+.tier-section{margin-top:48px}
+.tier-h{
+  display:flex;align-items:baseline;gap:12px;margin-bottom:20px;
+  padding-bottom:8px;border-bottom:1px solid var(--border-cream);
+}
+.tier-h h2{
+  font-family:var(--serif);font-weight:500;font-size:22px;
+  color:var(--near-black);
+}
+.tier-h .tier-min{
+  font-family:var(--mono);font-size:12px;color:var(--stone-gray);
+}
+
+.sponsor-grid{
+  display:grid;gap:18px;
+}
+.sponsor-grid.gold{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.sponsor-grid.silver{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+.sponsor-grid.bronze{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+
+.sponsor-card{
+  background:var(--ivory);border:1px solid var(--border-cream);
+  border-radius:10px;padding:14px;text-align:center;
+  transition:box-shadow .15s,border-color .15s;
+}
+.sponsor-card:hover{
+  border-color:var(--terracotta);
+  box-shadow:0 4px 18px rgba(0,0,0,.04);
+}
+.sponsor-card a{color:inherit;text-decoration:none;display:block}
+.sponsor-card img.avatar{
+  display:block;border-radius:50%;margin:0 auto 8px;
+  border:2px solid var(--border-cream);background:var(--warm-sand);
+  object-fit:cover;
+}
+.sponsor-card .name{
+  font-family:var(--serif);font-weight:500;color:var(--near-black);
+  font-size:15px;margin-bottom:4px;
+}
+.sponsor-card .msg{
+  font-size:12.5px;color:var(--olive-gray);font-style:italic;
+  font-family:var(--serif);line-height:1.4;
+}
+
+.anonymous-line{
+  background:var(--ivory);border:1px solid var(--border-cream);
+  border-radius:10px;padding:14px 18px;
+  font-size:13.5px;color:var(--olive-gray);font-style:italic;
+  font-family:var(--serif);
+}
+
+.backers-list{
+  background:var(--ivory);border:1px solid var(--border-cream);
+  border-radius:10px;padding:14px 18px;
+  font-family:var(--serif);font-size:14px;line-height:1.9;
+  color:var(--charcoal-warm);
+}
+.backers-list .name{
+  display:inline;color:var(--near-black);font-weight:500;
+}
+.backers-list .name + .name::before{
+  content:" · ";color:var(--stone-gray);font-weight:400;
+}
+.backers-list a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--border-warm)}
+.backers-list a:hover{color:var(--terracotta);border-bottom-color:var(--terracotta)}
+
+.empty{
+  text-align:center;padding:40px 20px;
+  background:var(--ivory);border:1px dashed var(--border-warm);
+  border-radius:12px;color:var(--stone-gray);
+}
+.empty strong{color:var(--charcoal-warm);font-family:var(--serif);font-weight:500}
+
+.maintenance-note{
+  margin:36px 0 0;padding:18px 24px 18px 22px;
+  background:#fbf6f1;border-left:3px solid var(--terracotta);
+  border-radius:8px;
+  font-size:14.5px;line-height:1.7;color:var(--charcoal-warm);
+}
+.maintenance-note p{margin:0 0 10px}
+.maintenance-note p:last-child{margin-bottom:0}
+.maintenance-note strong{color:var(--near-black);font-weight:500}
+
+.footer-note{
+  margin-top:60px;padding-top:24px;border-top:1px solid var(--border-cream);
+  font-size:12.5px;color:var(--stone-gray);text-align:center;line-height:1.7;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <span>赞助者 · claude-omni</span>
+    <a href="architecture.html">← 返回架构文档</a>
+  </div>
+
+  <div class="hero">
+    <h1>支持 claude-omni</h1>
+    <p class="lead">本项目是个人维护的开源研究工具。如果它对你有帮助, 欢迎赞助一杯咖啡的钱让它走得更远。</p>
+
+<div class="cta">
+<a class="btn" href="https://ifdian.net/a/yxhueimie" target="_blank" rel="noopener">前往爱发电赞助</a>
+</div>
+<div class="qr-row">
+<div class="qr-card"><img src="qr-afdian.jpg" alt="爱发电二维码"><div class="qr-label">爱发电</div></div>
+<div class="qr-card"><img src="qr-wechat.jpg" alt="微信赞赏码"><div class="qr-label">微信赞赏码</div></div>
+</div>
+</div>
+<div class="maintenance-note"><p><strong>为什么赞助：</strong> 这项目实测靠 Claude Pro / Max plan 跑（每月几百块），订阅断了研究就停摆。</p><p>赞助够升 Max 的话能跑更深的实验、出更多对比数据、给你们更新得快点。没赞助也维护，但节奏慢一档。</p></div>
+
+  <div class="empty">
+    <strong>项目刚开放赞助 — 欢迎成为第一位赞助者。</strong><br>
+    点上面的"前往爱发电赞助"按钮, 或者扫描二维码即可。<br>
+    所有赞助者会按档位上墙, 也可选择匿名赞助。
+  </div>
+
+
+  <div class="footer-note">
+    所有赞助者按照档位置顶展示, 实名 / 匿名 / 留言均尊重赞助者本人选择。<br>
+    项目代码采用 MIT 协议开源, 不会因为赞助锁定任何核心功能。
+  </div>
+</div>
+</body>
+</html>
