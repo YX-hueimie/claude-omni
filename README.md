@@ -6,6 +6,8 @@ Claude Desktop 客户端 modding 与 prompt 注入梯度的实证研究工具箱
 
 研究目的：实证理解 Claude SDK 如何拼装 system prompt、不同配置位置的权威性差异、Electron 客户端补丁的工程实现。完整研究文档见 [`docs/architecture.html`](./docs/architecture.html)。
 
+> **在线文档站**：<https://yx-hueimie.github.io/claude-omni/> —— 浏览器直接看渲染版（README / 架构文档 / 赞助者墙），不用 clone。
+
 > **前置**：先装 [Claude Desktop](https://claude.com/download)，所有补丁以官方下载版本为对齐基准。
 
 > 跨档互斥：同一台机器只能装一档。换档前先到当前档目录跑 `uninstall.bat`。
