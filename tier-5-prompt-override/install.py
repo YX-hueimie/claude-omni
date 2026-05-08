@@ -84,6 +84,49 @@ def run_acl_check(cmd):
     return r
 
 
+def fuse_off_with_retry(claude_exe, max_retries=3):
+    """关 EnableEmbeddedAsarIntegrityValidation fuse, EBUSY 时再补杀进程后重试。
+    fuse 写入需要 exclusive 拿到 claude.exe, 进程没杀干净就 EBUSY。"""
+    import time as _time
+    for attempt in range(max_retries):
+        r = subprocess.run(
+            ["npx", "--yes", "@electron/fuses", "write",
+             "--app", str(claude_exe),
+             "EnableEmbeddedAsarIntegrityValidation=off"],
+            capture_output=True, text=True, shell=True,
+            encoding="utf-8", errors="replace"
+        )
+        out = (r.stdout or "") + (r.stderr or "")
+        if r.returncode == 0:
+            print(f"  ✓ fuse 关闭成功", flush=True)
+            return
+        is_ebusy = "EBUSY" in out or "resource busy" in out or "locked" in out
+        if is_ebusy and attempt < max_retries - 1:
+            print(f"  ! fuse 失败 EBUSY (尝试 {attempt+1}/{max_retries}): claude.exe 被进程持有, 再补杀一次", flush=True)
+            for name in ["claude.exe", "cowork-svc.exe", "chrome-native-host.exe", "ant-base.exe"]:
+                subprocess.run(["taskkill", "/F", "/IM", name, "/T"],
+                               capture_output=True, text=True,
+                               encoding="cp936", errors="replace")
+            subprocess.run(["sc", "stop", "CoworkVMService"],
+                           capture_output=True, text=True,
+                           encoding="cp936", errors="replace")
+            _time.sleep(5)
+            continue
+        # 失败兜底: 出诊断 + raise
+        print(f"  ! fuse 失败 (rc={r.returncode}):", flush=True)
+        tail = out[-800:] if len(out) > 800 else out
+        for line in tail.splitlines():
+            print(f"    {line}", flush=True)
+        if is_ebusy:
+            print(f"\n  ! 诊断: claude.exe 持续被进程持有, 自动 retry {max_retries} 次仍 EBUSY。", flush=True)
+            print(f"  ! 手动处理建议:")
+            print(f"    (1) 检查任务栏右下角是否还有 Claude 图标, 右键退出 (任务栏托盘)")
+            print(f"    (2) 任务管理器搜 'claude' / 'cowork' / 'ant', 全部 '结束任务'")
+            print(f"    (3) 关掉 Windows Defender 实时保护 (它有时会持有文件 handle)")
+            print(f"    (4) 重启 Windows 后再跑 install (最稳兜底)")
+        raise SystemExit(f"fuse 写入失败 (rc={r.returncode})")
+
+
 def robocopy_mirror(src, dst):
     """robocopy /MIR — 镜像 src 到 dst (清空目标多余 + 完整复制)。
     用于完整还原场景。处理 WindowsApps 里 shutil.copytree 处理不了的特殊文件。
@@ -446,10 +489,7 @@ def main():
     sub_backup = full_backup(claude_exe, asar_path, resources_dir)
 
     step(4, TOTAL, "关 ASAR fuse...")
-    run_loud(["npx", "--yes", "@electron/fuses", "write",
-              "--app", str(claude_exe),
-              "EnableEmbeddedAsarIntegrityValidation=off"],
-             shell=True)
+    fuse_off_with_retry(claude_exe)
 
     # 重装路径: 当前 asar 已含本 patch marker 时, 先从备份还原干净基线再重打。
     # 直接在已 patched asar 上再 patch 会让锚点正则匹配失败 (注入位置已变形),
@@ -530,20 +570,45 @@ def main():
 
     target_unpacked = resources_dir / "app.asar.unpacked"
 
+    # 写入策略: 优先 atomic (.pending + os.replace); AppX 拦截创建 .pending 时退化到 direct overwrite。
+    # WindowsApps 受 AppX 部署引擎保护, 即使 admin Full ACL 也可能拒绝 "在 resources/ 创建新文件"
+    # (如 .pending), 但允许 "覆盖已有文件" (app.asar 本身)。direct overwrite 失去原子性, 中断时
+    # asar 可能损坏, 但 emergency-restore.bat 可兜底恢复, 这是 "装不上" vs "偶尔可能损坏可恢复"
+    # 之间的权衡, 后者更可接受。
+    fallback_to_direct = False
+
     try:
-        # 1. 写 pending
+        # 1. 试 atomic 路径: 写 .pending
         shutil.copy2(new_asar, pending)
         if pending.stat().st_size != new_asar.stat().st_size:
             raise SystemExit(".pending 写入大小不匹配")
+    except (PermissionError, OSError) as e:
+        err_str = str(e)
+        if "WinError 5" in err_str or "Permission" in err_str.lower() or "拒绝访问" in err_str:
+            print(f"  ! 创建 .pending 被拒 ({type(e).__name__}: {e})")
+            print(f"  ! AppX/系统保护层拦截 'WindowsApps 里创建新文件', 退化到 direct overwrite")
+            print(f"    (非 atomic 但绕过 AppX 限制; 中断时跑 emergency-restore.bat 兜底)")
+            if pending.exists():
+                pending.unlink(missing_ok=True)
+            fallback_to_direct = True
+        else:
+            raise  # 其他错误走外层 except 诊断
 
-        # 2. merge unpacked: robocopy /E 递归复制, 不删目标多余文件
-        #    (保留 i18n 等其他 patch 的 unpacked 内容)
-        if new_unpacked.exists():
-            robocopy_merge(new_unpacked, target_unpacked)
-
-        # 3. atomic replace pending -> asar (Windows NTFS 上 os.replace 是真 atomic)
-        os.replace(str(pending), str(asar_path))
-        print(f"  ✓ {asar_path}")
+    try:
+        if not fallback_to_direct:
+            # atomic 路径: pending 已写好, 走 merge unpacked + os.replace
+            if new_unpacked.exists():
+                robocopy_merge(new_unpacked, target_unpacked)
+            os.replace(str(pending), str(asar_path))
+            print(f"  ✓ {asar_path} (atomic)")
+        else:
+            # direct overwrite 路径: 直接覆盖 app.asar 本身, 绕过 AppX 创建新文件限制
+            shutil.copy2(new_asar, asar_path)
+            if asar_path.stat().st_size != new_asar.stat().st_size:
+                raise SystemExit("direct overwrite 大小不匹配")
+            if new_unpacked.exists():
+                robocopy_merge(new_unpacked, target_unpacked)
+            print(f"  ✓ {asar_path} (direct overwrite, 非 atomic)")
 
     except Exception as e:
         print(f"  ! 写回失败: {e}")

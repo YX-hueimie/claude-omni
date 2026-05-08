@@ -83,6 +83,49 @@ def run(cmd, check=True, capture=False, shell=False):
         return r
 
 
+def fuse_off_with_retry(claude_exe, max_retries=3):
+    """关 EnableEmbeddedAsarIntegrityValidation fuse, EBUSY 时再补杀进程后重试。
+    fuse 写入需要 exclusive 拿到 claude.exe, 进程没杀干净就 EBUSY。"""
+    import time as _time
+    for attempt in range(max_retries):
+        r = subprocess.run(
+            ["npx", "--yes", "@electron/fuses", "write",
+             "--app", str(claude_exe),
+             "EnableEmbeddedAsarIntegrityValidation=off"],
+            capture_output=True, text=True, shell=True,
+            encoding="utf-8", errors="replace"
+        )
+        out = (r.stdout or "") + (r.stderr or "")
+        if r.returncode == 0:
+            print(f"  ✓ fuse 关闭成功", flush=True)
+            return
+        is_ebusy = "EBUSY" in out or "resource busy" in out or "locked" in out
+        if is_ebusy and attempt < max_retries - 1:
+            print(f"  ! fuse 失败 EBUSY (尝试 {attempt+1}/{max_retries}): claude.exe 被进程持有, 再补杀一次", flush=True)
+            for name in ["claude.exe", "cowork-svc.exe", "chrome-native-host.exe", "ant-base.exe"]:
+                subprocess.run(["taskkill", "/F", "/IM", name, "/T"],
+                               capture_output=True, text=True,
+                               encoding="cp936", errors="replace")
+            subprocess.run(["sc", "stop", "CoworkVMService"],
+                           capture_output=True, text=True,
+                           encoding="cp936", errors="replace")
+            _time.sleep(5)
+            continue
+        # 失败兜底: 出诊断 + raise
+        print(f"  ! fuse 失败 (rc={r.returncode}):", flush=True)
+        tail = out[-800:] if len(out) > 800 else out
+        for line in tail.splitlines():
+            print(f"    {line}", flush=True)
+        if is_ebusy:
+            print(f"\n  ! 诊断: claude.exe 持续被进程持有, 自动 retry {max_retries} 次仍 EBUSY。", flush=True)
+            print(f"  ! 手动处理建议:")
+            print(f"    (1) 检查任务栏右下角是否还有 Claude 图标, 右键退出 (任务栏托盘)")
+            print(f"    (2) 任务管理器搜 'claude' / 'cowork' / 'ant', 全部 '结束任务'")
+            print(f"    (3) 关掉 Windows Defender 实时保护 (它有时会持有文件 handle)")
+            print(f"    (4) 重启 Windows 后再跑 install (最稳兜底)")
+        raise SystemExit(f"fuse 写入失败 (rc={r.returncode})")
+
+
 def find_claude_app():
     """找 WindowsApps 里最新的 Claude_xxx_x64__xxx 目录。"""
     if not WINDOWSAPPS.exists():
@@ -281,10 +324,7 @@ def main():
     print(f"  备份目录: {sub_backup}")
 
     step(5, TOTAL, "关 claude.exe 的 ASAR 完整性 fuse...")
-    run(["npx", "--yes", "@electron/fuses", "write",
-         "--app", str(claude_exe),
-         "EnableEmbeddedAsarIntegrityValidation=off"],
-        capture=True, shell=True)
+    fuse_off_with_retry(claude_exe)
 
     step(6, TOTAL, "解 app.asar、注入 i18n、重新打包...")
     extracted = SCRIPT_DIR / "_extracted_tmp"
