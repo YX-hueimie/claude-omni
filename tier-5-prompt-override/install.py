@@ -73,6 +73,17 @@ def run_quiet(cmd):
                           encoding="cp936", errors="replace", check=False)
 
 
+def run_acl_check(cmd):
+    """跑 takeown / icacls 这种 ACL 命令, 失败时打印 stderr 警告 (不 halt install)。
+    跟 run_quiet 区别: run_quiet 完全静默, 这个会让 ACL 失败浮出表面。"""
+    r = subprocess.run(cmd, capture_output=True, text=True,
+                       encoding="cp936", errors="replace", check=False)
+    if r.returncode != 0:
+        msg = (r.stderr or r.stdout or "").strip()
+        print(f"  [警告] {cmd[0]} rc={r.returncode}: {msg[:200]}", flush=True)
+    return r
+
+
 def robocopy_mirror(src, dst):
     """robocopy /MIR — 镜像 src 到 dst (清空目标多余 + 完整复制)。
     用于完整还原场景。处理 WindowsApps 里 shutil.copytree 处理不了的特殊文件。
@@ -426,10 +437,10 @@ def main():
     import time
     time.sleep(3)
     for target in [claude_exe, asar_path]:
-        run_quiet(["takeown", "/F", str(target)])
-        run_quiet(["icacls", str(target), "/grant", "administrators:F"])
-    run_quiet(["takeown", "/F", str(resources_dir), "/R", "/D", "Y"])
-    run_quiet(["icacls", str(resources_dir), "/grant", "administrators:F", "/T", "/C"])
+        run_acl_check(["takeown", "/F", str(target)])
+        run_acl_check(["icacls", str(target), "/grant", "administrators:F"])
+    run_acl_check(["takeown", "/F", str(resources_dir), "/R", "/D", "Y"])
+    run_acl_check(["icacls", str(resources_dir), "/grant", "administrators:F", "/T", "/C"])
 
     step(3, TOTAL, "完整备份 (asar + exe + unpacked/)...")
     sub_backup = full_backup(claude_exe, asar_path, resources_dir)
@@ -536,6 +547,26 @@ def main():
 
     except Exception as e:
         print(f"  ! 写回失败: {e}")
+        # 诊断: WinError 5 / Permission denied 类的权限错误, 给具体根因排查
+        err_str = str(e)
+        if "WinError 5" in err_str or "Permission" in err_str.lower() or "拒绝访问" in err_str:
+            print(f"  ! 这是 Windows 权限错误 (拒绝访问), 常见三种原因:")
+            print(f"    (1) Windows Defender 实时保护拦截 WindowsApps 写入")
+            print(f"        → 临时关 Defender 实时保护后重试")
+            print(f"    (2) 项目放在受保护目录 (如 System32 / Program Files)")
+            print(f"        → 把 claude-omni/ 整个移到 Desktop / Documents 下重跑")
+            print(f"    (3) Trusted Installer 仍持有 deny ACL")
+            print(f"        → 管理员 PowerShell 跑: takeown /F \"{resources_dir}\" /R /D Y")
+            print(f"                              : icacls \"{resources_dir}\" /reset /T /C")
+            # 实地查一下 resources_dir 当前 ACL, 让用户能贴给我们看
+            acl_r = subprocess.run(
+                ["icacls", str(resources_dir)],
+                capture_output=True, text=True, encoding="cp936", errors="replace"
+            )
+            if acl_r.stdout:
+                print(f"  ! 当前 resources/ ACL (如要贴 issue 复制这段):")
+                for line in acl_r.stdout.splitlines()[:10]:
+                    print(f"    {line}")
         if pending.exists():
             pending.unlink(missing_ok=True)
         # 从备份完整恢复
