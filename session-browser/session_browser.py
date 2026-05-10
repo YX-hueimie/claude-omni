@@ -843,6 +843,28 @@ h1.page-title {
 .bubble.editing .edit-btn,
 .bubble.editing .delete-btn,
 .bubble.editing .truncate-btn { display: none; }
+/* 中间事件删除按钮：tool_result / attachment / queue / ai-title / last-prompt 等 */
+.evt-del-btn, .grp-del-btn {
+  background: transparent;
+  border: 1px solid var(--border-warm);
+  color: var(--stone-gray);
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+  font-family: "Anthropic Sans", sans-serif;
+  margin-left: 6px;
+  user-select: none;
+}
+details:hover > summary .evt-del-btn,
+details:hover > summary .grp-del-btn { opacity: 1; }
+.evt-del-btn:hover, .grp-del-btn:hover {
+  color: var(--error-crimson);
+  border-color: var(--error-crimson);
+}
+.grp-del-btn { font-weight: 600; }
 .bubble-actions {
   display: inline-flex;
   align-items: center;
@@ -1468,6 +1490,7 @@ SESSION_HTML = """
 <div class="container">
   <div class="toolbar">
     <a class="btn" href="/project/{{ project_id }}">← 返回会话列表</a>
+    <a class="btn" href="/project/{{ project_id }}/session/{{ session_id }}/export.md" title="导出对话为 Markdown (只含你和 Claude 的文本, 跳过工具调用)">导出 .md</a>
     <span class="undo-wrap">
       <button class="btn" type="button" onclick="toggleUndoMenu()">撤销 ▾</button>
       <div class="undo-menu" id="undo-menu">
@@ -1558,6 +1581,7 @@ SESSION_HTML = """
           <span class="tool-name">{{ tu.name }}</span>
           {% if tu.preview %}<span class="tool-preview">{{ tu.preview }}</span>{% endif %}
           <span class="tool-meta">L{{ it.line_no }}</span>
+          <button type="button" class="evt-del-btn" onclick="deleteByLine({{ it.line_no }}, 'line', event)" title="删除此条 assistant 消息（含其所有 tool_use）">删</button>
         </summary>
         <pre>{{ tu.input | tojson(indent=2) }}</pre>
       </details>
@@ -1568,6 +1592,7 @@ SESSION_HTML = """
           <span class="tool-name">工具返回</span>
           {% if it.preview %}<span class="tool-preview">{{ it.preview }}</span>{% endif %}
           <span class="tool-meta">L{{ it.line_no }} · {{ it.lines }} 行</span>
+          <button type="button" class="evt-del-btn" onclick="deleteByLine({{ it.line_no }}, 'line', event)" title="删此 tool_result">删</button>
         </summary>
         <pre>{{ it.text[:5000] }}{% if it.text|length > 5000 %}
 
@@ -1575,27 +1600,42 @@ SESSION_HTML = """
       </details>
     {% elif it.kind == 'attachment' %}
       <details class="attachment">
-        <summary>附件 / attachment · L{{ it.line_no }}</summary>
+        <summary>
+          附件 / attachment · L{{ it.line_no }}
+          <button type="button" class="evt-del-btn" onclick="deleteByLine({{ it.line_no }}, 'line', event)" title="删此附件事件">删</button>
+        </summary>
         <pre>{{ it.summary }}</pre>
       </details>
     {% elif it.kind == 'summary' %}
       <details class="summary-block" open>
-        <summary>会话摘要 / summary · L{{ it.line_no }}</summary>
+        <summary>
+          会话摘要 / summary · L{{ it.line_no }}
+          <button type="button" class="evt-del-btn" onclick="deleteByLine({{ it.line_no }}, 'line', event)" title="删此摘要事件">删</button>
+        </summary>
         <pre>{{ it.text }}</pre>
       </details>
     {% elif it.kind == 'queue' %}
       <details class="queue">
-        <summary>队列事件 · L{{ it.line_no }}</summary>
+        <summary>
+          队列事件 · L{{ it.line_no }}
+          <button type="button" class="evt-del-btn" onclick="deleteByLine({{ it.line_no }}, 'line', event)" title="删此事件">删</button>
+        </summary>
         <pre>{{ it.text }}</pre>
       </details>
     {% elif it.kind == 'broken' %}
       <details class="broken">
-        <summary>无法解析 · L{{ it.line_no }}</summary>
+        <summary>
+          无法解析 · L{{ it.line_no }}
+          <button type="button" class="evt-del-btn" onclick="deleteByLine({{ it.line_no }}, 'line', event)" title="删此事件">删</button>
+        </summary>
         <pre>{{ it.text }}</pre>
       </details>
     {% else %}
       <details class="queue">
-        <summary>{{ it.kind }} · L{{ it.line_no }}</summary>
+        <summary>
+          {{ it.kind }} · L{{ it.line_no }}
+          <button type="button" class="evt-del-btn" onclick="deleteByLine({{ it.line_no }}, 'line', event)" title="删此事件">删</button>
+        </summary>
         <pre>{{ it.text }}</pre>
       </details>
     {% endif %}
@@ -1609,6 +1649,7 @@ SESSION_HTML = """
           <span class="tool-name">中间过程</span>
           <span class="tool-preview">{{ it.count }} 个事件</span>
           <span class="tool-meta">L{{ it.start_line }} – L{{ it.end_line }}</span>
+          <button type="button" class="grp-del-btn" onclick="deleteToolGroup({{ it.start_line }}, {{ it.end_line }}, event)" title="删除整组中间过程（L{{ it.start_line }}–L{{ it.end_line }} 全部事件）">删整组</button>
         </summary>
         <div class="tool-group-body">
           {% for sub in it.events %}{{ render_item(sub) }}{% endfor %}
@@ -1771,6 +1812,91 @@ function escapeHtml(s) {
 }
 
 // ===== 单条 / 整轮 / 截断删除（带预览） =====
+// 直接按行号删除单条事件（中间过程用，比如 tool_result / attachment / ai-title 等）
+async function deleteByLine(lineNo, mode, evt) {
+  if (evt) evt.stopPropagation();  // 防止 <details> 误开/关
+  if (SESSION_ACTIVE) {
+    alert('当前 session 还在活跃中，先关 Claude Desktop 再删（避免冲突写崩 jsonl）');
+    return;
+  }
+  const modeLabel = {
+    'line':       '删除此条',
+    'turn':       '删除整轮对话',
+    'from_here':  '从此条起截断到 session 末尾',
+  }[mode] || mode;
+
+  let preview;
+  try {
+    const res = await fetch(`/project/${PROJECT_ID}/session/${SESSION_ID}/delete`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({line_no: lineNo, mode: mode, dry_run: true}),
+    });
+    preview = await res.json();
+    if (!preview.ok) { alert('预览失败：' + (preview.error || res.status)); return; }
+  } catch (e) { alert('预览失败：' + e.message); return; }
+
+  let body = `<div>${modeLabel}：将删除 <b>${preview.deleted}</b> 行（L${preview.del_start_line}–L${preview.del_end_line}），删除后剩 ${preview.remaining_lines} 行。</div>`;
+  body += renderPreviewList(preview.would_delete);
+  if (preview.warnings && preview.warnings.length) {
+    body += `<div class="warn">⚠ ${preview.warnings.map(escapeHtml).join('<br>')}</div>`;
+  }
+
+  openModal('确认删除', body, '确认删除', async () => {
+    try {
+      const res = await fetch(`/project/${PROJECT_ID}/session/${SESSION_ID}/delete`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({line_no: lineNo, mode: mode}),
+      });
+      const data = await res.json();
+      if (!data.ok) { alert('删除失败：' + (data.error || res.status)); return; }
+      location.reload();
+    } catch (e) { alert('请求失败：' + e.message); }
+  });
+}
+
+// 删除整个中间过程组（连续 N 行）
+async function deleteToolGroup(startLine, endLine, evt) {
+  if (evt) evt.stopPropagation();
+  if (SESSION_ACTIVE) {
+    alert('当前 session 还在活跃中，先关 Claude Desktop 再删');
+    return;
+  }
+  const lineNos = [];
+  for (let i = startLine; i <= endLine; i++) lineNos.push(i);
+
+  let preview;
+  try {
+    const res = await fetch(`/project/${PROJECT_ID}/session/${SESSION_ID}/delete-bulk`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({line_nos: lineNos, dry_run: true}),
+    });
+    preview = await res.json();
+    if (!preview.ok) { alert('预览失败：' + (preview.error || res.status)); return; }
+  } catch (e) { alert('预览失败：' + e.message); return; }
+
+  let body = `<div>将删除整组中间过程：L${startLine}–L${endLine}（<b>${preview.deleted}</b> 行），删除后剩 ${preview.remaining_lines} 行。</div>`;
+  body += renderPreviewList(preview.would_delete);
+  if (preview.warnings && preview.warnings.length) {
+    body += `<div class="warn">⚠ ${preview.warnings.map(escapeHtml).join('<br>')}</div>`;
+  }
+
+  openModal('确认删除整组', body, `删除 ${lineNos.length} 条`, async () => {
+    try {
+      const res = await fetch(`/project/${PROJECT_ID}/session/${SESSION_ID}/delete-bulk`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({line_nos: lineNos}),
+      });
+      const data = await res.json();
+      if (!data.ok) { alert('删除失败：' + (data.error || res.status)); return; }
+      location.reload();
+    } catch (e) { alert('请求失败：' + e.message); }
+  });
+}
+
 async function deleteLine(btn, mode) {
   if (SESSION_ACTIVE) {
     alert('当前 session 还在活跃中，先关 Claude Desktop 再删（避免冲突写崩 jsonl）');
@@ -2095,9 +2221,89 @@ def session_view(project_id, sid):
         data=data,
         project_name=project_name,
         project_id=project_id,
+        session_id=sid,
         projects=projects,
         css=BASE_CSS,
     )
+
+
+@app.route("/project/<project_id>/session/<sid>/export.md")
+def session_export_md(project_id, sid):
+    """导出会话为 Markdown - 只保留 user 和 assistant 的纯文本对话,
+    跳过 tool_use / tool_result / system 等元/工具内容。"""
+    if not _validate_project_id(project_id):
+        abort(400)
+    if not re.match(r"^[a-f0-9-]+$", sid):
+        abort(400)
+    project_dir = get_project_dir(project_id)
+    p = project_dir / f"{sid}.jsonl"
+    if not p.exists():
+        abort(404)
+
+    lines = [f"# Claude session — {sid[:8]}", ""]
+
+    with open(p, "r", encoding="utf-8") as f:
+        for raw in f:
+            raw = raw.strip()
+            if not raw:
+                continue
+            try:
+                obj = json.loads(raw)
+            except Exception:
+                continue
+
+            t = obj.get("type", "")
+            if t not in ("user", "assistant"):
+                continue
+            if obj.get("isMeta"):
+                continue  # 跳过 system-reminder / 元数据 user 消息
+
+            # 抽 message.content 的纯 text 部分 (跳过 tool_use / tool_result)
+            msg = obj.get("message", {}) or {}
+            content = msg.get("content", "")
+            text_parts = []
+            has_tool_result = False
+            if isinstance(content, str):
+                text_parts.append(content)
+            elif isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict):
+                        it_type = item.get("type")
+                        if it_type == "text" and item.get("text"):
+                            text_parts.append(item["text"])
+                        elif it_type == "tool_result":
+                            has_tool_result = True
+                    elif isinstance(item, str):
+                        text_parts.append(item)
+
+            text = "\n".join(text_parts).strip()
+            if not text:
+                continue
+            # user.content 是 tool_result 的话, 不算"我说的", 跳过
+            if t == "user" and has_tool_result and not any(
+                isinstance(x, dict) and x.get("type") == "text" for x in (content if isinstance(content, list) else [])
+            ):
+                continue
+
+            ts = obj.get("timestamp", "")
+            ts_short = ts[:19].replace("T", " ") if ts else ""
+
+            speaker = "你" if t == "user" else "Claude"
+            header = f"## {speaker}"
+            if ts_short:
+                header += f"  <sub>{ts_short}</sub>"
+            lines.append(header)
+            lines.append("")
+            lines.append(text)
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+
+    md = "\n".join(lines)
+    return md, 200, {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Content-Disposition": f'attachment; filename="claude-session-{sid[:8]}.md"',
+    }
 
 
 @app.route("/project/<project_id>/session/<sid>/edit", methods=["POST"])
