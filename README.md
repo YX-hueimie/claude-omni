@@ -2,7 +2,7 @@
 
 # claude-omni
 
-Claude Desktop 客户端 modding 与 prompt 注入梯度的实证研究工具箱——按"配置层级"分 5 档，独立可装可卸，配套可视化控制面板。
+Claude Desktop的一站式中文补丁、字体补丁、会话管理、破限工具
 
 研究目的：实证理解 Claude SDK 如何拼装 system prompt、不同配置位置的权威性差异、Electron 客户端补丁的工程实现。完整研究文档见 [`docs/architecture.html`](./docs/architecture.html)。
 
