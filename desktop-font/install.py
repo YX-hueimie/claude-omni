@@ -124,6 +124,90 @@ def run(cmd, check=True, capture=False, shell=False):
         return r
 
 
+def _refresh_path_for_current_process():
+    """从注册表读最新系统 PATH + 用户 PATH，合并到当前 process env['PATH']。
+    winget 装完 Node.js 不会自动刷当前 shell 的 PATH，需要手动同步。"""
+    try:
+        import winreg
+        parts = []
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                            r"SYSTEM\CurrentControlSet\Control\Session Manager\Environment") as k:
+            sys_path, _ = winreg.QueryValueEx(k, "Path")
+            parts.append(sys_path)
+        try:
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as k:
+                user_path, _ = winreg.QueryValueEx(k, "Path")
+                parts.append(user_path)
+        except FileNotFoundError:
+            pass
+        os.environ["PATH"] = ";".join(p for p in parts if p)
+    except Exception as e:
+        print(f"  ! 刷新 PATH 失败 (非致命): {e}")
+
+
+def ensure_node_available():
+    """确保 Node.js / npx 可用，缺了就尝试 winget 自动装。
+    Node.js 是这个补丁的硬依赖（npx 调 @electron/asar 和 @electron/fuses）。"""
+    import shutil as _shutil
+    if _shutil.which("npx") or _shutil.which("npx.cmd"):
+        return
+
+    print()
+    print("  ! 没找到 Node.js (npx 不可用)")
+    print("  正在尝试用 winget 自动安装 Node.js LTS...")
+    print("  (要联网，包约 30MB，装一下，估计 30-60 秒)")
+    print()
+
+    winget = _shutil.which("winget") or _shutil.which("winget.exe")
+    if winget:
+        try:
+            r = subprocess.run(
+                ["winget", "install", "-e", "--id", "OpenJS.NodeJS.LTS",
+                 "--accept-source-agreements", "--accept-package-agreements",
+                 "--silent"],
+                shell=True
+            )
+        except Exception as e:
+            print(f"  ! winget 启动失败: {e}")
+            r = None
+
+        if r is not None and r.returncode == 0:
+            print("  ✓ Node.js 安装成功，正在刷新当前 shell 的 PATH...")
+            _refresh_path_for_current_process()
+            if _shutil.which("npx") or _shutil.which("npx.cmd"):
+                print("  ✓ npx 已可用，继续安装")
+                return
+            # PATH 没刷到 current process (有时 winget 不写注册表立刻生效)
+            # 退而求其次：直接到默认安装位置找 npx
+            candidates = [
+                r"C:\Program Files\nodejs\npx.cmd",
+                r"C:\Program Files (x86)\nodejs\npx.cmd",
+                os.path.expandvars(r"%LocalAppData%\Programs\nodejs\npx.cmd"),
+            ]
+            for c in candidates:
+                if os.path.isfile(c):
+                    # 把那个目录塞到 PATH 最前
+                    os.environ["PATH"] = os.path.dirname(c) + ";" + os.environ.get("PATH", "")
+                    if _shutil.which("npx") or _shutil.which("npx.cmd"):
+                        print(f"  ✓ 已找到并加入 PATH: {c}")
+                        return
+            print()
+            print("  ! Node.js 已装好，但当前命令窗口的 PATH 还没刷新到。")
+            print("  ! 请关掉当前 cmd / git bash 窗口，重新打开，再跑一遍 install.bat 即可。")
+            raise SystemExit("Node.js 已装，需要重开 cmd 继续")
+        else:
+            rc = r.returncode if r is not None else "?"
+            print(f"  ! winget 装失败 (rc={rc})")
+
+    print()
+    print("  ! 自动安装失败，需要手动装 Node.js")
+    print()
+    print("  下载链接: https://nodejs.org/zh-cn/")
+    print("  装 LTS 版即可，安装时勾选 'Add to PATH'")
+    print("  装好后关掉当前 cmd 窗口，重新打开再跑 install.bat")
+    raise SystemExit("Node.js 不可用，跑不下去")
+
+
 def fuse_off_with_retry(claude_exe, max_retries=3):
     """关 EnableEmbeddedAsarIntegrityValidation fuse, EBUSY 时再补杀进程后重试。
     fuse 写入需要 exclusive 拿到 claude.exe, 进程没杀干净就 EBUSY。"""
@@ -363,6 +447,9 @@ def main():
         print("需要管理员权限，正在请求提权...")
         relaunch_as_admin()
         return
+
+    # 检查并确保 Node.js / npx 可用，缺了 winget 自动装
+    ensure_node_available()
 
     TOTAL = 7
 
