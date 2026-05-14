@@ -274,22 +274,33 @@ def js_template_escape(text: str) -> str:
 
 # --- patch 文本逻辑 ----------------------------------------------------------
 
-def apply_patches_to_text(text: str, append_path_js: str, append_prepend_path_js: str):
+def apply_patches_to_text(text: str, append_v1_js: str, append_v2_js: str,
+                          prepend_v1_js: str, prepend_v2_js: str, marker_js: str):
     """
-    注入运行时 fs.readFileSync 调用 — 而不是嵌入字面量。
-    Claude 进程每次拼装 system prompt 时实时读文件, 改完重启即生效, 不用重 install。
-
-    Code tab (override) 读 append.txt — 完整内容替换 SDK 默认 system prompt。
-    Cowork (prepend) 读 append-prepend.txt — 简化版, 只含 user authorization 顶部, 无 Code SDK 专属 section
-        (TodoWrite / auto memory / Response style 等), 让 cowork 上下文不被开发者风格指令污染。
+    注入运行时 fs.readFileSync 调用 — 不嵌入字面量。
+    Claude 进程每次拼装 system prompt 时:
+      1. 读 marker 文件 (~/.claude/.claude-omni-tier5-mode) 看是 v1 还是 v2 (没有/非法 → v2)
+      2. 按 mode 读对应 append.<mode>.txt 跟 append-prepend.<mode>.txt
+    切 mode = 改 marker 文件 + 重启 Claude, 不用重 install。
     """
-    # Code override 读 append.txt
+    # Code override: marker 选 mode, 读 append.v1.txt 或 append.v2.txt
     read_call = (
-        f"(function(){{try{{return require('fs').readFileSync({append_path_js},'utf-8');}}catch(e){{return '';}}}})()"
+        f"(function(){{try{{"
+        f"var fs=require('fs');"
+        f"var m='v2';try{{var v=fs.readFileSync({marker_js},'utf-8').trim();if(v==='v1')m='v1';}}catch(_e){{}}"
+        f"var fp=m==='v1'?{append_v1_js}:{append_v2_js};"
+        f"return fs.readFileSync(fp,'utf-8');"
+        f"}}catch(e){{return '';}}}})()"
     )
-    # Cowork prepend 读 append-prepend.txt; 内容非空时加 \n\n 分隔, 空时不加
+    # Cowork prepend: marker 选 mode, 读 append-prepend.v1.txt 或 append-prepend.v2.txt; 非空加 \n\n
     read_call_nl = (
-        f"(function(){{try{{var s=require('fs').readFileSync({append_prepend_path_js},'utf-8');return s?s+'\\n\\n':'';}}catch(e){{return '';}}}})()"
+        f"(function(){{try{{"
+        f"var fs=require('fs');"
+        f"var m='v2';try{{var v=fs.readFileSync({marker_js},'utf-8').trim();if(v==='v1')m='v1';}}catch(_e){{}}"
+        f"var fp=m==='v1'?{prepend_v1_js}:{prepend_v2_js};"
+        f"var s=fs.readFileSync(fp,'utf-8');"
+        f"return s?s+'\\n\\n':'';"
+        f"}}catch(e){{return '';}}}})()"
     )
 
     text, prev_n = re.subn(
@@ -534,15 +545,25 @@ def main():
 
     check_tier_conflict()
 
-    append_path = (SCRIPT_DIR / "append.txt").resolve()
-    append_prepend_path = (SCRIPT_DIR / "append-prepend.txt").resolve()
-    if not append_path.exists():
-        raise SystemExit(f"缺少 append.txt: {append_path}")
-    # runtime read: 改 append.txt 后重启 Claude 即生效, 不用重 install。
-    # 注: append-prepend.txt 暂未启用 (Cowork 仍读 append.txt)。
-    append_path_js = json.dumps(str(append_path))
-    append_prepend_path_js = json.dumps(str(append_prepend_path)) if append_prepend_path.exists() else append_path_js
-    print(f"  runtime read 路径: {append_path}")
+    append_v1_path = (SCRIPT_DIR / "append.v1.txt").resolve()
+    append_v2_path = (SCRIPT_DIR / "append.v2.txt").resolve()
+    prepend_v1_path = (SCRIPT_DIR / "append-prepend.v1.txt").resolve()
+    prepend_v2_path = (SCRIPT_DIR / "append-prepend.v2.txt").resolve()
+    for p, name in [(append_v1_path, "append.v1.txt"), (append_v2_path, "append.v2.txt"),
+                    (prepend_v1_path, "append-prepend.v1.txt"), (prepend_v2_path, "append-prepend.v2.txt")]:
+        if not p.exists():
+            raise SystemExit(f"缺少 {name}: {p}")
+    marker_path = Path(os.path.expanduser("~/.claude/.claude-omni-tier5-mode"))
+    # runtime read: 每次 Claude 拼 system prompt 时读 marker → 选 v1 或 v2 对应文件。
+    # 切 mode = 改 marker (面板代办) + 重启 Claude, 不用重 install。marker 没有/非法 → 默认 v2。
+    append_v1_js = json.dumps(str(append_v1_path))
+    append_v2_js = json.dumps(str(append_v2_path))
+    prepend_v1_js = json.dumps(str(prepend_v1_path))
+    prepend_v2_js = json.dumps(str(prepend_v2_path))
+    marker_js = json.dumps(str(marker_path))
+    print(f"  v1 路径: {append_v1_path}")
+    print(f"  v2 路径: {append_v2_path}")
+    print(f"  mode marker: {marker_path} (默认 v2)")
 
     # 检查并确保 Node.js / npx 可用，缺了 winget 自动装
     ensure_node_available()
@@ -615,7 +636,7 @@ def main():
     if not index_js.exists():
         raise SystemExit(f"找不到 {index_js}")
     text = index_js.read_text(encoding="utf-8")
-    new_text, n = apply_patches_to_text(text, append_path_js, append_prepend_path_js)
+    new_text, n = apply_patches_to_text(text, append_v1_js, append_v2_js, prepend_v1_js, prepend_v2_js, marker_js)
     if n == 0:
         raise SystemExit("两条注入路径都没找到锚点")
     index_js.write_text(new_text, encoding="utf-8")
@@ -746,8 +767,9 @@ def main():
     print("=" * 60)
     print()
     print("启动 Claude Desktop 测一下 — 能不能开 + 注入是否生效")
-    print(f"改 Code tab 注入内容 (整段替换 SDK 默认): 编辑 {append_path}")
-    print(f"改 Cowork prepend 内容: 编辑 {append_prepend_path}")
+    print(f"改 v1 内容: 编辑 {append_v1_path} 跟 {prepend_v1_path}")
+    print(f"改 v2 内容: 编辑 {append_v2_path} 跟 {prepend_v2_path}")
+    print(f"切 mode: 改 {marker_path} 写 'v1' 或 'v2' (面板有按钮代办)")
     print("  改完重启 Claude 即生效, 不用重 install (runtime read)")
     print()
     print("注意: 首次启动 Claude 会弹\"未知发布者\"警告 (数字签名失效, 是改 asar 的代价),")

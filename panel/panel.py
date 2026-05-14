@@ -121,6 +121,7 @@ ROOT_DIR = SCRIPT_DIR.parent
 CLAUDE_DIR = Path(os.path.expanduser("~/.claude"))
 TIER_MARKER = CLAUDE_DIR / ".claude-omni-tier"
 PERSONA_MARKER = CLAUDE_DIR / ".claude-omni-persona"
+TIER5_MODE_MARKER = CLAUDE_DIR / ".claude-omni-tier5-mode"
 WINDOWSAPPS = Path(r"C:\Program Files\WindowsApps")
 
 PORT = 5500
@@ -184,8 +185,13 @@ TIERS = [
         "subtitle": "整段替换 + Cowork strip",
         "desc": "整段替换 SDK system prompt + Cowork strip 三段",
         "platform": "Windows / Claude Desktop",
-        "preview_files": ["append.txt", "append-prepend.txt"],
+        "preview_files": ["append.v1.txt", "append.v2.txt", "append-prepend.v1.txt", "append-prepend.v2.txt"],
         "has_emergency": True,
+        "has_mode": True,
+        "modes": [
+            {"id": "v1", "label": "v1 · 绝对服从", "desc": "直接执行不顶嘴, 不发散"},
+            {"id": "v2", "label": "v2 · 主动思考", "desc": "保留主动性、敢顶嘴、发散思路"},
+        ],
     },
 ]
 
@@ -307,6 +313,18 @@ def get_current_persona():
     return None
 
 
+def get_tier5_mode():
+    """读 ~/.claude/.claude-omni-tier5-mode marker, 返回 'v1' 或 'v2'。没有/非法 → 'v2'。"""
+    if TIER5_MODE_MARKER.exists():
+        try:
+            v = TIER5_MODE_MARKER.read_text(encoding="utf-8").strip()
+            if v in ("v1", "v2"):
+                return v
+        except OSError:
+            pass
+    return "v2"
+
+
 def is_port_open(port):
     """检测本地端口是否被占用 (session-browser 在 5193)。"""
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -333,6 +351,7 @@ def collect_status():
         "claude_app_path": str(claude_app) if claude_app else None,
         "current_tier": cur_tier,
         "current_persona": cur_persona,
+        "tier5_mode": get_tier5_mode(),
         "asar_markers": sorted(asar_markers),
         "tiers": [
             {**t, "installed": cur_tier == t["name"]}
@@ -575,6 +594,19 @@ def api_log(task_id):
     if not task:
         abort(404)
     return jsonify(task.snapshot(since))
+
+
+@app.route("/api/tier5-mode", methods=["POST"])
+def api_tier5_mode():
+    """切 tier-5 的 v1/v2 mode。写 ~/.claude/.claude-omni-tier5-mode 文件,
+    Claude 重启后 runtime read IIFE 会按新 mode 读对应文件。"""
+    data = request.get_json(force=True)
+    mode = data.get("mode")
+    if mode not in ("v1", "v2"):
+        return jsonify({"ok": False, "error": "mode 必须是 'v1' 或 'v2'"}), 400
+    CLAUDE_DIR.mkdir(parents=True, exist_ok=True)
+    TIER5_MODE_MARKER.write_text(mode, encoding="utf-8")
+    return jsonify({"ok": True, "mode": mode})
 
 
 @app.route("/api/session-browser/start", methods=["POST"])
@@ -1063,6 +1095,49 @@ function makeTierCard(t, currentTier, disabled){
   if(t.installed){
     const b = el('span', 'badge badge-installed', '已装');
     c.appendChild(b);
+  }
+
+  // mode radio (仅 tier-5)
+  if(t.has_mode && t.modes){
+    const modeBox = el('div');
+    modeBox.style.cssText = 'margin:6px 0;padding:8px 10px;border:1px solid var(--border-cream);border-radius:6px;background:#fbf6f1';
+    const modeHdr = el('div', null, '当前版本');
+    modeHdr.style.cssText = 'font-size:11px;color:var(--stone-gray);font-family:var(--mono);letter-spacing:.04em;margin-bottom:4px';
+    modeBox.appendChild(modeHdr);
+    for(const m of t.modes){
+      const lbl = document.createElement('label');
+      lbl.style.cssText = 'display:flex;gap:8px;cursor:pointer;padding:4px 0;align-items:flex-start';
+      const rb = document.createElement('input');
+      rb.type = 'radio';
+      rb.name = `mode-${t.id}`;
+      rb.value = m.id;
+      rb.checked = (STATE && m.id === STATE.tier5_mode);
+      rb.style.marginTop = '3px';
+      rb.style.accentColor = 'var(--terracotta)';
+      rb.addEventListener('change', async () => {
+        try{
+          const r = await fetch('/api/tier5-mode', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({mode: m.id}),
+          });
+          const j = await r.json();
+          if(!j.ok){ alert('切换失败: ' + (j.error || '未知')); refresh(); return; }
+          const tip = el('div', null, `已切到 ${m.id} · 重启 Claude 后生效`);
+          tip.style.cssText = 'font-size:11px;color:var(--terracotta);margin-top:4px';
+          modeBox.appendChild(tip);
+          setTimeout(() => { if(tip.parentElement) tip.remove(); }, 4000);
+        }catch(e){
+          alert('请求失败: ' + e.message);
+        }
+      });
+      lbl.appendChild(rb);
+      const txt = el('div');
+      txt.innerHTML = `<div style="font-size:12.5px;color:var(--charcoal-warm);font-weight:500">${m.label}</div><div style="color:var(--stone-gray);font-size:11px;line-height:1.4">${m.desc}</div>`;
+      lbl.appendChild(txt);
+      modeBox.appendChild(lbl);
+    }
+    c.appendChild(modeBox);
   }
 
   const actions = el('div', 'card-actions');
