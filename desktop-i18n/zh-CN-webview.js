@@ -365,7 +365,7 @@
     "Replace": "替换",
     "auto": "自动",
     "You": "你",
-    "Created time": "创建时间",
+    "Created time": "按创建时间",
     "Created Date": "创建日期",
     "Created date": "创建日期",
     "Legacy": "旧版",
@@ -2836,6 +2836,388 @@
     "Streamline engineering workflows — standups, code review, architecture decisions, incident response, and…": "简化工程工作流 — 站会、代码评审、架构决策、事故响应…",
     "Turn Common Room into your GTM copilot. Research accounts and contacts, prep for calls with attendee...": "把 Common Room 变成你的 GTM 副驾。调研账户和联系人、为通话准备与会者信息...",
     "Turn Common Room into your GTM copilot. Research accounts and contacts, prep for calls with attendee…": "把 Common Room 变成你的 GTM 副驾。调研账户和联系人、为通话准备与会者信息…",
+
+    // === 套餐页 / 升级页 / Max 订阅 ===
+    "Plans that grow with you": "随你成长的套餐",
+    "Individual": "个人版",
+    "Free": "免费",
+    "Meet Claude": "认识 Claude",
+    "Use Claude for free": "免费使用 Claude",
+    "Chat on web, iOS, Android, and desktop": "在网页、iOS、Android 和桌面端聊天",
+    "Generate code and visualize data": "生成代码、可视化数据",
+    "Connect Slack and Google Workspace": "连接 Slack 和 Google Workspace",
+    "Extended thinking for complex work": "复杂工作支持扩展思考",
+    "Built-in web search": "内置网页搜索",
+    "Deep research, code, and organize": "深度研究、编程、整理",
+    "billed annually": "按年计费",
+    "billed monthly": "按月计费",
+    "Yearly": "年付",
+    "Monthly": "月付",
+    "Get Pro plan": "选择 Pro 套餐",
+    "Get Max plan": "选择 Max 套餐",
+    "Claude Code directly in your codebase": "在你的代码库中直接使用 Claude Code",
+    "Power through tasks with Cowork": "用 Cowork 加速完成任务",
+    "Higher usage limits": "更高的用量上限",
+    "Deep research and analysis": "深度研究和分析",
+    "Memory that carries across conversations": "跨对话保留的记忆",
+    "Higher limits, priority access": "更高用量上限,优先访问",
+    "Higher limits": "更高用量上限",
+    "priority access": "优先访问",
+    "Priority access": "优先访问",
+    "No commitment · Cancel anytime": "无承诺 · 随时取消",
+    "No commitment": "无承诺",
+    "Cancel anytime": "随时取消",
+    "Recommended for Claude Code & Cowork": "推荐用于 Claude Code 和 Cowork",
+    "Early access to advanced Claude features": "抢先体验 Claude 高级功能",
+    "Higher output limits for all tasks": "所有任务的输出上限更高",
+    "Priority access at high traffic times": "高峰时段优先访问",
+
+    // === Teams / Enterprise 套餐页 ===
+    "Predictable usage per seat": "每席位用量稳定",
+    "Flexible pooled usage": "灵活的共享用量",
+    "Standard seat": "标准席位",
+    "Premium seat": "高级席位",
+    "All Claude features, plus more usage than Pro": "所有 Claude 功能,且用量比 Pro 多",
+    "All Claude features, plus more usage than Pro*": "所有 Claude 功能,且用量比 Pro 多*",
+    "5x more usage than standard seats": "用量是标准席位的 5 倍",
+    "5x more usage than standard seats*": "用量是标准席位的 5 倍*",
+    "5x more usage than Pro": "用量是 Pro 的 5 倍",
+    "200K context window": "200K 上下文窗口",
+    "500K context window": "500K 上下文窗口",
+    "context window": "上下文窗口",
+    "Extra usage available at API rates": "额外用量按 API 费率计费",
+    "Central billing and administration": "集中计费与管理",
+    "Single sign-on (SSO) and domain capture": "单点登录 (SSO) 与域名认领",
+    "Admin controls for remote and local connectors": "远程和本地连接器的管理员控制",
+    "Enterprise deployment for the Claude desktop app": "Claude 桌面应用的企业版部署",
+    "Enterprise search across your organization": "组织级企业搜索",
+    "Connect Microsoft 365, Slack, and more": "连接 Microsoft 365、Slack 等",
+    "No model training on your content by default": "默认不使用你的内容训练模型",
+    "Work email address required.": "需要工作邮箱地址。",
+    "Work email address required": "需要工作邮箱地址",
+    "Seat price + usage at API rates": "席位价格 + 按 API 费率计费用量",
+    "API rates": "API 费率",
+    "USD 20/seat. Usage cost scales with model and task.": "USD 20/席位。使用成本随模型和任务而变。",
+    "Pay-as-you-go pricing with pooled usage across your org": "按使用付费,组织内用量共享",
+    "Set user and org spend limits": "设置用户和组织的支出限额",
+    "Role-based access with fine grained permissioning": "基于角色的访问控制,细粒度权限",
+    "System for Cross-domain Identity Management (SCIM)": "跨域身份管理系统 (SCIM)",
+    "Audit logs": "审计日志",
+    "Compliance API for observability and monitoring": "用于可观测和监控的合规 API",
+    "Network-level access control": "网络级访问控制",
+    "Custom data retention controls": "自定义数据保留控制",
+    "IP allowlisting": "IP 白名单",
+    "Google Docs cataloging": "Google 文档编目",
+    "A work email address is required to create an Enterprise account. Contact sales to learn more.": "需要工作邮箱地址才能创建企业账号。联系销售了解更多。",
+    "A work email address is required to create an Enterprise account.": "需要工作邮箱地址才能创建企业账号。",
+    "Contact sales to learn more.": "联系销售了解更多。",
+    "Contact sales": "联系销售",
+    "to learn more": "了解更多",
+    "to learn more.": "了解更多。",
+    "limits apply.": "限制适用。",
+    "limits apply": "限制适用",
+    "Usage limits apply.": "用量限制适用。",
+    "Usage limits apply": "用量限制适用",
+    "Prices shown don't include applicable tax. Prices and plans are subject to change at Anthropic's discretion.": "显示价格不含适用税费。价格和套餐可能由 Anthropic 自行决定更改。",
+    "Prices shown don’t include applicable tax. Prices and plans are subject to change at Anthropic’s discretion.": "显示价格不含适用税费。价格和套餐可能由 Anthropic 自行决定更改。",
+    "Prices shown don't include applicable tax.": "显示价格不含适用税费。",
+    "Prices shown don’t include applicable tax.": "显示价格不含适用税费。",
+    "Prices and plans are subject to change at Anthropic's discretion.": "价格和套餐可能由 Anthropic 自行决定更改。",
+    "Prices and plans are subject to change at Anthropic’s discretion.": "价格和套餐可能由 Anthropic 自行决定更改。",
+
+    // === Max checkout 页 ===
+    "Order details": "订单详情",
+    "Order": "订单",
+    "Subtotal": "小计",
+    "Total due today": "今日应付总额",
+
+    // === 升级提示卡片 ===
+    "Claude understands your codebase and helps you build, debug, and ship faster. Upgrade your plan to get started.": "Claude 理解你的代码库,帮你更快地构建、调试和发布。升级套餐即可开始。",
+    "Claude understands your codebase and helps you build, debug, and ship faster.": "Claude 理解你的代码库,帮你更快地构建、调试和发布。",
+    "Upgrade your plan to get started.": "升级套餐即可开始。",
+    "Upgrade your plan to get started": "升级套餐即可开始",
+    "Upgrade to Max or Pro": "升级到 Max 或 Pro",
+    "Upgrade to Pro": "升级到 Pro",
+    "Upgrade to Max": "升级到 Max",
+
+    // === 通用版本对比 ===
+    "Everything in Free and:": "包含 Free 全部内容,加上:",
+    "Everything in Pro, plus:": "包含 Pro 全部内容,加上:",
+    "Everything in Pro and:": "包含 Pro 全部内容,加上:",
+    "Everything in Team, plus:": "包含团队版全部内容,加上:",
+    "Everything in Team and:": "包含团队版全部内容,加上:",
+    "All Team features, plus:": "包含团队版全部功能,加上:",
+    "All Free features, plus:": "包含 Free 全部功能,加上:",
+    "All Pro features, plus:": "包含 Pro 全部功能,加上:",
+    "Up to 20x more usage than Pro": "用量最高是 Pro 的 20 倍",
+    "Up to 20x more usage than Pro*": "用量最高是 Pro 的 20 倍*",
+
+    // === 设置 - 代码执行权限 ===
+    "Code execution and file creation": "代码执行和文件创建",
+    "Claude can execute code and create and edit docs, spreadsheets, presentations, PDFs, and data reports. Required for skills.": "Claude 可以执行代码,创建并编辑文档、表格、演示文稿、PDF 和数据报告。skills 功能需要开启。",
+    "Claude can execute code and create and edit docs, spreadsheets, presentations, PDFs, and data reports.": "Claude 可以执行代码,创建并编辑文档、表格、演示文稿、PDF 和数据报告。",
+    "Required for skills.": "skills 功能需要开启。",
+    "Required for skills": "skills 功能需要开启",
+    "Allow outbound network": "允许出站网络",
+    "Allow Claude to access common package managers to install packages and libraries for data analysis, visualizations, and file processing. View package manager domains. Monitor chats closely as this comes with security risks.": "允许 Claude 访问常用包管理器,安装用于数据分析、可视化、文件处理的包和库。查看包管理器域名。请密切留意对话内容,这有安全风险。",
+    "Allow Claude to access common package managers to install packages and libraries for data analysis, visualizations, and file processing.": "允许 Claude 访问常用包管理器,安装用于数据分析、可视化、文件处理的包和库。",
+    "View package manager domains.": "查看包管理器域名。",
+    "View package manager domains": "查看包管理器域名",
+    "Monitor chats closely as this comes with security risks.": "请密切留意对话内容,这有安全风险。",
+    "Monitor chats closely as this comes with security risks": "请密切留意对话内容,这有安全风险",
+    "security risks": "安全风险",
+    "security risk": "安全风险",
+
+    // === 免费套餐宣传项 (Try Claude) ===
+    "Try Claude": "试用 Claude",
+    "Chat on web, iOS, Android, and on your desktop": "在网页、iOS、Android 和你的桌面端聊天",
+    "Write, edit, and create content": "写作、编辑、创建内容",
+    "Analyze text and images": "分析文本和图像",
+    "Ability to search web": "网页搜索能力",
+    "Ability to search the web": "网页搜索能力",
+    "Create files and execute code": "创建文件和执行代码",
+    "Unlock more from Claude with desktop extensions": "用桌面扩展解锁 Claude 的更多能力",
+    "Connect Slack and Google Workspace services": "连接 Slack 和 Google Workspace 服务",
+    "Integrate any context or tool through connectors with remote MCP": "通过远程 MCP 连接器集成任意上下文或工具",
+
+    // === 发票页 ===
+    "Invoices": "发票",
+    "We have not sent you an invoice yet.": "还没给你开过发票。",
+    "We have not sent you an invoice yet": "还没给你开过发票",
+
+    // === 删除 session 对话框 ===
+    "Delete session?": "删除会话?",
+    "Delete session": "删除会话",
+    "session?": "会话?",
+    "This can't be undone.": "此操作无法撤销。",
+    "This can't be undone": "此操作无法撤销",
+    "This can’t be undone.": "此操作无法撤销。",
+    "This can’t be undone": "此操作无法撤销",
+    "will be permanently deleted.": "将被永久删除。",
+    "will be permanently deleted": "将被永久删除",
+
+    // === 右键菜单 / 分组 ===
+    "Open in...": "在……中打开",
+    "Open in": "在……中打开",
+    "VS Code": "VS Code",
+    "Explorer": "资源管理器",
+    "Move to group": "移到分组",
+    "New group...": "新建分组...",
+    "New group…": "新建分组…",
+    "New group": "新建分组",
+    "Group name": "分组名",
+    "Pin": "置顶",
+    "Mark as unread": "标为未读",
+    "Rename": "重命名",
+    "Fork": "分叉",
+    "Archive": "归档",
+    "Delete": "删除",
+
+    // === 虚拟机平台未启用提示 ===
+    "Virtual Machine Platform not available": "虚拟机平台不可用",
+    "Claude's workspace requires the Virtual Machine Platform on Windows. Enable this feature, then restart.": "Claude 工作区需要启用 Windows 的虚拟机平台。启用后重启。",
+    "Claude’s workspace requires the Virtual Machine Platform on Windows. Enable this feature, then restart.": "Claude 工作区需要启用 Windows 的虚拟机平台。启用后重启。",
+    "Claude's workspace requires the Virtual Machine Platform on Windows.": "Claude 工作区需要启用 Windows 的虚拟机平台。",
+    "Claude’s workspace requires the Virtual Machine Platform on Windows.": "Claude 工作区需要启用 Windows 的虚拟机平台。",
+    "Enable this feature, then restart.": "启用后重启。",
+    "Enable this feature, then restart": "启用后重启",
+    "Enable": "启用",
+
+    // === 无痕模式 ===
+    "Use incognito": "无痕模式",
+    "Incognito chat": "无痕对话",
+    "Incognito": "无痕",
+    "Greetings, whoever you are": "你好,无论你是谁",
+    "Incognito chats aren't saved, added to memory, or used to train models.": "无痕对话不会被保存、不进入记忆,也不会用于训练模型。",
+    "Incognito chats aren’t saved, added to memory, or used to train models.": "无痕对话不会被保存、不进入记忆,也不会用于训练模型。",
+    "Incognito chats aren't saved, added to memory, or used to train models": "无痕对话不会被保存、不进入记忆,也不会用于训练模型",
+    "Incognito chats aren’t saved, added to memory, or used to train models": "无痕对话不会被保存、不进入记忆,也不会用于训练模型",
+    "Learn more about how your data is used.": "了解你的数据如何被使用。",
+    "Learn more about how your data is used": "了解你的数据如何被使用",
+    "about how your data is used.": "了解你的数据如何被使用。",
+    "about how your data is used": "了解你的数据如何被使用",
+    "how your data is used": "你的数据如何被使用",
+
+    // === 连接器迁移说明 ===
+    // 注意: 前半句"Connectors have moved to <a>Personalization</a>"那个链接打断了文本节点,
+    // 剩下这部分文本节点开头带个句号(链接结束后立刻是".") — 加带句号变体。
+    "Head there to browse, connect, and manage them.": "去那里浏览、连接、管理。",
+    "Head there to browse, connect, and manage them": "去那里浏览、连接、管理",
+    ". Head there to browse, connect, and manage them.": "。去那里浏览、连接、管理。",
+    ". Head there to browse, connect, and manage them": "。去那里浏览、连接、管理",
+
+    // === 设置 - 外观 / 字体 ===
+    "Appearance": "外观",
+    "appearance": "外观",
+    "Code appearance": "代码外观",
+    "Font": "字体",
+    "font": "字体",
+    "Code font": "代码字体",
+    "Set a custom monospace font for code and terminal.": "为代码和终端设置自定义等宽字体。",
+    "Set a custom monospace font for code and terminal": "为代码和终端设置自定义等宽字体",
+    "e.g. JetBrains Mono": "例如 JetBrains Mono",
+
+    // === 设置 - 会话状态分类 ===
+    "Classify session states": "会话状态分类",
+    "Allow Claude to automatically classify sessions as blocked, ready for review, or done. Classifying sessions counts towards your plan usage. Applies to new sessions.": "让 Claude 自动把会话分类为「阻塞」「待审查」「完成」。分类计入套餐用量,仅对新会话生效。",
+    "Allow Claude to automatically classify sessions as blocked, ready for review, or done.": "让 Claude 自动把会话分类为「阻塞」「待审查」「完成」。",
+    "Classifying sessions counts towards your plan usage.": "分类计入套餐用量。",
+    "Applies to new sessions.": "仅对新会话生效。",
+    "Applies to new sessions": "仅对新会话生效",
+
+    // === 设置 - 本地 sessions ===
+    "Local sessions": "本地会话",
+    "Enable remote control by default": "默认启用远程控制",
+    "Automatically connect new local sessions to Remote Control so you can continue them from the CLI or claude.ai/code.": "自动把新本地会话连到远程控制,让你能在 CLI 或 claude.ai/code 接着用。",
+    "Remote Control": "远程控制",
+
+    // === 代码主题名 (产品名 / brand 标识, 保留原文) ===
+    // 下拉关闭时触发按钮显示当前选中项, 这里没 role="option" 跳过, 用字典 identity 映射兜底。
+    "Claude Dark": "Claude Dark",
+    "Claude Light": "Claude Light",
+    "GitHub Dark": "GitHub Dark",
+    "GitHub Light": "GitHub Light",
+    "GitHub Dark Dimmed": "GitHub Dark Dimmed",
+    "GitHub Light Dimmed": "GitHub Light Dimmed",
+    "Pierre Dark": "Pierre Dark",
+    "Pierre Light": "Pierre Light",
+    "One Dark Pro": "One Dark Pro",
+    "One Dark": "One Dark",
+    "One Light": "One Light",
+    "Dracula": "Dracula",
+    "Dracula Soft": "Dracula Soft",
+    "Catppuccin Mocha": "Catppuccin Mocha",
+    "Catppuccin Macchiato": "Catppuccin Macchiato",
+    "Catppuccin Frappe": "Catppuccin Frappe",
+    "Catppuccin Frappé": "Catppuccin Frappé",
+    "Catppuccin Latte": "Catppuccin Latte",
+    "Nord": "Nord",
+    "Solarized Dark": "Solarized Dark",
+    "Solarized Light": "Solarized Light",
+    "Monokai": "Monokai",
+    "Monokai Pro": "Monokai Pro",
+    "Tokyo Night": "Tokyo Night",
+    "Tokyo Night Storm": "Tokyo Night Storm",
+    "Tokyo Night Light": "Tokyo Night Light",
+    "Atom One Dark": "Atom One Dark",
+    "Atom One Light": "Atom One Light",
+    "Ayu Dark": "Ayu Dark",
+    "Ayu Mirage": "Ayu Mirage",
+    "Ayu Light": "Ayu Light",
+    "Material Theme": "Material Theme",
+    "Material Theme Lighter": "Material Theme Lighter",
+    "Material Theme Darker": "Material Theme Darker",
+    "Gruvbox Dark": "Gruvbox Dark",
+    "Gruvbox Light": "Gruvbox Light",
+    "Night Owl": "Night Owl",
+    "Light Owl": "Light Owl",
+
+    // === 过滤 / 分组 / 排序下拉 ===
+    "Cloud": "云端",
+    "State": "状态",
+    "Custom groups": "自定义分组",
+    "Group by": "分组方式",
+    "Sort": "排序",
+    "Sort by": "排序",
+    "Environment": "环境",
+    "Last activity": "最后活动",
+    "Alphabetical": "按字母顺序",
+    "Most recent": "按最近",
+    "Recent": "按最近",
+    "Date": "日期",
+    "Project": "项目",
+    "None": "无",
+
+    // === 工作流 / 模板 ===
+    "Or start from a template": "或从模板开始",
+    "from a template": "从模板开始",
+    "Briefing": "简报",
+    "Summary of your calendar, emails, and messages.": "你的日历、邮件、消息的汇总。",
+    "Email triage": "邮件分类",
+    "Categorize and prioritize your inbox, with draft responses for urgent items.": "为邮箱分类排序, 为紧急邮件起草回复。",
+    "System health check": "系统健康检查",
+    "health check": "健康检查",
+    "Monitor infrastructure and services for errors, outages, and performance issues.": "监控基础设施和服务, 关注错误、宕机和性能问题。",
+    "Issue triage": "问题分类",
+    "Review and categorize incoming issues, bugs, and feature requests.": "审查并分类收到的 issue、bug 和功能请求。",
+    "PR review digest": "PR 评审摘要",
+    "Overview of open PRs, review status, and what needs attention.": "未关闭 PR 的概览、评审状态、需要关注的内容。",
+    "Dependency update check": "依赖更新检查",
+    "Scan for outdated packages, security patches, and breaking changes.": "扫描过期包、安全补丁和破坏性变更。",
+    "Release notes drafter": "发布说明起草",
+    "Draft user-facing release notes each time a PR merges to the main branch.": "每次有 PR 合并到主分支时, 起草面向用户的发布说明。",
+    "Triggered by pull request closed": "触发条件: pull request 关闭",
+    "Flaky test tracker": "不稳定测试追踪",
+    "Find tests that pass and fail intermittently across recent CI runs.": "查找最近 CI 运行里时过时挂的测试。",
+    "Works with": "支持",
+
+    // === 新建工作流表单 ===
+    "e.g., Daily code review": "例如: 每日代码评审",
+    "Describe what Claude should do in each session": "描述每次会话中 Claude 应该做什么",
+    "Select a repository": "选择仓库",
+    "Select an environment": "选择环境",
+    "Select a trigger": "选择触发器",
+    "Select a repository first": "先选择仓库",
+    "Add environment": "添加环境",
+    "Add another trigger": "添加另一个触发器",
+    "another trigger": "另一个触发器",
+    "Behavior": "行为",
+    "Permissions": "权限",
+    "Integrations available to Claude during each run.": "每次运行中 Claude 可用的集成。",
+    "Integrations available to Claude during each run": "每次运行中 Claude 可用的集成",
+
+    // === 新建云端环境对话框 ===
+    "New cloud environment": "新建云端环境",
+    "cloud environment": "云端环境",
+    "Default": "默认",
+    "Network access": "网络访问",
+    "Learn more about our network policy and access levels.": "了解我们的网络政策和访问级别。",
+    "Learn more about our network policy and access levels": "了解我们的网络政策和访问级别",
+    "network policy": "网络政策",
+    "access levels": "访问级别",
+    "Trusted": "可信",
+    "Untrusted": "不可信",
+    "Restricted": "受限",
+    "Environment variables": "环境变量",
+    "In .env format. These are visible to anyone using this environment — don't add secrets or credentials.": ".env 格式。本环境的所有使用者都能看到 — 不要放密钥或凭据。",
+    "In .env format. These are visible to anyone using this environment — don't add secrets or credentials": ".env 格式。本环境的所有使用者都能看到 — 不要放密钥或凭据",
+    "In .env format. These are visible to anyone using this environment — don’t add secrets or credentials.": ".env 格式。本环境的所有使用者都能看到 — 不要放密钥或凭据。",
+    "In .env format.": ".env 格式。",
+    ".env format": ".env 格式",
+    "These are visible to anyone using this environment — don't add secrets or credentials.": "本环境的所有使用者都能看到 — 不要放密钥或凭据。",
+    "These are visible to anyone using this environment — don’t add secrets or credentials.": "本环境的所有使用者都能看到 — 不要放密钥或凭据。",
+    "Setup script": "启动脚本",
+    "Bash script that runs when a new session starts, before Claude Code launches.": "新会话启动时、Claude Code 启动前运行的 Bash 脚本。",
+    "Bash script that runs when a new session starts, before Claude Code launches": "新会话启动时、Claude Code 启动前运行的 Bash 脚本",
+    "Create environment": "创建环境",
+
+    // === 触发器选项 ===
+    "GitHub event": "GitHub 事件",
+    "Run when a GitHub webhook event fires": "GitHub webhook 事件触发时运行",
+    "Trigger from your own code by sending a POST request": "通过你自己的代码发送 POST 请求触发",
+
+    // === 行为 / 权限 tab ===
+    "Auto-fix pull requests": "自动修复 pull request",
+    "Watch CI and review comments on PRs this routine opens, and let Claude push fixes.": "监控这个例程开的 PR 的 CI 和评审评论, 让 Claude 推送修复。",
+    "Watch CI and review comments on PRs this routine opens, and let Claude push fixes": "监控这个例程开的 PR 的 CI 和评审评论, 让 Claude 推送修复",
+    "Add a repository to configure permissions.": "添加仓库后配置权限。",
+    "Add a repository to configure permissions": "添加仓库后配置权限",
+
+    // === API 触发器卡片 ===
+    "Call via API": "通过 API 调用",
+    "Token will be generated when you save.": "保存时会生成 token。",
+    "Token will be generated when you save": "保存时会生成 token",
+
+    // === 链接打断文本节点导致的句子片段 (网络访问说明 / .env 格式说明等) ===
+    // 含 <a> 链接的整句, 链接会把文本拆成多个 textNode; 单独配前缀/后缀片段。
+    // 翻译函数 trim() 后再查字典, 因此 key 不能带前后空格。
+    "Learn more about our": "了解我们的",
+    "about our": "我们的",
+    // <a>.env format</a> 链接后面跟着 ". These are visible..." 整句, 作为单独 textNode
+    ". These are visible to anyone using this environment — don't add secrets or credentials.": "。本环境的所有使用者都能看到 — 不要放密钥或凭据。",
+    ". These are visible to anyone using this environment — don't add secrets or credentials": "。本环境的所有使用者都能看到 — 不要放密钥或凭据",
+    ". These are visible to anyone using this environment — don’t add secrets or credentials.": "。本环境的所有使用者都能看到 — 不要放密钥或凭据。",
+    ". These are visible to anyone using this environment — don’t add secrets or credentials": "。本环境的所有使用者都能看到 — 不要放密钥或凭据",
   };
 
   // 把字典 keys 按长度倒序排——长的先匹配，避免 "Run" 覆盖 "Run code"
@@ -2930,6 +3312,53 @@
   // 性能优化 5：跳过这些标签的文本——里头是代码、样式，不该翻译
   const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "CODE", "PRE", "TEXTAREA", "INPUT"]);
 
+  // 选择器跳过: 这些 class 的元素及其后代不翻译。
+  // 产品名 / 功能名所在的 UI 槽位 (Cowork "Chat"/"Code" 模式切换 pill 等)。
+  const SKIP_CLASSES = ["df-pill"];
+
+  // 子串匹配跳过 (针对 Tailwind arbitrary value class 如 [mask-image:linear-gradient(...)])。
+  // 用户内容文本槽位 (会话标题 / 对话名 / 任务标题) 用 mask-image 做右边淡出截断,
+  // 这是变长内容专用 trick; UI 按钮固定标签不用。所以靠这个特征区分。
+  const SKIP_CLASS_SUBSTRINGS = ["mask-image:linear-gradient"];
+
+  function isInSkipElement(node) {
+    let el = node.nodeType === 1 ? node : node.parentElement;
+    while (el) {
+      const cls = (el.className && typeof el.className === "string") ? el.className : "";
+      if (cls) {
+        const list = cls.split(" ");
+        for (const c of SKIP_CLASSES) {
+          if (list.indexOf(c) !== -1) return true;
+        }
+        for (const sub of SKIP_CLASS_SUBSTRINGS) {
+          if (cls.indexOf(sub) !== -1) return true;
+        }
+      }
+      // 跳过: role="option" 且带 title 属性 (代码主题、模型名等产品标识下拉项)。
+      // title 属性通常保留原始英文, 这种 dropdown 选项不该翻译。
+      if (el.getAttribute && el.getAttribute("role") === "option"
+          && el.hasAttribute && el.hasAttribute("title")) {
+        return true;
+      }
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  // 用户输入消息气泡: 永不翻译, 哪怕文本命中字典 (如用户输入 "OK" 不应该变 "确定")。
+  // Cowork 用 CSS var --ui-user-message-background / --ui-user-message-primary-text 标记用户消息气泡,
+  // 容器 class 里头会含这两个变量名作为 Tailwind arbitrary value 字面量。
+  function isInUserMessageBubble(node) {
+    let el = node.parentElement;
+    while (el) {
+      const cls = (el.className && typeof el.className === "string") ? el.className : "";
+      if (cls.indexOf("ui-user-message-background") !== -1) return true;
+      if (cls.indexOf("ui-user-message-primary-text") !== -1) return true;
+      el = el.parentElement;
+    }
+    return false;
+  }
+
   // 计算给定 orig 文本应该翻译成啥（纯函数，结果可缓存）
   // 返回：null = 不需要改 / 字符串 = 应替换成这个
   function computeTranslation(orig) {
@@ -2969,6 +3398,8 @@
     if (parent && SKIP_TAGS.has(parent.tagName)) return;
     if (isInEditableArea(node)) return;
     if (isInUserContentLink(node)) return;
+    if (isInSkipElement(node)) return;
+    if (isInUserMessageBubble(node)) return;
 
     const orig = node.textContent;
     if (!orig || orig.length < 2) return;
@@ -3011,6 +3442,7 @@
     const sel = ["placeholder", "title", "aria-label", "data-placeholder"];
     for (const attr of sel) {
       document.querySelectorAll("[" + attr + "]").forEach((el) => {
+        if (isInSkipElement(el)) return;
         const v = el.getAttribute(attr);
         if (v && translations[v.trim()]) {
           el.setAttribute(attr, translations[v.trim()]);
@@ -3284,6 +3716,64 @@
     [/^\s*Are you sure you want to clear (.+?)\?\s*$/i, "确认清除 $1?"],
     [/^\s*Are you sure you want to unarchive (.+?)\?\s*$/i, "确认取消归档 $1?"],
     [/^\s*Are you sure you want to disconnect (.+?)\?\s*$/i, "确认断开连接 $1?"],
+
+    // === 套餐 / 订阅 / 升级 页相关 ===
+    // "Usage limit reached · resets at 10:00 PM" → "用量已达上限 · 10:00 PM 重置"
+    [/^\s*Usage limit reached\s*·\s*resets at\s+(.+?)\s*$/i, "用量已达上限 · $1 重置"],
+    [/^\s*usage limit reached\s*·\s*resets at\s+(.+?)\s*$/i, "用量已达上限 · $1 重置"],
+    // 价格行
+    [/^USD\s+([\d.]+)\s*\/\s*month\s*\+\s*tax\s*$/i, "USD $1/月 + 税"],
+    [/^USD\s+([\d.]+)\s*\/\s*month\s*$/i, "USD $1/月"],
+    [/^USD\s+([\d.]+)\s*\/\s*mo\s*$/i, "USD $1/月"],
+    [/^USD\s+([\d.]+)\s*\/\s*mo\s+when billed monthly\s*$/i, "USD $1/月 (按月计费)"],
+    [/^USD\s+([\d.]+)\s*\/\s*seat\s*$/i, "USD $1/席位"],
+    // "$X USD / month" / "From $X"
+    [/^\$([\d.]+)\s+USD\s*\/\s*month\s*$/i, "$$1 USD / 月"],
+    [/^From\s+\$([\d.]+)\s*$/i, "起 $$1"],
+    // 自动续费
+    [/^\s*Your subscription will auto renew on\s+(.+?)\.\s+You will be charged USD\s+([\d.]+)\s*\/\s*month\s*\+\s*tax\.?\s*$/i, "你的订阅将于 $1 自动续费。届时将收取 USD $2/月 + 税。"],
+    [/^\s*Your subscription will auto renew on\s+(.+?)\.\s*$/i, "你的订阅将于 $1 自动续费。"],
+    // "Get X plan" → "选择 X 套餐"
+    [/^Get\s+(.+?)\s+plan$/i, "选择 $1 套餐"],
+    // "Yearly · save 17%" / "save 17%"
+    [/^Yearly\s*·\s*save\s+([\d.]+)%\s*$/i, "年付 · 省 $1%"],
+    [/^save\s+([\d.]+)%\s*$/i, "省 $1%"],
+    [/^Save\s+([\d.]+)%\s*$/i, "省 $1%"],
+    // "Up to Nx more usage than X"
+    [/^Up to\s+(\d+)[xX×]\s+more usage than\s+(.+?)\*?\s*$/i, "用量最高是 $2 的 $1 倍"],
+    // "Nx more usage than X" (含 standard seats / Pro)
+    [/^(\d+)[xX×]\s+more usage than\s+(.+?)\*?\s*$/i, "用量是 $2 的 $1 倍"],
+    // "Built-in X"
+    [/^Built-in\s+(.+?)\s*$/i, "内置 $1"],
+    // "Upgrade to X or Y"
+    [/^Upgrade to\s+(.+?)\s+or\s+(.+?)\s*$/i, "升级到 $1 或 $2"],
+    // "5-150 users" / "20+ users"
+    [/^(\d+)[\-–](\d+)\s+users\s*$/i, "$1-$2 用户"],
+    [/^(\d+)\+\s+users\s*$/i, "$1+ 用户"],
+
+    // === 连接器迁移说明 (链接打断文本节点的情形) ===
+    [/^\s*\.\s+Head there to browse,\s*connect,\s*and manage them\.?\s*$/i, "。去那里浏览、连接、管理。"],
+
+    // === 工作流 cron 时间表 ===
+    // "Runs weekdays at 20:30 GMT+8" → "工作日 20:30 GMT+8 运行"
+    [/^\s*Runs weekdays at (\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, "工作日 $1 $2 运行"],
+    [/^\s*Runs daily at (\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, "每日 $1 $2 运行"],
+    // "Runs every Tuesday at 2:30 GMT+8" — Tuesday 已被翻译成 "星期二" 等 → "Runs every 星期二 at ..."
+    [/^\s*Runs every\s+(星期[一二三四五六日天])\s+at\s+(\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, "每$1 $2 $3 运行"],
+    [/^\s*Runs every\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s+at\s+(\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, (m, day, t, tz) => {
+      const map = {Monday:"周一", Tuesday:"周二", Wednesday:"周三", Thursday:"周四", Friday:"周五", Saturday:"周六", Sunday:"周日"};
+      return "每" + (map[day] || day) + " " + t + " " + tz + " 运行";
+    }],
+    // "Works with X · Y · Z" → "支持 X · Y · Z"
+    [/^\s*Works with\s+(.+?)\s*$/i, "支持 $1"],
+
+    // === 删除 session 对话框 (含变量 session 名) ===
+    // ""General coding session" will be permanently deleted. This can't be undone." →
+    //   ""General coding session" 将被永久删除。此操作无法撤销。"
+    [/^\s*[“"](.+?)[”"]\s+will be permanently deleted\.\s+This can[''’]t be undone\.?\s*$/i, '"$1" 将被永久删除。此操作无法撤销。'],
+    [/^\s*[“"](.+?)[”"]\s+will be permanently deleted\.\s*$/i, '"$1" 将被永久删除。'],
+    [/^\s*(.+?)\s+will be permanently deleted\.\s+This can[''’]t be undone\.?\s*$/i, "$1 将被永久删除。此操作无法撤销。"],
+    [/^\s*(.+?)\s+will be permanently deleted\.\s*$/i, "$1 将被永久删除。"],
     ];
 
   function translateDynamic(text) {
@@ -3341,6 +3831,7 @@
     for (const attr of sel) {
       try {
         root.querySelectorAll("[" + attr + "]").forEach((el) => {
+          if (isInSkipElement(el)) return;
           const v = el.getAttribute(attr);
           if (v && translations[v.trim()]) {
             el.setAttribute(attr, translations[v.trim()]);
