@@ -129,8 +129,11 @@ PERSONA_MARKER = CLAUDE_DIR / ".claude-omni-persona"
 TIER5_MODE_MARKER = CLAUDE_DIR / ".claude-omni-tier5-mode"
 WINDOWSAPPS = Path(r"C:\Program Files\WindowsApps")
 
-PORT = 5500
 HOST = "127.0.0.1"
+# 首选 PORT; Windows 开了 Hyper-V / WSL / 虚拟机平台后会保留大段端口号, 撞上 bind 会
+# 失败 (WinError 10013)。备一组候选, 启动时逐个试, 取第一个能 bind 的。
+PORT = 5500
+PORT_CANDIDATES = [5500, 5712, 6606, 7788, 8855, 9119]
 
 # ============================================================
 # 补丁定义
@@ -341,6 +344,21 @@ def is_port_open(port):
         return False
     finally:
         s.close()
+
+
+def find_bindable_port():
+    """从 PORT_CANDIDATES 里挑第一个能 bind 的端口; 都不行返回 None。
+    被占用 (WinError 10048) 或被系统保留 (WinError 10013) 都会 bind 失败, 一并跳过。"""
+    for p in PORT_CANDIDATES:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.bind((HOST, p))
+            return p
+        except OSError:
+            continue
+        finally:
+            s.close()
+    return None
 
 
 def collect_status():
@@ -1540,16 +1558,28 @@ def main():
     print("claude-omni · panel")
     print("=" * 60)
     print()
-    print(f"Listening on http://{HOST}:{PORT}")
+
+    port = find_bindable_port()
+    if port is None:
+        print(f"候选端口全部不可用 (被占用或被系统保留): {PORT_CANDIDATES}")
+        print("编辑 panel.py 顶部的 PORT_CANDIDATES 加个新端口号再试。")
+        print("查系统保留了哪些端口: netsh interface ipv4 show excludedportrange protocol=tcp")
+        print()
+        input("按回车退出...")
+        sys.exit(1)
+
+    print(f"Listening on http://{HOST}:{port}")
+    if port != PORT:
+        print(f"(首选端口 {PORT} 不可用, 自动切到 {port})")
     print()
     print("浏览器没自动打开就手动访问上面那个地址。Ctrl+C 关闭。")
     print()
     threading.Thread(
         target=lambda: (time.sleep(0.6),
-                        webbrowser.open(f"http://{HOST}:{PORT}")),
+                        webbrowser.open(f"http://{HOST}:{port}")),
         daemon=True,
     ).start()
-    app.run(host=HOST, port=PORT, debug=False, use_reloader=False)
+    app.run(host=HOST, port=port, debug=False, use_reloader=False)
 
 
 if __name__ == "__main__":
