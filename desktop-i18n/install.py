@@ -54,8 +54,11 @@ def is_admin():
 
 
 def relaunch_as_admin():
-    params = " ".join([f'"{a}"' for a in sys.argv])
-    ret = ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
+    # 提权后新进程 cwd 会变成 System32, 相对路径找不到脚本 → 用绝对路径 + 显式 workdir
+    script = os.path.abspath(sys.argv[0])
+    params = " ".join(f'"{a}"' for a in [script] + sys.argv[1:])
+    workdir = os.path.dirname(script)
+    ret = ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, workdir, 1)
     if ret <= 32:
         print(f"[错误] 提权失败 (ShellExecute ret={ret})")
         sys.exit(1)
