@@ -118,9 +118,9 @@ def main():
         run_quiet(["icacls", str(target), "/grant", "administrators:F"])
 
     print("\n[4/4] byte-identical 还原...")
-    shutil.copy2(backup_asar, asar_path)
+    shutil.copyfile(backup_asar, asar_path)
     print(f"  ✓ {asar_path}")
-    shutil.copy2(backup_exe, claude_exe)
+    shutil.copyfile(backup_exe, claude_exe)
     print(f"  ✓ {claude_exe}")
 
     if asar_path.stat().st_size != backup_asar.stat().st_size:

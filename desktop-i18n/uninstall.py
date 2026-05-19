@@ -183,7 +183,7 @@ def repack_and_write(extracted_dir: Path, asar_path: Path):
         size = new_asar.stat().st_size if new_asar.exists() else 0
         raise SystemExit(f"重打包失败：新 asar {size} 字节，远小于预期。原文件未动。")
 
-    shutil.copy2(new_asar, asar_path)
+    shutil.copyfile(new_asar, asar_path)
     shutil.rmtree(extracted_dir, ignore_errors=True)
     new_asar.unlink(missing_ok=True)
     if new_unpacked.exists():

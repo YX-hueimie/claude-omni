@@ -166,10 +166,10 @@ def main():
 
     print("\n[4/5] byte-identical 还原...")
     # 1. 还原 asar
-    shutil.copy2(backup_asar, asar_path)
+    shutil.copyfile(backup_asar, asar_path)
     print(f"  ✓ {asar_path}")
     # 2. 还原 claude.exe (含原 fuse)
-    shutil.copy2(backup_exe, claude_exe)
+    shutil.copyfile(backup_exe, claude_exe)
     print(f"  ✓ {claude_exe}")
 
     # 3. 还原 unpacked — 三种 case

@@ -375,7 +375,7 @@ def install_chinese_fonts():
 
         dst = USER_FONTS / font["filename"]
         try:
-            shutil.copy2(cache, dst)
+            shutil.copyfile(cache, dst)
         except Exception as e:
             print(f"  [警告] 复制 {dst} 失败: {e}")
             continue
@@ -421,12 +421,12 @@ def backup_originals(claude_exe: Path, asar_path: Path):
     asar_bak = sub / "app.asar"
     if not exe_bak.exists():
         print(f"  备份 claude.exe -> {exe_bak}")
-        shutil.copy2(claude_exe, exe_bak)
+        shutil.copyfile(claude_exe, exe_bak)
     else:
         print(f"  ✓ {exe_bak.name} 已备份过，跳过")
     if not asar_bak.exists():
         print(f"  备份 app.asar -> {asar_bak}")
-        shutil.copy2(asar_path, asar_bak)
+        shutil.copyfile(asar_path, asar_bak)
     else:
         print(f"  ✓ {asar_bak.name} 已备份过，跳过")
     return sub
@@ -509,7 +509,7 @@ def main():
         size = new_asar.stat().st_size if new_asar.exists() else 0
         raise SystemExit(f"重打包失败：新 asar {size} 字节，远小于预期。原文件未动。")
 
-    shutil.copy2(new_asar, asar_path)
+    shutil.copyfile(new_asar, asar_path)
     shutil.rmtree(extracted, ignore_errors=True)
     new_asar.unlink(missing_ok=True)
     if new_unpacked.exists():

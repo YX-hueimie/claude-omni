@@ -191,9 +191,9 @@ def main():
         # ==================== 路径 A: byte-identical 完全还原 ====================
         print("\n[4/4] byte-identical 完全还原 (跳过 extract+pack)...")
         # 直接复制备份, 不动当前的 asar (避免 os.replace 引入的 ACL 重置问题)
-        shutil.copy2(backup_asar, asar_path)
+        shutil.copyfile(backup_asar, asar_path)
         print(f"  ✓ asar 还原 byte-identical")
-        shutil.copy2(backup_exe, claude_exe)
+        shutil.copyfile(backup_exe, claude_exe)
         print(f"  ✓ claude.exe 还原 (fuse 回 on)")
         # unpacked: robocopy /MIR (处理 WindowsApps 特殊文件)
         if backup_unpacked.exists() and any(backup_unpacked.iterdir()):
@@ -289,7 +289,7 @@ def main():
         pending = asar_path.parent / "app.asar.pending"
         if pending.exists():
             pending.unlink()
-        shutil.copy2(new_asar, pending)
+        shutil.copyfile(new_asar, pending)
         if new_unpacked.exists():
             robocopy_merge(new_unpacked, cur_unpacked)
         os.replace(str(pending), str(asar_path))

@@ -444,10 +444,10 @@ def full_backup(claude_exe: Path, asar_path: Path, resources_dir: Path):
     print(f"  备份目录: {sub}")
 
     print(f"  备份 claude.exe ({claude_exe.stat().st_size / 1024 / 1024:.1f} MB)...")
-    shutil.copy2(claude_exe, exe_bak)
+    shutil.copyfile(claude_exe, exe_bak)
 
     print(f"  备份 app.asar ({asar_path.stat().st_size / 1024 / 1024:.1f} MB)...")
-    shutil.copy2(asar_path, asar_bak)
+    shutil.copyfile(asar_path, asar_bak)
 
     unpacked_src = resources_dir / "app.asar.unpacked"
     if unpacked_src.exists():
@@ -482,9 +482,9 @@ def restore_from_backup(sub_backup: Path, claude_exe: Path, asar_path: Path,
     cur_unpacked = resources_dir / "app.asar.unpacked"
 
     if backup_asar.exists():
-        shutil.copy2(backup_asar, asar_path)
+        shutil.copyfile(backup_asar, asar_path)
     if backup_exe.exists():
-        shutil.copy2(backup_exe, claude_exe)
+        shutil.copyfile(backup_exe, claude_exe)
     # 用 robocopy /MIR 还原 unpacked (处理 WindowsApps 特殊文件)
     if backup_unpacked.exists() and any(backup_unpacked.iterdir()):
         robocopy_mirror(backup_unpacked, cur_unpacked)
@@ -612,7 +612,7 @@ def main():
         backup_unpacked_clean = sub_backup / "app.asar.unpacked"
         if not backup_asar_clean.exists():
             raise SystemExit(f"备份 asar {backup_asar_clean} 不存在, 跑 emergency-restore.bat 后重试")
-        shutil.copy2(backup_asar_clean, asar_path)
+        shutil.copyfile(backup_asar_clean, asar_path)
         # unpacked 也还原 (避免 i18n 等其他 patch 的旧文件残留与新装版本不匹配)
         cur_unpacked_pre = resources_dir / "app.asar.unpacked"
         if backup_unpacked_clean.exists() and any(backup_unpacked_clean.iterdir()):
@@ -690,7 +690,7 @@ def main():
 
     try:
         # 1. 试 atomic 路径: 写 .pending
-        shutil.copy2(new_asar, pending)
+        shutil.copyfile(new_asar, pending)
         if pending.stat().st_size != new_asar.stat().st_size:
             raise SystemExit(".pending 写入大小不匹配")
     except (PermissionError, OSError) as e:
@@ -714,7 +714,7 @@ def main():
             print(f"  ✓ {asar_path} (atomic)")
         else:
             # direct overwrite 路径: 直接覆盖 app.asar 本身, 绕过 AppX 创建新文件限制
-            shutil.copy2(new_asar, asar_path)
+            shutil.copyfile(new_asar, asar_path)
             if asar_path.stat().st_size != new_asar.stat().st_size:
                 raise SystemExit("direct overwrite 大小不匹配")
             if new_unpacked.exists():
