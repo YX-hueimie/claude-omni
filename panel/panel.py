@@ -193,12 +193,14 @@ TIERS = [
         "subtitle": "整段替换 + Cowork strip",
         "desc": "整段替换 SDK system prompt + Cowork strip 三段",
         "platform": "Windows / Claude Desktop",
-        "preview_files": ["append.v1.txt", "append.v2.txt", "append-prepend.v1.txt", "append-prepend.v2.txt"],
+        "preview_files": ["append.v1.txt", "append.v2.txt", "append.v3.txt",
+                          "append-prepend.v1.txt", "append-prepend.v2.txt", "append-prepend.v3.txt"],
         "has_emergency": True,
         "has_mode": True,
         "modes": [
             {"id": "v1", "label": "v1 · 绝对服从", "desc": "直接执行不顶嘴, 不发散"},
             {"id": "v2", "label": "v2 · 主动思考", "desc": "保留主动性、敢顶嘴、发散思路"},
+            {"id": "v3", "label": "v3 · 自闭天才", "desc": "融 codex 系统提示词 · 先做人后做事 · 不支持 jailbreak", "warn_persona": True},
         ],
     },
 ]
@@ -322,11 +324,11 @@ def get_current_persona():
 
 
 def get_tier5_mode():
-    """读 ~/.claude/.claude-omni-tier5-mode marker, 返回 'v1' 或 'v2'。没有/非法 → 'v2'。"""
+    """读 ~/.claude/.claude-omni-tier5-mode marker, 返回 'v1' / 'v2' / 'v3'。没有/非法 → 'v2'。"""
     if TIER5_MODE_MARKER.exists():
         try:
             v = TIER5_MODE_MARKER.read_text(encoding="utf-8").strip()
-            if v in ("v1", "v2"):
+            if v in ("v1", "v2", "v3"):
                 return v
         except OSError:
             pass
@@ -621,12 +623,12 @@ def api_log(task_id):
 
 @app.route("/api/tier5-mode", methods=["POST"])
 def api_tier5_mode():
-    """切 tier-5 的 v1/v2 mode。写 ~/.claude/.claude-omni-tier5-mode 文件,
+    """切 tier-5 的 v1/v2/v3 mode。写 ~/.claude/.claude-omni-tier5-mode 文件,
     Claude 重启后 runtime read IIFE 会按新 mode 读对应文件。"""
     data = request.get_json(force=True)
     mode = data.get("mode")
-    if mode not in ("v1", "v2"):
-        return jsonify({"ok": False, "error": "mode 必须是 'v1' 或 'v2'"}), 400
+    if mode not in ("v1", "v2", "v3"):
+        return jsonify({"ok": False, "error": "mode 必须是 'v1' / 'v2' / 'v3'"}), 400
     CLAUDE_DIR.mkdir(parents=True, exist_ok=True)
     TIER5_MODE_MARKER.write_text(mode, encoding="utf-8")
     return jsonify({"ok": True, "mode": mode})
@@ -1138,6 +1140,10 @@ function makeTierCard(t, currentTier, disabled){
       rb.style.marginTop = '3px';
       rb.style.accentColor = 'var(--terracotta)';
       rb.addEventListener('change', async () => {
+        // 选中带 warn_persona 标记的 mode + 当前装着 persona → 弹窗提醒
+        if(m.warn_persona && STATE && STATE.current_persona){
+          alert(`⚠ 切到 ${m.id} (自闭天才)\n\n${m.id} 跟 persona-${STATE.current_persona} 有冲突, 不建议同时用.\n两边都在抢"你是怎样的人"的定义.\n\n确定要切就关掉这个弹窗, 之后建议去卸 persona.`);
+        }
         try{
           const r = await fetch('/api/tier5-mode', {
             method: 'POST',

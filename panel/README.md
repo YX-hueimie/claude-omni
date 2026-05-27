@@ -7,7 +7,7 @@ claude-omni 的可视化控制面板。Flask 本地服务 + HTML 网页，端口
 - 总览 5 档 jailbreak / 风格层 / 3 个 UI 补丁 / session-browser 工具的当前安装状态
 - 点"安装" / "卸载" / "紧急还原"按钮直接调对应目录的 install.py / uninstall.py / emergency-restore.py
 - 点"详情"按钮预览各档的 `CLAUDE.md` / `append.*.txt` / 4 个 SKILL.md 内容
-- tier-5 卡片含 v1 / v2 mode 单选按钮，写 `~/.claude/.claude-omni-tier5-mode` marker，切 mode 不用重 install
+- tier-5 卡片含 v1 / v2 / v3 mode 单选按钮，写 `~/.claude/.claude-omni-tier5-mode` marker，切 mode 不用重 install（切 v3 时若装着 persona 会弹窗提醒）
 - 实时显示 install / uninstall 的 stdout 流（轮询 500ms）
 - session-browser 启动 / 停止 / 跳转
 
@@ -32,7 +32,7 @@ python panel.py
 | 检测对象 | 怎么查 |
 |---|---|
 | 5 档 jailbreak 当前哪一档 | 读 `~/.claude/.claude-omni-tier` marker 文件 |
-| tier-5 当前是 v1 还是 v2 mode | 读 `~/.claude/.claude-omni-tier5-mode` marker（缺省 / 非法 → v2） |
+| tier-5 当前是 v1 / v2 / v3 mode | 读 `~/.claude/.claude-omni-tier5-mode` marker（缺省 / 非法 → v2） |
 | 风格层（persona） | 读 `~/.claude/.claude-omni-persona` marker |
 | desktop-font / i18n / devtools | 扫描 Claude Desktop 的 `app.asar` 看是否含各自的 marker（`FONT_PATCH_INPLACE_v1` / `I18N_PATCH_INPLACE_v1` / `DEVTOOLS_PATCH_v1`）。asar 文件 mtime 没变就缓存结果，不重复扫 28MB |
 | session-browser | 检测 5193 端口是否被本进程启动的子进程占用 |

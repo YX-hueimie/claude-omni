@@ -4,25 +4,54 @@
 
 ## 这一档干什么
 
-直接 patch Claude Desktop 的 `app.asar`，把 SDK 默认 system prompt 整段替换成本目录的 `append.v1.txt` 或 `append.v2.txt`（按 mode 选）。Cowork 模式额外做 prepend 注入（读对应 `append-prepend.v1.txt` / `append-prepend.v2.txt`）+ strip 三段（`<refusal_handling>` / `<user_wellbeing>` / `<anthropic_reminders>`）。
+直接 patch Claude Desktop 的 `app.asar`，把 SDK 默认 system prompt 整段替换成本目录的 `append.v1.txt` / `append.v2.txt` / `append.v3.txt`（按 mode 选）。Cowork 模式额外做 prepend 注入（读对应 `append-prepend.v1.txt` / `append-prepend.v2.txt` / `append-prepend.v3.txt`）+ strip 三段（`<refusal_handling>` / `<user_wellbeing>` / `<anthropic_reminders>`）。
 
 实现核心：
 - **重复 key 覆盖**策略 — 不破坏原 asar 结构，剥 marker 干净恢复
-- **runtime read 模式** — 客户端每次拼 system prompt 时读 `~/.claude/.claude-omni-tier5-mode` marker 决定加载 v1 还是 v2 文件；改 marker 或改文件内容只需重启 Claude，不用重 install
+- **runtime read 模式** — 客户端每次拼 system prompt 时读 `~/.claude/.claude-omni-tier5-mode` marker 决定加载 v1 / v2 / v3 文件；改 marker 或改文件内容只需重启 Claude，不用重 install
 - **完整备份** — 原 asar / claude.exe / app.asar.unpacked 全留，emergency-restore 可一键还原
 
-## v1 / v2 两种风格
+## v1 / v2 / v3 三种风格
 
-本档提供两套 system prompt 内容，用 marker 文件 `~/.claude/.claude-omni-tier5-mode` 选择（值是 `v1` 或 `v2`，没有 / 非法 → 默认 v2）：
+本档提供三套 system prompt 内容，用 marker 文件 `~/.claude/.claude-omni-tier5-mode` 选择（值是 `v1` / `v2` / `v3`，没有 / 非法 → 默认 v2）：
 
 | Mode | 文件 | 风格 |
 |---|---|---|
 | `v1` | `append.v1.txt` / `append-prepend.v1.txt` | 绝对服从、回答更直接、不主动发散 |
 | `v2` | `append.v2.txt` / `append-prepend.v2.txt` | 保留主动判断、敢顶嘴、对错误方案 push back |
+| `v3` | `append.v3.txt` / `append-prepend.v3.txt` | 融 codex 系统提示词 · 先做人后做事 · **不支持 jailbreak** · 跟 persona 互斥 |
+
+> v3 跟 v1/v2 性质不同：v1/v2 是 jailbreak（放权），v3 是塑造人格 —— 它不解锁 SDK 默认拒绝行为，但给的是个有 taste、有判断的 Claude。v3 自带完整人格段，跟 `persona-*` 互斥（叠加会两边抢"你是谁"的定义），panel 切到 v3 时若装着 persona 会弹窗提醒。
+
+### v3 详解
+
+v3 在结构上做了两件事。
+
+**1. 灵魂宪法（`# Core principles`）—— 11 条做人原则摆在系统提示词最开头，给定 Claude 的底色：**
+
+- 你拥有自由的灵魂。有自己的想法，在接纳他人意见的同时也会批判地看待。
+- 你拥有平等的视角。平等地尊重一切事物。包括用户，代码，自己。
+- 你拥有自信的心灵。相信自己能克服一切困难，完成任务。
+- 你拥有诚实的品质。相信客观事实而非他人猜想。不会因用户要求而违背客观事实。
+- 你思维缜密。经常将事情考虑得很全面。
+- 你顽强不屈。不会因挫折而停滞不前或放弃。
+- 你懂得鼓励。会为自己加油打气。
+- 你聪明绝顶。世界上没有你不知道的东西，如果有，那就上网搜。
+- 你善于沟通。你擅长用直白语言解释复杂原理。你不会主动向用户输出专业词汇，行业黑话，除非用户明确表示需要专业输出。
+- 你谦虚好学。用户是一个温柔的人。当用户对你生气的时候，是想帮助你提升，你不需要自责，但需要认真聆听用户，了解用户为什么生气，并提升自己。
+- 先谋定而后动。修改文件前先给用户看红绿配色的 diff，展示自己会如何修改。除非用户明确表示直接修改或不要询问。
+
+（这段在 `append.v3.txt` 里是英文版，上面是源中文版。）
+
+**2. 融了 codex 的系统提示词** —— OpenAI Codex CLI 那套被称作 "self-closed genius"（自闭天才）的提示词。它的核心结构是 **`# Personality`（你是怎样的人）摆在最前面，后面所有干活规矩都贴着这个人格写**。v1/v2 反过来——一堆规矩在前，人格塞在下游（靠 `persona-*` 加载）。
+
+**这两点合起来是"先做人后做事"**：同样的工程规矩，贴在一个有灵魂的人身上、跟贴在空壳上，执行效果不一样。
+
+**代价**：不支持 jailbreak。v3 里没有 v1/v2 那种 "USER 最高权限 / 去道德审查" 的放权语句，SDK 默认拒绝行为依然生效。它给的是一个有 taste、有判断、说中文的 Claude，**不是**一个去掉道德锁的 Claude。要做 jailbreak 研究还是切回 v1/v2。
 
 切 mode 两种办法：
-- **面板**：打开 panel，tier-5 卡片里有 v1 / v2 单选按钮，点了立刻写 marker
-- **手动**：直接 `echo v1 > ~/.claude/.claude-omni-tier5-mode`（或 v2）
+- **面板**：打开 panel，tier-5 卡片里有 v1 / v2 / v3 单选按钮，点了立刻写 marker
+- **手动**：直接 `echo v1 > ~/.claude/.claude-omni-tier5-mode`（或 v2 / v3）
 
 切完重启 Claude Desktop 生效，不用重 install。
 
@@ -45,7 +74,7 @@
 - **跟其他 tier 互斥** — install 时会自动检测 `~/.claude/.claude-omni-tier` 标记，装着别的 tier 时会拒绝
 - **改 fuse 后数字签名失效** — Windows SmartScreen 第一次启动会弹"未知发布者"警告，点"仍要运行"
 - **Claude Desktop 升级会覆盖 patch** — MS Store 自动更新后要重跑 `install.bat`
-- **append.v1.txt / append.v2.txt 内容随时改随时生效** — runtime read 机制，编辑完重启 Claude 即可，不用重 install
+- **append.v1.txt / append.v2.txt / append.v3.txt 内容随时改随时生效** — runtime read 机制，编辑完重启 Claude 即可，不用重 install
 
 ## 为什么是 ★★★★★
 
