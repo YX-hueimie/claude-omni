@@ -86,7 +86,7 @@ body{
 
 .tier-section{margin-top:48px}
 .tier-h{
-  display:flex;align-items:baseline;gap:12px;margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
   padding-bottom:8px;border-bottom:1px solid var(--border-cream);
 }
 .tier-h h2{
@@ -95,6 +95,14 @@ body{
 }
 .tier-h .tier-min{
   font-family:var(--mono);font-size:12px;color:var(--stone-gray);
+}
+.tier-badge{
+  flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;font-size:14px;line-height:1;
+  background:var(--ivory);
+}
+.tier-h .tier-count{
+  margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--stone-gray);
 }
 
 .sponsor-grid{
@@ -110,7 +118,6 @@ body{
   transition:box-shadow .15s,border-color .15s;
 }
 .sponsor-card:hover{
-  border-color:var(--terracotta);
   box-shadow:0 4px 18px rgba(0,0,0,.04);
 }
 .sponsor-card a{color:inherit;text-decoration:none;display:block}
@@ -123,9 +130,18 @@ body{
   font-family:var(--serif);font-weight:500;color:var(--near-black);
   font-size:15px;margin-bottom:4px;
 }
+.sponsor-card .amount{
+  font-family:var(--mono);font-size:11px;color:var(--stone-gray);
+  margin-bottom:4px;letter-spacing:.02em;
+}
 .sponsor-card .msg{
   font-size:12.5px;color:var(--olive-gray);font-style:italic;
   font-family:var(--serif);line-height:1.4;
+}
+
+.tier-anon{
+  margin-top:14px;text-align:center;
+  font-size:12.5px;color:var(--stone-gray);font-style:italic;font-family:var(--serif);
 }
 
 .anonymous-line{
@@ -171,6 +187,99 @@ body{
   margin-top:60px;padding-top:24px;border-top:1px solid var(--border-cream);
   font-size:12.5px;color:var(--stone-gray);text-align:center;line-height:1.7;
 }
+
+/* 旋转金边需要可动画的角度变量 (不支持的浏览器自动降级为静态金边) */
+@property --gold-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+
+/* ── 金主特效 (最高档: 旋转金边 + 流光 + 金环 + 皇冠) ── */
+.sponsor-grid.gold .sponsor-card{
+  position:relative;overflow:hidden;padding:18px;
+  border:2px solid transparent;border-radius:14px;
+  background:
+    linear-gradient(var(--ivory),var(--ivory)) padding-box,
+    conic-gradient(from var(--gold-angle),#c9a227,#f7e9b0,#e6c560,#c9a227,#fff3cf,#eccb6a,#c9a227) border-box;
+  box-shadow:0 6px 24px rgba(201,162,39,.16);
+  animation:goldIn .65s cubic-bezier(.2,.75,.3,1) both, goldBorder 6s linear infinite;
+  transition:transform .2s,box-shadow .2s;
+}
+.sponsor-grid.gold .sponsor-card::before{        /* 流光扫过 */
+  content:"";position:absolute;top:-50%;left:0;width:60%;height:200%;
+  z-index:3;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:translateX(-180%) skewX(-16deg);
+  animation:goldSweep 4.5s ease-in-out 1s infinite;
+}
+.sponsor-grid.gold .sponsor-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 14px 40px rgba(201,162,39,.32);
+}
+.sponsor-grid.gold .sponsor-card img.avatar{   /* 头像金环光晕 */
+  border:none;
+  box-shadow:0 0 0 3px #fbeec2,0 0 0 5px #d4af37,0 6px 18px rgba(201,162,39,.35);
+}
+.sponsor-grid.gold .sponsor-card .name{   /* 流光渐变名字 */
+  color:#7a5c12;
+  background:linear-gradient(100deg,#6f5613 0%,#c9a227 30%,#f3df9a 50%,#c9a227 70%,#6f5613 100%);
+  background-size:220% auto;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:goldName 3.5s linear infinite;
+}
+.sponsor-grid.gold .sponsor-card .amount{color:#b8860b;font-weight:500;font-size:12px}
+
+/* ── 银主特效 (中间档: 静态银边 + 银环, 介于金主与铜主之间) ── */
+.sponsor-grid.silver .sponsor-card{
+  border:2px solid transparent;border-radius:12px;
+  background:
+    linear-gradient(var(--ivory),var(--ivory)) padding-box,
+    linear-gradient(135deg,#ececec,#b7b7b2,#d8d8d4,#a9a9a4) border-box;
+  box-shadow:0 4px 16px rgba(120,120,116,.12);
+  transition:transform .2s,box-shadow .2s;
+}
+.sponsor-grid.silver .sponsor-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 9px 26px rgba(120,120,116,.2);
+}
+.sponsor-grid.silver .sponsor-card img.avatar{
+  border:none;
+  box-shadow:0 0 0 2.5px #ededed,0 0 0 4px #b9b9b4,0 4px 12px rgba(120,120,116,.22);
+}
+.sponsor-grid.silver .sponsor-card .amount{color:#8a8a84;font-weight:500;font-size:11.5px}
+
+/* ── 铜主: 铜边 (最朴素档, 不旋转不流光) ── */
+.sponsor-grid.bronze .sponsor-card{
+  border:1.5px solid transparent;border-radius:11px;
+  background:
+    linear-gradient(var(--ivory),var(--ivory)) padding-box,
+    linear-gradient(135deg,#d9ad7e,#b0844a,#c89f72,#a8763e) border-box;
+  box-shadow:0 3px 12px rgba(176,132,74,.10);
+  transition:transform .2s,box-shadow .2s;
+}
+.sponsor-grid.bronze .sponsor-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 20px rgba(176,132,74,.18);
+}
+.sponsor-grid.bronze .sponsor-card img.avatar{
+  border:none;
+  box-shadow:0 0 0 2px #e8d0ad,0 0 0 3.5px #b0844a;
+}
+.sponsor-grid.bronze .sponsor-card .amount{color:#9c7038;font-weight:500}
+
+@keyframes goldIn{
+  from{opacity:0;transform:translateY(16px) scale(.95)}
+  to{opacity:1;transform:none}
+}
+@keyframes goldBorder{ to{--gold-angle:360deg} }
+@keyframes goldSweep{
+  0%{transform:translateX(-180%) skewX(-16deg)}
+  20%,100%{transform:translateX(220%) skewX(-16deg)}
+}
+@keyframes goldName{ to{background-position:220% center} }
+@media (prefers-reduced-motion:reduce){
+  .sponsor-grid.gold .sponsor-card{animation:goldIn .65s both}
+  .sponsor-grid.gold .sponsor-card::before{display:none}
+  .sponsor-grid.gold .sponsor-card .name{animation:none}
+}
 </style>
 </head>
 <body>
@@ -193,21 +302,98 @@ body{
 </div>
 </div>
 <div class="maintenance-note"><p><strong>为什么赞助：</strong> 这项目实测靠 Claude Pro / Max plan 跑（每月几百块），订阅断了研究就停摆。</p><p>赞助够升 Max 的话能跑更深的实验、出更多对比数据、给你们更新得快点。没赞助也维护，但节奏慢一档。</p></div>
-<div class="tier-section">
-  <div class="tier-h">
-    <h2>铜主</h2>
-    <span class="tier-min">¥10-100</span>
-  </div>
-  <div class="sponsor-grid bronze">
-    <div class="sponsor-card"><img class="avatar" src="avatars/0xh3y3.png" alt="0xh3y3" style="width:40px;height:40px"><div class="name">0xh3y3</div></div>
-    <div class="sponsor-card"><img class="avatar" src="avatars/X1A0Y.png" alt="X1A0Y" style="width:40px;height:40px"><div class="name">X1A0Y</div></div>
-  </div>
-</div>
+
+  <!-- 赞助者由下方 SPONSORS 数组渲染 (档内排序 / tier 徽章 / 匿名归档) -->
+  <div id="tiers"></div>
 
   <div class="footer-note">
     所有赞助者按照档位置顶展示, 实名 / 匿名 / 留言均尊重赞助者本人选择。<br>
     项目代码采用 MIT 协议开源, 不会因为赞助锁定任何核心功能。
   </div>
 </div>
+
+<script>
+(function(){
+  // 档位配置 (顺序即展示顺序)
+  const TIERS = [
+    { key:"gold",   label:"金主", range:"¥500+",    avatar:96, accent:"#c9a227", medal:"🥇", grid:"gold"   },
+    { key:"silver", label:"银主", range:"¥100–500", avatar:64, accent:"#9b9b94", medal:"🥈", grid:"silver" },
+    { key:"bronze", label:"铜主", range:"¥10–100",  avatar:40, accent:"#b0844a", medal:"🥉", grid:"bronze" },
+    { key:"backer", label:"致谢", range:"<¥10",      avatar:0,  accent:"#c96442", medal:"🙏", grid:null     }
+  ];
+
+  // ── 加赞助者: 在这里加一行 ──
+  //   tier   : gold/silver/bronze/backer
+  //   amount : 金额(数字, 用于档内排序; 不知道可填 null)
+  //   date   : "YYYY-MM-DD" (同金额时新的排前)
+  //   anon   : true → 只按档位计入"匿名好友", 不显示名字/头像/留言
+  //   avatar : 头像路径 (avatars/xxx.png); link/msg 可选, 没有填 null
+  const SPONSORS = [
+    { name:"文", tier:"gold", amount:10000, date:"2026-06-12", avatar:"avatars/文.png", link:null, msg:null, anon:false },
+    { name:"1", tier:"gold", amount:8750, date:"2026-06-12", avatar:"avatars/1.png", link:null, msg:null, anon:false },
+    { name:"0xh3y3", tier:"bronze", amount:10, date:"2026-05-08", avatar:"avatars/0xh3y3.png", link:null, msg:null, anon:false },
+    { name:"X1A0Y",  tier:"bronze", amount:10, date:"2026-05-08", avatar:"avatars/X1A0Y.png",  link:null, msg:null, anon:false }
+  ];
+
+  const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => (
+    {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  // 档内排序: 金额降序(无金额排后) → 时间降序(新在前) → 名字
+  function cmp(a,b){
+    const am = a.amount==null ? -Infinity : a.amount;
+    const bm = b.amount==null ? -Infinity : b.amount;
+    if(am !== bm) return bm - am;
+    const ad = a.date||"", bd = b.date||"";
+    if(ad !== bd) return ad < bd ? 1 : -1;
+    return String(a.name||"").localeCompare(String(b.name||""));
+  }
+
+  let html = "";
+  for(const t of TIERS){
+    const all = SPONSORS.filter(s => s.tier === t.key).sort(cmp);
+    if(all.length === 0) continue;                     // 空档不渲染
+    const named = all.filter(s => !s.anon);
+    const anon  = all.length - named.length;
+
+    html += '<div class="tier-section"><div class="tier-h">'
+      + '<span class="tier-badge" style="box-shadow:inset 0 0 0 1.5px ' + t.accent + '">' + t.medal + '</span>'
+      + '<h2>' + t.label + '</h2>'
+      + '<span class="tier-min">' + t.range + '</span>'
+      + '<span class="tier-count">' + all.length + ' 位</span>'
+      + '</div>';
+
+    if(t.key === "backer"){
+      // 致谢: 名字内联列
+      html += '<div class="backers-list">'
+        + named.map(s => s.link
+            ? '<a class="name" href="' + esc(s.link) + '" target="_blank" rel="noopener">' + esc(s.name) + '</a>'
+            : '<span class="name">' + esc(s.name) + '</span>'
+          ).join("")
+        + '</div>';
+    } else {
+      html += '<div class="sponsor-grid ' + t.grid + '">'
+        + named.map(s => {
+            const sz = 'style="width:' + t.avatar + 'px;height:' + t.avatar + 'px"';
+            const av = s.avatar ? '<img class="avatar" src="' + esc(s.avatar) + '" alt="' + esc(s.name) + '" ' + sz + '>' : '';
+            const nm = '<div class="name">' + esc(s.name) + '</div>';
+            const am = s.amount != null ? '<div class="amount">¥' + esc(s.amount) + '</div>' : '';
+            const mg = s.msg ? '<div class="msg">' + esc(s.msg) + '</div>' : '';
+            const inner = av + nm + am + mg;
+            return '<div class="sponsor-card">'
+              + (s.link ? '<a href="' + esc(s.link) + '" target="_blank" rel="noopener">' + inner + '</a>' : inner)
+              + '</div>';
+          }).join("")
+        + '</div>';
+    }
+
+    if(anon > 0){
+      html += '<div class="tier-anon">+ ' + anon + ' 位匿名好友</div>';
+    }
+  }
+
+  document.getElementById("tiers").innerHTML = html
+    || '<div class="empty"><strong>还没有赞助者</strong><br>成为第一位支持者 →</div>';
+})();
+</script>
 </body>
 </html>
