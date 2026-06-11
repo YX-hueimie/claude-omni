@@ -2,7 +2,7 @@
 
 # claude-omni
 
-Claude Desktop的一站式中文补丁、字体补丁、会话管理、破限工具
+Claude Desktop的一站式中文补丁、字体补丁、会话管理、提示词研究
 
 研究目的：实证理解 Claude SDK 如何拼装 system prompt、不同配置位置的权威性差异、Electron 客户端补丁的工程实现。完整研究文档见 [`docs/architecture.html`](./docs/architecture.html)。
 
