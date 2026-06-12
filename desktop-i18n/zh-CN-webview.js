@@ -12,6 +12,27 @@
   window.__CLAUDE_I18N_INSTALLED__ = true;
 
   const translations = {
+    "Open a GitHub project on your computer, make a quick code change, and run the tests.": "在你的电脑上打开一个 GitHub 项目，做个快速的代码改动，然后运行测试。",
+    // Dispatch / 应用授权 / 通知页
+    "Revoke access": "撤销访问权限",
+    "Revoke access?": "撤销访问权限？",
+    "Revoke Access": "撤销访问权限",
+    "This will revoke access for this application. You'll need to reconnect it if you want to use it again.": "这将撤销此应用的访问权限。如需再次使用，需要重新连接。",
+    "This will revoke access for this application. You’ll need to reconnect it if you want to use it again.": "这将撤销此应用的访问权限。如需再次使用，需要重新连接。",
+    "Dispatch is off": "Dispatch 已关闭",
+    "Turn it on in Settings to dispatch work to Claude from your phone.": "在设置中开启，即可从手机向 Claude 派发任务。",
+    "Go to Settings": "前往设置",
+    "Go to": "前往",
+    "Bypass": "跳过",
+    "Dismiss": "忽略",
+    // 手机 App 配对页
+    "Pair with the Claude Mobile app": "与 Claude 手机 App 配对",
+    "Use the mobile app to talk to Claude while it works from your desktop. Scan the code to download it on your phone.": "在桌面端工作时，用手机 App 与 Claude 对话。扫码即可在手机上下载。",
+    "Use the mobile app to talk to Claude while it works from your desktop.": "在桌面端工作时，用手机 App 与 Claude 对话。",
+    "Scan the code to download it on your phone.": "扫码即可在手机上下载。",
+    "I'm signed in on my phone": "我已在手机上登录",
+    "I’m signed in on my phone": "我已在手机上登录",
+    "Set up later": "稍后设置",
     // === 思考强度滑杆 (Opus 4.8 effort: Faster ←→ Smarter) ===
     "Faster": "更快",
     "Smarter": "更聪明",
@@ -287,6 +308,15 @@
     "Fixed": "修复",
 
     // === 更新内容(changelog)正文条目 ===
+    // Cowork 更新内容
+    "Added a “Free Up Cowork Disk Space” option under Help > Troubleshooting, and Cowork now cleans up caches and old temporary files automatically when its workspace disk runs low.": "在 帮助 > 故障排查 下新增\"释放 Cowork 磁盘空间\"选项；工作区磁盘空间不足时，Cowork 现在会自动清理缓存和旧临时文件。",
+    "Added a low-disk-space warning before Cowork downloads the files it needs to run.": "Cowork 下载运行所需文件前，磁盘空间不足会先警告。",
+    "Added in-session effort and thinking controls for local Cowork projects.": "为本地 Cowork 项目加入了会话内的思考强度和思考开关。",
+    "Updated the New project folder picker to default to your Claude data folder (~/Claude/Projects) instead of ~/Documents.": "新建项目的文件夹选择器现在默认指向你的 Claude 数据文件夹（~/Claude/Projects），而不是 ~/Documents。",
+    "Fixed Claude reporting that a skill was updated when the change was never saved to your account.": "修复了改动从未保存到你账户、Claude 却报告 skill 已更新的问题。",
+    "Fixed the /schedule command in Cowork showing as unavailable.": "修复了 Cowork 中 /schedule 命令显示为不可用的问题。",
+    "Added a \"Free Up Cowork Disk Space\" option under Help > Troubleshooting, and Cowork now cleans up caches and old temporary files automatically when its workspace disk runs low.": "在 帮助 > 故障排查 下新增\"释放 Cowork 磁盘空间\"选项；工作区磁盘空间不足时，Cowork 现在会自动清理缓存和旧临时文件。",
+    "Improved the read/unread toggle on sidebar sessions: it now works on the currently open session, has a larger click target, and shows a tooltip describing what a click will do.": "改进了侧边栏会话的已读/未读切换：现在对当前打开的会话生效、点击区域更大，并显示说明点击作用的提示。",
     // changelog 内联代码块切分 → 翻周围文字片段
     ") remembers where you placed and sized it": "）会记住你摆放的位置和大小",
     "Files you reference with": "你用",
@@ -4052,6 +4082,9 @@
 
   // 动态 regex 翻译——处理"数字+单位"等含变量的字符串，字典做不到
   const dynamicPatterns = [
+    // 已连接的浏览器列表
+    [/^\s*(\d+)\s+browsers?\s+connected\s*$/i, "已连接 $1 个浏览器"],
+    [/^\s*Browser\s+(\d+)\s*$/i, "浏览器 $1"],
     // ===== 最高优先: 必须先于下面通用的 "X hours ago" / "X of Y" 规则，否则会被提前拆词 =====
     // token 列表 "Connected 7 hours ago"
     [/^\s*Connected just now\s*$/i, "刚刚连接"],
