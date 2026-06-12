@@ -12,6 +12,27 @@
   window.__CLAUDE_I18N_INSTALLED__ = true;
 
   const translations = {
+    // 安全切换模型提示
+    "This model has safety measures that flagged something in this session. This sometimes happens with safe, normal conversations. These measures let us bring you Mythos-level capability in other areas sooner, and we're working to refine them.": "此模型的安全机制在本次会话中标记了某些内容。这有时也会发生在安全、正常的对话中。这些机制让我们能更快地在其他领域为你带来 Mythos 级能力，我们也在持续改进它们。",
+    "This model has safety measures that flagged something in this session. This sometimes happens with safe, normal conversations. These measures let us bring you Mythos-level capability in other areas sooner, and we’re working to refine them.": "此模型的安全机制在本次会话中标记了某些内容。这有时也会发生在安全、正常的对话中。这些机制让我们能更快地在其他领域为你带来 Mythos 级能力，我们也在持续改进它们。",
+    "Send feedback": "发送反馈",
+    "feedback": "反馈",
+    "learn more": "了解更多",
+    "or": "或",
+    // 不问直接操作 已开启横幅
+    "Claude works, uses connectors, and browses the web without pausing for approval. You can turn off individual connectors in the Add menu.": "Claude 会直接工作、使用连接器并浏览网页，不再暂停等待批准。你可以在「添加」菜单中关闭单个连接器。",
+    "Don't show again": "不再显示",
+    "Don’t show again": "不再显示",
+    // 不问直接操作(自动运行)对话框
+    "Claude will work and use your connectors without pausing for approval. This can put your data at risk.": "Claude 将直接工作并使用你的连接器，不再暂停等待批准。这可能使你的数据面临风险。",
+    "Claude can act anywhere on the internet, which could put your data at risk.": "Claude 可以在互联网上任意操作，这可能使你的数据面临风险。",
+    // 文件夹访问授权对话框
+    "This includes all files and subfolders. Claude will be able to read, edit, and permanently delete—and may share file contents with third-party tools it connects to. Be careful about exposing sensitive information.": "这包括所有文件和子文件夹。Claude 将能够读取、编辑和永久删除——并可能与它所连接的第三方工具共享文件内容。请谨慎对待敏感信息的暴露。",
+    "Always allow": "始终允许",
+    "Allow": "允许",
+    // 文件访问错误 toast
+    "File access was denied.": "文件访问被拒绝。",
+    "File access was denied": "文件访问被拒绝",
     "Open a GitHub project on your computer, make a quick code change, and run the tests.": "在你的电脑上打开一个 GitHub 项目，做个快速的代码改动，然后运行测试。",
     // Dispatch / 应用授权 / 通知页
     "Revoke access": "撤销访问权限",
@@ -4082,6 +4103,11 @@
 
   // 动态 regex 翻译——处理"数字+单位"等含变量的字符串，字典做不到
   const dynamicPatterns = [
+    // 安全切换模型提示(含模型名变量)
+    [/^\s*Switched to\s+(.+?)\s*$/i, "已切换到 $1"],
+    [/^\s*Try again with\s+(.+?)\s*$/i, "用 $1 再试一次"],
+    // 文件夹访问授权标题(含文件夹名变量)
+    [/^\s*Allow Claude to change files in\s*[“"'「](.+?)["”'」]\s*\?\s*$/i, "允许 Claude 修改「$1」中的文件吗？"],
     // 已连接的浏览器列表
     [/^\s*(\d+)\s+browsers?\s+connected\s*$/i, "已连接 $1 个浏览器"],
     [/^\s*Browser\s+(\d+)\s*$/i, "浏览器 $1"],
