@@ -12,6 +12,70 @@
   window.__CLAUDE_I18N_INSTALLED__ = true;
 
   const translations = {
+    // 会话筛选空状态
+    "No sessions match the current filters": "没有会话符合当前筛选条件",
+    "Show all sessions": "显示所有会话",
+    // 跳过所有权限对话框 / 打开文件夹
+    "Claude will read, edit, and execute files without asking — including potentially destructive commands. Only use this in isolated or disposable environments.": "Claude 将无需询问即可读取、编辑和执行文件——包括潜在的破坏性命令。请仅在隔离或一次性环境中使用。",
+    "Open folder…": "打开文件夹…",
+    "Open folder...": "打开文件夹...",
+    // 计划提议栏 / 接受模式 / 用量限制横幅
+    "Claude proposed a plan": "Claude 提议了一个计划",
+    "Open plan": "打开计划",
+    "Revise…": "修改…",
+    "Revise...": "修改...",
+    "Revise": "修改",
+    "Accept and auto mode": "接受并自动运行",
+    "Accept and allow edits": "接受并允许编辑",
+    "Accept and bypass permissions": "接受并跳过权限",
+    "Select any text to leave a comment for Claude": "选中任意文本即可给 Claude 留言",
+    "Anything else to add?": "还有什么要补充的？",
+    "Approaching weekly usage limit": "即将达到每周用量上限",
+    // 发送菜单 / 取消套餐对话框
+    "Send and stay here": "发送并留在此处",
+    "You'll lose access to": "你将失去以下访问权限",
+    "You’ll lose access to": "你将失去以下访问权限",
+    "Build, debug, and ship by describing what you need.": "用自然语言描述需求，即可构建、调试并发布。",
+    "Hand off tasks to Claude so you can focus on other work.": "把任务交给 Claude，你就能专注于其他工作。",
+    "Keep your Max plan": "保留你的 Max 套餐",
+    // 后台任务空状态
+    "Background work appears here": "后台任务会显示在这里",
+    "Background work appears here.": "后台任务会显示在这里。",
+    // changelog 2026-06-11
+    "Added Find Next and Find Previous keyboard shortcuts to in-app search.": "为应用内搜索新增了「查找下一个」和「查找上一个」快捷键。",
+    "Added the Files panel to remote and SSH sessions — search the session's files and open them in the viewer — plus a Show in Files button in the file viewer.": "为远程和 SSH 会话新增了文件面板——可搜索会话的文件并在查看器中打开——并在文件查看器中加了「在文件中显示」按钮。",
+    "Added the Files panel to remote and SSH sessions — search the session’s files and open them in the viewer — plus a Show in Files button in the file viewer.": "为远程和 SSH 会话新增了文件面板——可搜索会话的文件并在查看器中打开——并在文件查看器中加了「在文件中显示」按钮。",
+    "Added a running-tasks button to the activity indicator that opens the Tasks panel, and Bash rows in the Background tasks panel now open to show their output, including a live tail while the command runs.": "在活动指示器上新增了运行中任务按钮，点击可打开任务面板；后台任务面板中的 Bash 行现在可展开查看输出，命令运行期间还能实时跟踪。",
+    "Added model-picker memory — the picker now remembers your last model choice.": "新增了模型选择器记忆——选择器现在会记住你上次选择的模型。",
+    "Fixed preview panes stealing keyboard focus from the chat input when they reloaded or navigated.": "修复了预览面板在重新加载或跳转时从聊天输入框抢走键盘焦点的问题。",
+    "Fixed sessions failing to start after your sign-in expired — the app now prompts you to sign in again.": "修复了登录过期后会话无法启动的问题——应用现在会提示你重新登录。",
+    "Fixed SSH sessions: forking no longer opens an empty conversation, and connections no longer fail with \"Failed to upload file\" errors on remotes first set up by early-2026 versions of the app.": "修复了 SSH 会话：派生不再打开空对话；在由 2026 年初版本应用首次配置的远程主机上，连接也不再因「文件上传失败」错误而失败。",
+    "Fixed SSH sessions: forking no longer opens an empty conversation, and connections no longer fail with “Failed to upload file” errors on remotes first set up by early-2026 versions of the app.": "修复了 SSH 会话：派生不再打开空对话；在由 2026 年初版本应用首次配置的远程主机上，连接也不再因「文件上传失败」错误而失败。",
+    "Fixed renaming a session while its title was still generating — the generated title no longer overwrites the name you set.": "修复了标题仍在生成时重命名会话的问题——生成的标题不再覆盖你设置的名称。",
+    "Fixed the Pull Requests view showing \"No open pull requests\" when GitHub isn't connected — it now prompts you to connect.": "修复了未连接 GitHub 时拉取请求视图显示「没有打开的拉取请求」的问题——现在会提示你连接。",
+    "Fixed the Pull Requests view showing “No open pull requests” when GitHub isn’t connected — it now prompts you to connect.": "修复了未连接 GitHub 时拉取请求视图显示「没有打开的拉取请求」的问题——现在会提示你连接。",
+    // Cowork 介绍弹窗 + Go back
+    "Go back": "返回",
+    "You set the direction. Cowork gets it done.": "你定方向，Cowork 来搞定。",
+    "You set the direction.": "你定方向。",
+    "Cowork gets it done.": "Cowork 来搞定。",
+    "Tell Claude what you need so you can move on to whatever's next. It'll organize files, draft reports, and crunch data—all at the same time.": "把你需要的告诉 Claude，你就能去忙下一件事。它会同时整理文件、起草报告、处理数据。",
+    "Tell Claude what you need so you can move on to whatever’s next. It’ll organize files, draft reports, and crunch data—all at the same time.": "把你需要的告诉 Claude，你就能去忙下一件事。它会同时整理文件、起草报告、处理数据。",
+    "Check in when you want or just let Claude run.": "想看进度随时查，或者放手让 Claude 跑。",
+    "Write a PRD for the new notifications feature": "为新的通知功能写一份 PRD",
+    "What level of detail do you need?": "你需要多详细？",
+    "High-level overview": "高层概览",
+    "MVP scoping": "MVP 范围界定",
+    "Detailed spec": "详细规格",
+    "Something else": "其他",
+    "Try Cowork": "试试 Cowork",
+    "Later": "稍后",
+    // 图片右键菜单 (Copy/Save partial 会把 image 漏翻, 整项 exact 覆盖)
+    "Copy image": "复制图片",
+    "Save image": "保存图片",
+    // 后台任务(Workflow)面板 (Agent 作为术语保留英文, 不翻"代理")
+    "Phases": "阶段",
+    "No agents have started yet": "尚无 Agent 启动",
     // 安全切换模型提示
     "This model has safety measures that flagged something in this session. This sometimes happens with safe, normal conversations. These measures let us bring you Mythos-level capability in other areas sooner, and we're working to refine them.": "此模型的安全机制在本次会话中标记了某些内容。这有时也会发生在安全、正常的对话中。这些机制让我们能更快地在其他领域为你带来 Mythos 级能力，我们也在持续改进它们。",
     "This model has safety measures that flagged something in this session. This sometimes happens with safe, normal conversations. These measures let us bring you Mythos-level capability in other areas sooner, and we’re working to refine them.": "此模型的安全机制在本次会话中标记了某些内容。这有时也会发生在安全、正常的对话中。这些机制让我们能更快地在其他领域为你带来 Mythos 级能力，我们也在持续改进它们。",
@@ -1779,7 +1843,6 @@
     // 类别 / 角色
     "connectors": "连接器",
     "plugins": "插件",
-    "agents": "代理",
 
     // 工作区 / 会话
     "No active sessions.": "没有活跃的会话。",
@@ -3931,6 +3994,11 @@
           )) {
         return true;
       }
+      // 会话标题 / 项目名: 面包屑里可点击改名的 button (class 含 cursor-text) 属于用户内容,
+      // 整段跳过, 避免 "Project review" 被 Project→项目 partial 误翻成 "项目 review"。
+      if (el.tagName === "BUTTON" && cls.indexOf("cursor-text") !== -1) {
+        return true;
+      }
       el = el.parentElement;
     }
     return false;
@@ -4103,6 +4171,16 @@
 
   // 动态 regex 翻译——处理"数字+单位"等含变量的字符串，字典做不到
   const dynamicPatterns = [
+    // 模型不可用提示 (含模型名变量)
+    [/^\s*(.+?)\s+is currently unavailable\.?\s*$/i, "$1 当前不可用。"],
+    // 取消套餐对话框正文 (含日期变量)
+    [/^\s*Cancel to stop recurring billing\.\s+You can still use Claude Max until\s+(.+?)\.?\s*$/i, "取消以停止周期性扣费。在 $1 之前你仍可使用 Claude Max。"],
+    // 预览链接拦截 toast (含 URL 变量)
+    [/^\s*Link to\s+(.+?)\s+was blocked\.\s+Preview only supports localhost URLs\.\s*$/i, "已拦截指向 $1 的链接。预览仅支持 localhost URL。"],
+    // 预览链接被拦截提示 (含域名变量)
+    [/^\s*Link to\s+(.+?)\s+was blocked\.\s+Preview only supports localhost URLs\.\s*$/i, "已拦截指向 $1 的链接。预览仅支持 localhost 网址。"],
+    // 状态行: "N running task(s)"
+    [/^\s*(\d+)\s+running tasks?\s*$/i, "$1 个任务运行中"],
     // 安全切换模型提示(含模型名变量)
     [/^\s*Switched to\s+(.+?)\s*$/i, "已切换到 $1"],
     [/^\s*Try again with\s+(.+?)\s*$/i, "用 $1 再试一次"],
@@ -4218,6 +4296,13 @@
     // "Resets in 3 hr 25 min" 类
     [/Resets in (\d+)\s+hr\s+(\d+)\s+min/g, "$1 小时 $2 分钟后重置"],
     [/Resets in (\d+)\s+min/g, "$1 分钟后重置"],
+    // "Resets Thu, Jun 18, 6:00 AM" 完整日期 (函数 replacement 映射星期/月份/AM-PM)
+    [/Resets\s+(\w{3}),\s+(\w{3})\s+(\d+),\s+(\d+):(\d+)\s+([AP]M)/g, (m, wd, mon, day, h, min, ap) => {
+      const W = { Mon: "周一", Tue: "周二", Wed: "周三", Thu: "周四", Fri: "周五", Sat: "周六", Sun: "周日" };
+      const M = { Jan: "1月", Feb: "2月", Mar: "3月", Apr: "4月", May: "5月", Jun: "6月", Jul: "7月", Aug: "8月", Sep: "9月", Oct: "10月", Nov: "11月", Dec: "12月" };
+      const apz = ap.toUpperCase() === "AM" ? "上午" : "下午";
+      return `${M[mon] || mon}${day}日 ${W[wd] || wd} ${apz}${h}:${min} 重置`;
+    }],
     [/Resets\s+(\S+)\s+(\d+):(\d+)\s+([AP]M)/g, "$1 $2:$3 $4 重置"],
     // first/last/next + 数字
     [/\bfirst\s+(\d+)/gi, "前 $1"],
