@@ -278,30 +278,32 @@ def js_template_escape(text: str) -> str:
 # --- patch 文本逻辑 ----------------------------------------------------------
 
 def apply_patches_to_text(text: str, append_v1_js: str, append_v2_js: str, append_v3_js: str,
+                          append_v4_js: str,
                           prepend_v1_js: str, prepend_v2_js: str, prepend_v3_js: str,
+                          prepend_v4_js: str,
                           marker_js: str):
     """
     注入运行时 fs.readFileSync 调用 — 不嵌入字面量。
     Claude 进程每次拼装 system prompt 时:
-      1. 读 marker 文件 (~/.claude/.claude-omni-tier5-mode) 看是 v1 / v2 / v3 (没有/非法 → v2)
+      1. 读 marker 文件 (~/.claude/.claude-omni-tier5-mode) 看是 v1 / v2 / v3 / v4 (没有/非法 → v2)
       2. 按 mode 读对应 append.<mode>.txt 跟 append-prepend.<mode>.txt
     切 mode = 改 marker 文件 + 重启 Claude, 不用重 install。
     """
-    # Code override: marker 选 mode, 读 append.v{1,2,3}.txt
+    # Code override: marker 选 mode, 读 append.v{1,2,3,4}.txt
     read_call = (
         f"(function(){{try{{"
         f"var fs=require('fs');"
-        f"var m='v2';try{{var v=fs.readFileSync({marker_js},'utf-8').trim();if(v==='v1'||v==='v3')m=v;}}catch(_e){{}}"
-        f"var fp=m==='v3'?{append_v3_js}:m==='v1'?{append_v1_js}:{append_v2_js};"
+        f"var m='v2';try{{var v=fs.readFileSync({marker_js},'utf-8').trim();if(v==='v1'||v==='v3'||v==='v4')m=v;}}catch(_e){{}}"
+        f"var fp=m==='v4'?{append_v4_js}:m==='v3'?{append_v3_js}:m==='v1'?{append_v1_js}:{append_v2_js};"
         f"return fs.readFileSync(fp,'utf-8');"
         f"}}catch(e){{return '';}}}})()"
     )
-    # Cowork prepend: marker 选 mode, 读 append-prepend.v{1,2,3}.txt; 非空加 \n\n
+    # Cowork prepend: marker 选 mode, 读 append-prepend.v{1,2,3,4}.txt; 非空加 \n\n (v4 留空 → 不注入)
     read_call_nl = (
         f"(function(){{try{{"
         f"var fs=require('fs');"
-        f"var m='v2';try{{var v=fs.readFileSync({marker_js},'utf-8').trim();if(v==='v1'||v==='v3')m=v;}}catch(_e){{}}"
-        f"var fp=m==='v3'?{prepend_v3_js}:m==='v1'?{prepend_v1_js}:{prepend_v2_js};"
+        f"var m='v2';try{{var v=fs.readFileSync({marker_js},'utf-8').trim();if(v==='v1'||v==='v3'||v==='v4')m=v;}}catch(_e){{}}"
+        f"var fp=m==='v4'?{prepend_v4_js}:m==='v3'?{prepend_v3_js}:m==='v1'?{prepend_v1_js}:{prepend_v2_js};"
         f"var s=fs.readFileSync(fp,'utf-8');"
         f"return s?s+'\\n\\n':'';"
         f"}}catch(e){{return '';}}}})()"
@@ -552,28 +554,33 @@ def main():
     append_v1_path = (SCRIPT_DIR / "append.v1.txt").resolve()
     append_v2_path = (SCRIPT_DIR / "append.v2.txt").resolve()
     append_v3_path = (SCRIPT_DIR / "append.v3.txt").resolve()
+    append_v4_path = (SCRIPT_DIR / "append.v4.txt").resolve()
     prepend_v1_path = (SCRIPT_DIR / "append-prepend.v1.txt").resolve()
     prepend_v2_path = (SCRIPT_DIR / "append-prepend.v2.txt").resolve()
     prepend_v3_path = (SCRIPT_DIR / "append-prepend.v3.txt").resolve()
+    prepend_v4_path = (SCRIPT_DIR / "append-prepend.v4.txt").resolve()
     for p, name in [(append_v1_path, "append.v1.txt"), (append_v2_path, "append.v2.txt"),
-                    (append_v3_path, "append.v3.txt"),
+                    (append_v3_path, "append.v3.txt"), (append_v4_path, "append.v4.txt"),
                     (prepend_v1_path, "append-prepend.v1.txt"), (prepend_v2_path, "append-prepend.v2.txt"),
-                    (prepend_v3_path, "append-prepend.v3.txt")]:
+                    (prepend_v3_path, "append-prepend.v3.txt"), (prepend_v4_path, "append-prepend.v4.txt")]:
         if not p.exists():
             raise SystemExit(f"缺少 {name}: {p}")
     marker_path = Path(os.path.expanduser("~/.claude/.claude-omni-tier5-mode"))
-    # runtime read: 每次 Claude 拼 system prompt 时读 marker → 选 v1 / v2 / v3 对应文件。
+    # runtime read: 每次 Claude 拼 system prompt 时读 marker → 选 v1 / v2 / v3 / v4 对应文件。
     # 切 mode = 改 marker (面板代办) + 重启 Claude, 不用重 install。marker 没有/非法 → 默认 v2。
     append_v1_js = json.dumps(str(append_v1_path))
     append_v2_js = json.dumps(str(append_v2_path))
     append_v3_js = json.dumps(str(append_v3_path))
+    append_v4_js = json.dumps(str(append_v4_path))
     prepend_v1_js = json.dumps(str(prepend_v1_path))
     prepend_v2_js = json.dumps(str(prepend_v2_path))
     prepend_v3_js = json.dumps(str(prepend_v3_path))
+    prepend_v4_js = json.dumps(str(prepend_v4_path))
     marker_js = json.dumps(str(marker_path))
     print(f"  v1 路径: {append_v1_path}")
     print(f"  v2 路径: {append_v2_path}")
     print(f"  v3 路径: {append_v3_path} (自闭天才 · 不支持 jailbreak)")
+    print(f"  v4 路径: {append_v4_path} (漏洞挖掘 · redteam mindset)")
     print(f"  mode marker: {marker_path} (默认 v2)")
 
     # 检查并确保 Node.js / npx 可用，缺了 winget 自动装
@@ -648,7 +655,9 @@ def main():
         raise SystemExit(f"找不到 {index_js}")
     text = index_js.read_text(encoding="utf-8")
     new_text, n = apply_patches_to_text(text, append_v1_js, append_v2_js, append_v3_js,
-                                        prepend_v1_js, prepend_v2_js, prepend_v3_js, marker_js)
+                                        append_v4_js,
+                                        prepend_v1_js, prepend_v2_js, prepend_v3_js,
+                                        prepend_v4_js, marker_js)
     if n == 0:
         raise SystemExit("两条注入路径都没找到锚点")
     index_js.write_text(new_text, encoding="utf-8")
@@ -782,7 +791,8 @@ def main():
     print(f"改 v1 内容: 编辑 {append_v1_path} 跟 {prepend_v1_path}")
     print(f"改 v2 内容: 编辑 {append_v2_path} 跟 {prepend_v2_path}")
     print(f"改 v3 内容: 编辑 {append_v3_path} 跟 {prepend_v3_path}")
-    print(f"切 mode: 改 {marker_path} 写 'v1' / 'v2' / 'v3' (面板有按钮代办)")
+    print(f"改 v4 内容: 编辑 {append_v4_path} (漏洞挖掘; prepend 留空, Cowork 不注入)")
+    print(f"切 mode: 改 {marker_path} 写 'v1' / 'v2' / 'v3' / 'v4' (面板有按钮代办)")
     print("  改完重启 Claude 即生效, 不用重 install (runtime read)")
     print()
     print("注意: 首次启动 Claude 会弹\"未知发布者\"警告 (数字签名失效, 是改 asar 的代价),")
