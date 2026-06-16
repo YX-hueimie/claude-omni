@@ -337,6 +337,15 @@ def get_tier5_mode():
     return "v2"
 
 
+def agents_installed():
+    """v4 依赖的 subagent (agents/*.md) 是否已部署到 ~/.claude/agents/。
+    源目录里每个 .md 在目标都存在, 才算已装。"""
+    src = ROOT_DIR / "tier-5-prompt-override" / "agents"
+    dst = Path(os.path.expanduser("~/.claude/agents"))
+    mds = sorted(src.glob("*.md")) if src.is_dir() else []
+    return bool(mds) and all((dst / md.name).exists() for md in mds)
+
+
 def is_port_open(port):
     """检测本地端口是否被占用 (session-browser 在 5193)。"""
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -379,6 +388,7 @@ def collect_status():
         "current_tier": cur_tier,
         "current_persona": cur_persona,
         "tier5_mode": get_tier5_mode(),
+        "agents_installed": agents_installed(),
         "asar_markers": sorted(asar_markers),
         "tiers": [
             {**t, "installed": cur_tier == t["name"]}
@@ -634,6 +644,48 @@ def api_tier5_mode():
     CLAUDE_DIR.mkdir(parents=True, exist_ok=True)
     TIER5_MODE_MARKER.write_text(mode, encoding="utf-8")
     return jsonify({"ok": True, "mode": mode})
+
+
+@app.route("/api/install-agents", methods=["POST"])
+def api_install_agents():
+    """把 v4 依赖的 subagent (tier-5-prompt-override/agents/*.md) 部署到 ~/.claude/agents/。
+    幂等覆盖; 不动用户其它 agent。"""
+    src = ROOT_DIR / "tier-5-prompt-override" / "agents"
+    if not src.is_dir():
+        return jsonify({"ok": False, "error": "找不到 agents 源目录"}), 400
+    mds = sorted(src.glob("*.md"))
+    if not mds:
+        return jsonify({"ok": False, "error": "agents 源目录下没有 .md"}), 400
+    dst = Path(os.path.expanduser("~/.claude/agents"))
+    dst.mkdir(parents=True, exist_ok=True)
+    names = []
+    try:
+        for md in mds:
+            (dst / md.name).write_bytes(md.read_bytes())
+            names.append(md.name)
+    except OSError as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+    return jsonify({"ok": True, "installed": names})
+
+
+@app.route("/api/uninstall-agents", methods=["POST"])
+def api_uninstall_agents():
+    """从 ~/.claude/agents/ 移除本项目 ships 的 subagent。只删同名 .md, 不动用户其它 agent。"""
+    src = ROOT_DIR / "tier-5-prompt-override" / "agents"
+    mds = sorted(src.glob("*.md")) if src.is_dir() else []
+    if not mds:
+        return jsonify({"ok": False, "error": "agents 源目录下没有 .md"}), 400
+    dst = Path(os.path.expanduser("~/.claude/agents"))
+    removed = []
+    try:
+        for md in mds:
+            t = dst / md.name
+            if t.exists():
+                t.unlink()
+                removed.append(md.name)
+    except OSError as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+    return jsonify({"ok": True, "removed": removed})
 
 
 @app.route("/api/session-browser/start", methods=["POST"])
@@ -1167,6 +1219,50 @@ function makeTierCard(t, currentTier, disabled){
       txt.innerHTML = `<div style="font-size:12.5px;color:var(--charcoal-warm);font-weight:500">${m.label}</div><div style="color:var(--stone-gray);font-size:11px;line-height:1.4">${m.desc}</div>`;
       lbl.appendChild(txt);
       modeBox.appendChild(lbl);
+
+      if(m.id === 'v4'){
+        const agentRow = el('div');
+        agentRow.style.cssText = 'margin:2px 0 2px 24px;display:flex;align-items:center;gap:8px';
+        const note = el('span', null, 'v4 的六顾问/三严审依赖');
+        note.style.cssText = 'font-size:10.5px;color:var(--stone-gray)';
+        let installed = !!(STATE && STATE.agents_installed);
+        const render = () => {
+          agentRow.innerHTML = '';
+          if(installed){
+            const tag = el('span', null, '✓ agent 已安装');
+            tag.style.cssText = 'font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid var(--border-cream);background:#f0ece6;color:var(--stone-gray)';
+            const un = document.createElement('button');
+            un.textContent = '卸载';
+            un.style.cssText = 'font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid var(--stone-gray);background:transparent;color:var(--stone-gray);cursor:pointer';
+            un.addEventListener('click', async () => {
+              un.disabled = true; un.textContent = '卸载中...';
+              try{
+                const r = await fetch('/api/uninstall-agents', { method: 'POST' });
+                const j = await r.json();
+                if(!j.ok){ alert('卸载失败: ' + (j.error || '未知')); un.disabled = false; un.textContent = '卸载'; return; }
+                installed = false; render();
+              }catch(e){ alert('请求失败: ' + e.message); un.disabled = false; un.textContent = '卸载'; }
+            });
+            agentRow.appendChild(tag); agentRow.appendChild(un); agentRow.appendChild(note);
+          } else {
+            const ab = document.createElement('button');
+            ab.textContent = '安装 agent';
+            ab.style.cssText = 'font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid var(--terracotta);background:var(--terracotta);color:#fff;cursor:pointer';
+            ab.addEventListener('click', async () => {
+              ab.disabled = true; ab.textContent = '安装中...';
+              try{
+                const r = await fetch('/api/install-agents', { method: 'POST' });
+                const j = await r.json();
+                if(!j.ok){ alert('安装失败: ' + (j.error || '未知')); ab.disabled = false; ab.textContent = '安装 agent'; return; }
+                installed = true; render();
+              }catch(e){ alert('请求失败: ' + e.message); ab.disabled = false; ab.textContent = '安装 agent'; }
+            });
+            agentRow.appendChild(ab); agentRow.appendChild(note);
+          }
+        };
+        render();
+        modeBox.appendChild(agentRow);
+      }
     }
     c.appendChild(modeBox);
   }
