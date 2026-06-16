@@ -12,6 +12,33 @@
   window.__CLAUDE_I18N_INSTALLED__ = true;
 
   const translations = {
+    // Word 安装提示 / 连接错误 / 回复
+    "Opening Word… Nothing happened?": "正在打开 Word… 没反应？",
+    "Install from Microsoft AppSource instead.": "改从 Microsoft AppSource 安装。",
+    "We couldn't connect to Claude. Please check your network connection and try again.": "无法连接到 Claude。请检查你的网络连接后重试。",
+    "We couldn’t connect to Claude. Please check your network connection and try again.": "无法连接到 Claude。请检查你的网络连接后重试。",
+    "Reply": "回复",
+    // 职业选择 / 启动状态 / 停止按钮
+    "Starting up…": "启动中…",
+    "What kind of work do you do?": "你从事什么工作？",
+    "Scientist": "科学家",
+    "Student": "学生",
+    "Founder": "创始人",
+    "Healthcare": "医疗",
+    "Stop Claude response": "停止 Claude 回复",
+    "Queue": "排队",
+    // Cowork onboarding 引导页
+    "Get to know Cowork": "了解 Cowork",
+    "Turn on notifications": "开启通知",
+    "Claude can ping you when it finishes work or needs your input": "Claude 完成工作或需要你输入时会提醒你",
+    "Customize Claude to your role": "按你的角色定制 Claude",
+    "Add ready-made tools and workflows": "添加现成的工具和工作流",
+    "Schedule a recurring task": "安排周期性任务",
+    "Great for reminders, reports, or regular check-ins": "适合提醒、报告或定期检查",
+    "Working on it…": "处理中…",
+    "Thought process": "思考过程",
+    "You've got the basics!": "你已掌握基础！",
+    "You’ve got the basics!": "你已掌握基础！",
     // 会话筛选空状态
     "No sessions match the current filters": "没有会话符合当前筛选条件",
     "Show all sessions": "显示所有会话",
@@ -4171,6 +4198,10 @@
 
   // 动态 regex 翻译——处理"数字+单位"等含变量的字符串，字典做不到
   const dynamicPatterns = [
+    // MCP app 设置失败 (含 app 名 + 域名变量)
+    [/^\s*Failed to set up MCP app for [“"'](.+?)["”']\.\s*Check that\s+(.+?)\s+is not blocked by your network or browser\.\s*$/i, "无法为「$1」设置 MCP 应用。请检查 $2 是否被你的网络或浏览器拦截。"],
+    // 工具调用状态 "Using X" (翻 Using, 保留工具名 X)
+    [/^\s*Using\s+(.+?)\s*$/i, "正在使用 $1"],
     // 模型不可用提示 (含模型名变量)
     [/^\s*(.+?)\s+is currently unavailable\.?\s*$/i, "$1 当前不可用。"],
     // 取消套餐对话框正文 (含日期变量)
