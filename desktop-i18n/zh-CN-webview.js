@@ -20,11 +20,19 @@
     "Reply": "回复",
     // 职业选择 / 启动状态 / 停止按钮
     "Starting up…": "启动中…",
+    "Starting up...": "启动中…",
+    "Preparing session…": "正在准备会话…",
+    "Preparing session...": "正在准备会话…",
     "What kind of work do you do?": "你从事什么工作？",
+    "What shall we think through?": "有什么要一起想清楚的？",
     "Scientist": "科学家",
     "Student": "学生",
     "Founder": "创始人",
     "Healthcare": "医疗",
+    "Writer": "作家",
+    "Educator": "教育工作者",
+    "Consultant": "顾问",
+    "Researcher": "研究员",
     "Stop Claude response": "停止 Claude 回复",
     "Queue": "排队",
     // Cowork onboarding 引导页
@@ -68,6 +76,27 @@
     // 后台任务空状态
     "Background work appears here": "后台任务会显示在这里",
     "Background work appears here.": "后台任务会显示在这里。",
+    // changelog 2026-06-16 (1.13576.0)
+    // 新
+    "Added a unified Artifacts view that lists your chat, Code, and Cowork artifacts in one searchable place, with a \"New artifact\" menu and a \"Filter by\" control to narrow the list by source.": "新增了统一的 Artifacts 视图，把你的 Chat、Code 和 Cowork artifact 集中到一个可搜索的位置，并带有「新建 artifact」菜单和「筛选方式」控件，可按来源缩小列表范围。",
+    "Added a unified Artifacts view that lists your chat, Code, and Cowork artifacts in one searchable place, with a “New artifact” menu and a “Filter by” control to narrow the list by source.": "新增了统一的 Artifacts 视图，把你的 Chat、Code 和 Cowork artifact 集中到一个可搜索的位置，并带有「新建 artifact」菜单和「筛选方式」控件，可按来源缩小列表范围。",
+    "Added running dev servers to the Background tasks panel, with stop and open-preview actions.": "把运行中的开发服务器加入了后台任务面板，并提供停止和打开预览操作。",
+    // 改进
+    "Improved find-in-page to search the entire session transcript instead of only the text scrolled into view, and the find bar now reliably takes keyboard focus when opened.": "改进了页内查找：现在搜索整个会话记录，而不只是滚动到可见区域的文本；查找栏打开时也能稳定获得键盘焦点。",
+    "Improved the Code file viewer: images, video, and audio now play inline instead of showing as text, and Markdown, CSV, and image files refresh automatically when Claude edits them.": "改进了 Code 文件查看器：图片、视频和音频现在内联播放，而不再以文本显示；Markdown、CSV 和图片文件在 Claude 编辑后会自动刷新。",
+    "Updated the model picker. The three headline models appear at the top level with older models and context-size variants under \"More models\", each model shows a capability description, and currently-unavailable models appear disabled instead of failing when selected.": "更新了模型选择器：三个主力模型显示在顶层，较旧的模型和上下文长度变体归到「更多模型」下；每个模型都有能力说明；当前不可用的模型显示为禁用，而不再在选中时报错。",
+    "Updated the model picker. The three headline models appear at the top level with older models and context-size variants under “More models”, each model shows a capability description, and currently-unavailable models appear disabled instead of failing when selected.": "更新了模型选择器：三个主力模型显示在顶层，较旧的模型和上下文长度变体归到「更多模型」下；每个模型都有能力说明；当前不可用的模型显示为禁用，而不再在选中时报错。",
+    "Updated the in-session artifact panel: switch between a session's published artifacts from the title dropdown, see when an artifact was last updated, copy a share link, and open, share, or delete the artifact from the overflow menu.": "更新了会话内 artifact 面板：可从标题下拉切换会话已发布的各个 artifact、查看 artifact 的最后更新时间、复制分享链接，并从溢出菜单打开、分享或删除 artifact。",
+    "Updated the in-session artifact panel: switch between a session’s published artifacts from the title dropdown, see when an artifact was last updated, copy a share link, and open, share, or delete the artifact from the overflow menu.": "更新了会话内 artifact 面板：可从标题下拉切换会话已发布的各个 artifact、查看 artifact 的最后更新时间、复制分享链接，并从溢出菜单打开、分享或删除 artifact。",
+    "Changed the Code sessions tab from \"Projects\" to \"All sessions\". It now lists your non-project sessions alongside project sessions and adds a multi-select Environment filter.": "把 Code 会话标签页从「项目」改为「所有会话」：现在会把你的非项目会话与项目会话一并列出，并新增了多选的环境筛选。",
+    "Changed the Code sessions tab from “Projects” to “All sessions”. It now lists your non-project sessions alongside project sessions and adds a multi-select Environment filter.": "把 Code 会话标签页从「项目」改为「所有会话」：现在会把你的非项目会话与项目会话一并列出，并新增了多选的环境筛选。",
+    // 修复
+    "Fixed keyboard shortcut conflicts failing silently. Assigning a shortcut already held by another app now tells you and keeps your previous shortcut working, and Quick Entry registration errors now appear in Settings.": "修复了键盘快捷键冲突静默失败的问题：现在为已被其他应用占用的快捷键赋值会有提示，并保留你原来的快捷键继续生效；Quick Entry 注册错误现在也会显示在设置中。",
+    "Fixed the first-run notification explaining that Claude keeps running in the notification area never appearing on Windows.": "修复了说明「Claude 会在通知区域持续运行」的首次启动通知在 Windows 上从不出现的问题。",
+    "Fixed corrupt plugin downloads crashing or hanging the app.": "修复了损坏的插件下载导致应用崩溃或卡死的问题。",
+    "Fixed skills sometimes staying on an older version after being edited until toggled off and on.": "修复了技能在编辑后有时仍停留在旧版本、需要关闭再重新开启才更新的问题。",
+    "Fixed pull request status checks. Failures now show a small warning indicator on the branch row instead of repeated error popups, the \"status couldn't be checked\" warning appears less often and can always be dismissed, and only GitHub CLI sign-in problems still raise a notification.": "修复了拉取请求状态检查：失败现在在分支行显示一个小的警告标记，而不再反复弹出错误；「无法检查状态」警告出现得更少且始终可关闭；只有 GitHub CLI 登录问题仍会触发通知。",
+    "Fixed pull request status checks. Failures now show a small warning indicator on the branch row instead of repeated error popups, the “status couldn’t be checked” warning appears less often and can always be dismissed, and only GitHub CLI sign-in problems still raise a notification.": "修复了拉取请求状态检查：失败现在在分支行显示一个小的警告标记，而不再反复弹出错误；「无法检查状态」警告出现得更少且始终可关闭；只有 GitHub CLI 登录问题仍会触发通知。",
     // changelog 2026-06-11
     "Added Find Next and Find Previous keyboard shortcuts to in-app search.": "为应用内搜索新增了「查找下一个」和「查找上一个」快捷键。",
     "Added the Files panel to remote and SSH sessions — search the session's files and open them in the viewer — plus a Show in Files button in the file viewer.": "为远程和 SSH 会话新增了文件面板——可搜索会话的文件并在查看器中打开——并在文件查看器中加了「在文件中显示」按钮。",
@@ -106,12 +135,19 @@
     // 安全切换模型提示
     "This model has safety measures that flagged something in this session. This sometimes happens with safe, normal conversations. These measures let us bring you Mythos-level capability in other areas sooner, and we're working to refine them.": "此模型的安全机制在本次会话中标记了某些内容。这有时也会发生在安全、正常的对话中。这些机制让我们能更快地在其他领域为你带来 Mythos 级能力，我们也在持续改进它们。",
     "This model has safety measures that flagged something in this session. This sometimes happens with safe, normal conversations. These measures let us bring you Mythos-level capability in other areas sooner, and we’re working to refine them.": "此模型的安全机制在本次会话中标记了某些内容。这有时也会发生在安全、正常的对话中。这些机制让我们能更快地在其他领域为你带来 Mythos 级能力，我们也在持续改进它们。",
+    // 模型不可用提示 (isn't 直/弯撇号双版本)
+    "This model isn't available": "此模型不可用",
+    "This model isn’t available": "此模型不可用",
+    "Switch to a different model from the model picker to continue.": "请从模型选择器切换到其他模型以继续。",
+    // 朗读 (TTS): Read 是单词级条目, partial 残留 "aloud", 整短语优先
+    "Read aloud": "朗读",
     "Send feedback": "发送反馈",
     "feedback": "反馈",
     "learn more": "了解更多",
     "or": "或",
     // 不问直接操作 已开启横幅
     "Claude works, uses connectors, and browses the web without pausing for approval. You can turn off individual connectors in the Add menu.": "Claude 会直接工作、使用连接器并浏览网页，不再暂停等待批准。你可以在「添加」菜单中关闭单个连接器。",
+    "For this task, Claude will work and use connectors without pausing for approval.": "对于此任务，Claude 将直接工作并使用连接器，不再暂停等待批准。",
     "Don't show again": "不再显示",
     "Don’t show again": "不再显示",
     // 不问直接操作(自动运行)对话框
@@ -145,6 +181,9 @@
     "I'm signed in on my phone": "我已在手机上登录",
     "I’m signed in on my phone": "我已在手机上登录",
     "Set up later": "稍后设置",
+    // 手机通知未送达提示 (won't 直/弯撇号双版本)
+    "Notifications won't reach your phone yet. Open Claude on your phone and allow notifications.": "通知暂时还无法送达你的手机。请在手机上打开 Claude 并允许通知。",
+    "Notifications won’t reach your phone yet. Open Claude on your phone and allow notifications.": "通知暂时还无法送达你的手机。请在手机上打开 Claude 并允许通知。",
     // === 思考强度滑杆 (Opus 4.8 effort: Faster ←→ Smarter) ===
     "Faster": "更快",
     "Smarter": "更聪明",
@@ -165,6 +204,8 @@
 
     // === Cowork 用量推广卡 (含日期的两条走 dynamicPatterns) ===
     "2× usage for Cowork": "Cowork 双倍用量",
+    "Let's tackle something together": "一起来搞定点什么吧",
+    "Let’s tackle something together": "一起来搞定点什么吧",
     "Start task": "开始任务",
 
     // === 设置/通用: 消息被标记时切换模型 ===
@@ -227,6 +268,8 @@
     "Delete stored sessions": "删除已存储的会话",
     "This can't be undone.": "此操作无法撤销。",
     "This can’t be undone.": "此操作无法撤销。",
+    // 删除任务 确认：整串 exact 优先于通用 dynamicPattern 4495，避免 "this task" 被当变量残留
+    "Are you sure you want to delete this task?": "确认删除此任务？",
 
     // === 设置/记忆 + 连接器搜索 ===
     "Allow Claude to remember relevant context from your chats. Memory includes your entire chat history with Claude.": "允许 Claude 记住对话中的相关上下文。记忆涵盖你与 Claude 的全部对话历史。",
@@ -358,6 +401,23 @@
     "thinking some more…": "再想想…",
     "thinking...": "思考中...",
     "thinking…": "思考中…",
+    // 趣味思考状态 (首字母大写版; 这套很多, 见到再补)
+    "Still thinking...": "还在思考...",
+    "Still thinking…": "还在思考…",
+    "Thinking hard...": "努力思考...",
+    "Thinking hard…": "努力思考…",
+    "Deep in thought...": "陷入沉思...",
+    "Deep in thought…": "陷入沉思…",
+    "Mulling it over...": "仔细琢磨...",
+    "Mulling it over…": "仔细琢磨…",
+    "Caramelizing onions...": "焦糖化洋葱中...",
+    "Caramelizing onions…": "焦糖化洋葱中…",
+    "Shelling...": "剥壳中...",
+    "Shelling…": "剥壳中…",
+    "Scrambling...": "炒蛋中...",
+    "Scrambling…": "炒蛋中…",
+    "Sautéing...": "煸炒中...",
+    "Sautéing…": "煸炒中…",
     "Path copied to clipboard.": "路径已复制到剪贴板。",
 
     // === 域名白名单 / worktree 位置 ===
@@ -961,6 +1021,9 @@
     "Create templated routines that can be kicked off on schedule, by API, or webhook.": "创建模板化的工作流，可按时间表、API 或 webhook 触发。",
     "Remote": "远程",
     "Remote Control": "远程控制",
+    "Set up remote control": "设置远程控制",
+    // "Run claude rc on your machine to code from here." 被 claude rc code chip 切开，补 trailing 片段（Run→运行 已生效）
+    "on your machine to code from here.": "，以从这里编写代码。",
     "Add SSH host...": "添加 SSH 主机...",
     "Add SSH host": "添加 SSH 主机",
     "host": "主机",
@@ -1037,6 +1100,55 @@
     "Billing": "账单",
     "Usage": "用量",
     "Connectors": "连接器",
+    // 连接器弹窗
+    "Bring your tools and data into Claude": "把你的工具和数据接入 Claude",
+    "Read repos, open pull requests": "读取仓库、创建拉取请求",
+    "Configured Claude.ai connectors will also be available here": "已配置的 Claude.ai 连接器也会出现在这里",
+    "Browse directory": "浏览目录",
+    // === 角色/兴趣 onboarding (tips 引导) ===
+    // 标题首词被 What→什么 / You→你 词条翻；整串 exact 先试，加粗拆节点时 You 那条有片段兜底
+    "What do you do?": "你是做什么的？",
+    "Pick all that apply — we'll tailor tips to your workflow.": "勾选所有适用项 —— 我们会根据你的工作流定制提示。",
+    "Pick all that apply — we’ll tailor tips to your workflow.": "勾选所有适用项 —— 我们会根据你的工作流定制提示。",
+    "Product": "产品",
+    "Skip": "跳过",
+    "What will you make?": "你想做点什么？",
+    "Choose a few — or skip to see everything.": "选几个 —— 或跳过查看全部。",
+    "Product mockups": "产品原型图",
+    "Interactive prototypes": "交互式原型",
+    "Data dashboards": "数据仪表盘",
+    "Dev handoff": "开发交接",
+    "Just exploring": "只是逛逛",
+    "You're all set": "你都准备好了",
+    "You’re all set": "你都准备好了",
+    "'re all set": "都准备好了",
+    "’re all set": "都准备好了",
+    "Tap or arrow through.": "点击或用方向键浏览。",
+    // ↓ 数字是独立节点, 整串 pattern 命不中 → 拆片段 ("Here are"|"6"|"quick tips picked for you.")
+    "Here are": "这是",
+    "quick tips picked for you.": "条为你挑选的快速提示。",
+    "Keep this tab open and come back in": "让标签页开着，稍后回来——大约",
+    "minutes": "分钟",
+    "Start": "开始",
+    // tips 轮播
+    "Bring your context": "带上你的上下文",
+    "Drop images or paste screenshots with ⌘V. Mount a local folder from the Import menu so Claude reads your codebase live.": "拖入图片或用 ⌘V 粘贴截图。从导入菜单挂载本地文件夹，让 Claude 实时读取你的代码库。",
+    "Point at what to change": "指出要改的地方",
+    "Click Comment in the toolbar, then click any element to annotate it. Leave several — they batch into one message when you send.": "点击工具栏中的「评论」，再点击任意元素进行标注。可以留多条 —— 发送时会合并成一条消息。",
+    "Sketch an idea": "勾勒想法",
+    "The napkin tool lets you draw a rough layout freehand. Claude reads your sketch and turns it into a real design.": "餐巾纸工具让你随手画出粗略布局。Claude 会读取你的草图并把它变成真正的设计。",
+    "Start with slides": "从幻灯片开始",
+    "Pick Slide deck when you create a project and describe your deck. Claude builds the full presentation — layout, content, speaker notes — in one pass.": "创建项目时选择「幻灯片组」并描述你的演示文稿。Claude 会一次性生成完整演示 —— 布局、内容、演讲者备注。",
+    "Mock it up": "做个原型",
+    "Design mode starts with quick wireframe explorations before committing to high fidelity. Say what the screen does; Claude sketches options.": "设计模式会先快速探索线框图，再进入高保真。说明这个界面做什么，Claude 就会勾勒出多个方案。",
+    "Make it interactive": "让它可交互",
+    "Prototype mode builds a real working app — state, transitions, API calls. Your prototype can even call the Claude API directly without a backend.": "原型模式会构建一个真正能运行的应用 —— 状态、转场、API 调用。你的原型甚至可以不用后端直接调用 Claude API。",
+    // 用户菜单
+    "Signed in as": "登录身份",
+    "Organization": "组织",
+    "Docs": "文档",
+    "Tutorial": "教程",
+    "Give feedback": "提供反馈",
     "Claude Code": "Claude Code",
 
     // 设置 - 个人资料
@@ -1073,6 +1185,9 @@
     // 聊天
     "New chat": "新建对话",
     "Search chats": "搜索对话",
+    "Search chats...": "搜索对话...",
+    "Search chats…": "搜索对话…",
+    "Select chats": "选择对话",
     "Search": "搜索",
     "Today": "今天",
     "Yesterday": "昨天",
@@ -1132,6 +1247,11 @@
     "View project": "查看项目",
     "Edit project": "编辑项目",
     "Delete project": "删除项目",
+    "Delete project?": "删除项目？",
+    "Failed to delete project": "删除项目失败",
+    "Actions for Untitled": "未命名 的操作",
+    "Delete \"Untitled\"? This cannot be undone.": "确认删除「未命名」？此操作无法撤销。",
+    "Delete “Untitled”? This cannot be undone.": "确认删除「未命名」？此操作无法撤销。",
 
     // 文件
     "File": "文件",
@@ -1306,6 +1426,125 @@
     "Claude can use connectors, browse the web, and control apps without asking. This could put your data at risk.": "Claude 可以使用连接器、浏览网页、控制应用，不再询问。这可能让你的数据面临风险。",
     "See safe use tips": "查看安全使用提示",
     "Work in a project": "在项目中工作",
+    "Work in a project or folder": "在项目或文件夹中工作",
+    // 会话中断横幅
+    "We got interrupted — Claude works right here in your browser, so when this tab closed, the work paused.": "我们被中断了 —— Claude 就在你的浏览器里运行，所以这个标签页关闭时，工作就暂停了。",
+    "Resume": "继续",
+    // 首页趣味问候
+    "Moonlit chat?": "月下闲聊？",
+    "More actions": "更多操作",
+    "Reload": "重新加载",
+    "Other…": "其他…",
+    "Other...": "其他...",
+    "Reading, Editing, Generating HTML": "读取、编辑、生成 HTML",
+    // === Claude Design - 用 Claude Code 上传组件 / 生成设计系统 ===
+    "Couldn't duplicate file — [not_found] source not found": "无法复制文件 ——[not_found] 源文件未找到",
+    "Use Claude Code to upload your components": "用 Claude Code 上传你的组件",
+    "Your system already lives in code, so there's nothing to set up here. Open your design-system package in Claude Code and run": "你的系统已经在代码里了，这里无需额外设置。在 Claude Code 中打开你的设计系统包并运行",
+    "Your system already lives in code, so there’s nothing to set up here. Open your design-system package in Claude Code and run": "你的系统已经在代码里了，这里无需额外设置。在 Claude Code 中打开你的设计系统包并运行",
+    "— it reads your tokens and React components directly.": "—— 它会直接读取你的 token 和 React 组件。",
+    "Claude can create new design systems or update an existing system.": "Claude 可以创建新的设计系统或更新现有系统。",
+    "When it finishes, your system appears under Design systems for everyone in your org.": "完成后，你的系统会出现在「设计系统」下，供组织内所有人使用。",
+    "Don't have Claude Code?": "还没有 Claude Code？",
+    "Don’t have Claude Code?": "还没有 Claude Code？",
+    "Install it": "安装它",
+    "You can step away. Keep the tab open in the background.": "你可以先去忙别的。让标签页在后台开着。",
+    "Generate": "生成",
+    "Generating your design system…": "正在生成你的设计系统…",
+    "Generating your design system...": "正在生成你的设计系统...",
+    "Generating your design system": "正在生成你的设计系统",
+    // ↑ 实为 "Generating"(→创建中) + "your design system…" 拆节点 (design 排除 partial), 补后段片段
+    "your design system…": "你的设计系统…",
+    "your design system...": "你的设计系统...",
+    "your design system": "你的设计系统",
+    "Turn on usage credits to keep using Claude if you hit a limit": "开启用量额度，达到上限后仍可继续使用 Claude",
+    "Manage usage credits": "管理用量额度",
+    // 设置 - Enter 键 / 状态行 / callout
+    "Enter key": "Enter 键",
+    "Sends message": "发送消息",
+    "Starts a new line": "另起一行",
+    "for a new line.": "即可换行。",
+    "to send.": "即可发送。",
+    "Set project title, Listing files": "设置项目标题、列出文件",
+    "Listing files": "正在列出文件",
+    "USEFUL INFO": "实用信息",
+    "Useful INFO": "实用信息",
+    "Useful info": "实用信息",
+    "Useful Info": "实用信息",
+    "useful info": "实用信息",
+    "Data file": "数据文件",
+    // 文件树 section header (实际 Title-case + CSS 大写)
+    "Folders": "文件夹",
+    "Stylesheets": "样式表",
+    "Stylesheet": "样式表",
+    "Scripts": "脚本",
+    "Documents": "文档",
+    "Feedback": "反馈",
+    "Loading design system": "正在加载设计系统",
+    "design system": "设计系统",
+    "Add usage notes": "添加使用说明",
+    "Check design system, Listing files": "检查设计系统、列出文件",
+    "A rubber band over a stripped screw head gives enough grip to turn it.": "在拧花的螺丝头上套一根橡皮筋，就能有足够的摩擦力把它拧动。",
+    "Run walnuts over scratched wood furniture. The oils fill the scratches.": "用核桃仁擦拭刮花的木家具，核桃油会填平划痕。",
+    "Image copied to clipboard": "图片已复制到剪贴板",
+    "Mount a local folder from the Import menu — Claude reads your codebase live, no copying.": "从导入菜单挂载本地文件夹 —— Claude 实时读取你的代码库，无需复制。",
+    "Click \"Comment\" in the toolbar, then click any element to annotate it.": "点击工具栏中的「评论」，然后点击任意元素进行标注。",
+    "Click “Comment” in the toolbar, then click any element to annotate it.": "点击工具栏中的「评论」，然后点击任意元素进行标注。",
+    "Ask Claude to use the Web Speech API for interactive voice input and output.": "让 Claude 使用 Web Speech API 实现交互式语音输入和输出。",
+    "\"Handoff to Claude Code\" creates a dev-ready package with specs and structure. Download it, then tell Claude Code \"create this design.\"": "「交给 Claude Code」会生成一个带规格和结构、可直接开发的包。下载后，告诉 Claude Code「创建这个设计」。",
+    "“Handoff to Claude Code” creates a dev-ready package with specs and structure. Download it, then tell Claude Code “create this design.”": "「交给 Claude Code」会生成一个带规格和结构、可直接开发的包。下载后，告诉 Claude Code「创建这个设计」。",
+    "Adding a splash of water instead of milk makes fluffier eggs. Milk makes them dense.": "用一点水代替牛奶能让鸡蛋更蓬松。牛奶会让它们更紧实。",
+    "Put a wooden spoon across a boiling pot. It won't boil over.": "在沸腾的锅上横放一把木勺，汤就不会溢出来。",
+    "Put a wooden spoon across a boiling pot. It won’t boil over.": "在沸腾的锅上横放一把木勺，汤就不会溢出来。",
+    "Microwave a damp paper towel for 30 seconds. Crud wipes right off the inside.": "把湿纸巾放进微波炉加热 30 秒，内壁的污垢一擦就掉。",
+    "The Share menu lets you export as PPTX, PDF, or a folder to give to Claude Code.": "分享菜单可以让你导出为 PPTX、PDF，或导出成一个文件夹交给 Claude Code。",
+    "You cannot unsee a bad font pairing. Choose carefully.": "糟糕的字体搭配一旦看到就再也忘不掉。请谨慎选择。",
+    "Comments and text edits appear as chips in the composer. Remove any you don't want.": "评论和文本编辑会以 chip 形式出现在输入框里。不想要的随时移除。",
+    "Comments and text edits appear as chips in the composer. Remove any you don’t want.": "评论和文本编辑会以 chip 形式出现在输入框里。不想要的随时移除。",
+    "The best design system is the one nobody notices.": "最好的设计系统是没人会注意到的那个。",
+    "\"Prototype\" starts at wireframes, moves to hi-fi, and ends as a working interactive app.": "「原型」从线框图开始，进阶到高保真，最终成为一个可运行的交互式应用。",
+    "“Prototype” starts at wireframes, moves to hi-fi, and ends as a working interactive app.": "「原型」从线框图开始，进阶到高保真，最终成为一个可运行的交互式应用。",
+    "The user's mental model is the only spec that matters.": "用户的心智模型才是唯一重要的规格。",
+    "The user’s mental model is the only spec that matters.": "用户的心智模型才是唯一重要的规格。",
+    "Attach skills or reference design systems from the Import menu.": "从导入菜单附加技能或引用设计系统。",
+    "If you need more than three colors, you have zero colors.": "如果你需要超过三种颜色，那你就等于没有颜色。",
+    "To talk to Claude, hold down Space to dictate.": "想跟 Claude 说话，按住空格键即可口述。",
+    "Leave multiple comments before sending — they all batch into one message.": "发送前可以留多条评论 —— 它们会合并成一条消息。",
+    "Import → Web Capture lets you copy elements from real web pages and paste them to Claude.": "「导入 → Web Capture」可以让你从真实网页复制元素并粘贴给 Claude。",
+    "The napkin sketch tool lets you draw freehand — great for rough layouts.": "餐巾纸草图工具让你随手画 —— 很适合粗略布局。",
+    "Every pixel argues for attention. Most should lose.": "每个像素都在争夺注意力。大多数都该落败。",
+    "Turn on speaker notes when creating decks to get a full presenter script.": "创建演示文稿时开启演讲者备注，即可获得完整的演讲脚本。",
+    "Whitespace is not empty. It is the silence between the notes.": "留白并非空白。它是音符之间的静默。",
+    "Text edit mode lets you click text in the preview and rewrite it in-place.": "文本编辑模式让你点击预览中的文字，原地重写。",
+    "Send (Ctrl+Enter)": "发送 (Ctrl+Enter)",
+    // 设计系统详情页 (design 已从 partial 排除, "X design" 短语需整短语 exact)
+    "Your team's new projects will use this design system by default. You can always update this design system using the chat.": "你团队的新项目将默认使用这个设计系统。你随时可以通过对话更新这个设计系统。",
+    "Your team’s new projects will use this design system by default. You can always update this design system using the chat.": "你团队的新项目将默认使用这个设计系统。你随时可以通过对话更新这个设计系统。",
+    "Use this system": "使用此系统",
+    "New design": "新建设计",
+    "Check design system": "检查设计系统",
+    "Auth failed: internal server error": "认证失败：内部服务器错误",
+    "A prototype nobody clicks is just a painting.": "没人点击的原型只是一幅画。",
+    // 用量弹窗 "Resets" 标签 (日期由 app i18n 格式成中文, 是独立英文节点)
+    "Resets": "重置于",
+    "No cards yet — add <!-- @dsCard group=\"…\" --> as the first line of any .html file.": "尚无卡片 —— 在任意 .html 文件的第一行加上 <!-- @dsCard group=\"…\" -->。",
+    "Claude can call the Claude API from inside your prototypes. No backend needed.": "Claude 可以在你的原型内部调用 Claude API。无需后端。",
+    "Finishing up": "即将完成",
+    "Tweaks": "微调",
+    "Describe a tweak…": "描述一个微调…",
+    "Describe a tweak...": "描述一个微调...",
+    "Ideas": "灵感",
+    "Working…": "处理中…",
+    "Working...": "处理中...",
+    "Copying starter": "正在复制起始模板",
+    "Copying": "复制中",
+    "Undo": "撤销",
+    "Chat history": "对话历史",
+    "New version ready": "新版本就绪",
+    "Claude has some questions": "Claude 有几个问题",
+    "inserts a new line.": "即可换行。",
+    "Checking the design for issues...": "正在检查设计的问题...",
+    "Checking the design for issues…": "正在检查设计的问题…",
     "Act": "执行",
     "Active": "活跃",
     "Claude desktop font settings not applying": "Claude 桌面字体设置不生效",
@@ -1318,7 +1557,9 @@
     "Recent": "最近",
     "Select a different folder": "选择其他文件夹",
     "Choose a different folder": "选择其他文件夹",
+    "Search folders": "搜索文件夹",
     "More models": "更多模型",
+    "Currently unavailable": "当前不可用",
     "Manage plugins": "管理插件",
     // Scheduled tasks 页
     "Scheduled tasks": "定时任务",
@@ -1328,6 +1569,16 @@
     "When enabled, Claude will prevent your computer from going to sleep.": "启用后，Claude 将阻止你的电脑进入睡眠。",
     "No scheduled tasks yet.": "暂无定时任务。",
     "Next run": "下次运行",
+    // 副标题被 /schedule code chip 切成两段渲染（整串 1325 命不中），拆段补
+    "Run tasks on a schedule or whenever you need them. Type": "按时间表或随时运行任务。在任意已有任务里输入",
+    "in any existing task to set one up.": "设置。",
+    "Search scheduled tasks…": "搜索定时任务…",
+    "Search scheduled tasks...": "搜索定时任务...",
+    "Create your first scheduled task": "创建你的第一个定时任务",
+    // 下拉项 / 快捷模板：Set up/Daily/Weekly 是单词级条目，partial 会残留英文，整短语 exact 优先
+    "Set up manually": "手动设置",
+    "Daily brief": "每日简报",
+    "Weekly review": "每周回顾",
     "Name": "名称",
     "Filter scheduled tasks": "筛选定时任务",
     "Create scheduled task": "创建定时任务",
@@ -1338,6 +1589,29 @@
     "Hourly": "每小时",
     "Daily": "每天",
     "Weekdays": "工作日",
+    // 定时任务详情页：Run/Manual 是单词级条目，partial 残留英文，整短语 exact 优先
+    "Run now": "立即运行",
+    "Manual only": "仅手动",
+    "History": "历史",
+    "Repeats": "重复",
+    "Always allowed": "始终允许",
+    "Runs": "运行记录",
+    // "scheduled task" 词组无条目 → Edit/Delete/Ran 被 partial 翻、词组留英文；
+    // 整短语 exact 保单节点无空格 + 小写词条兜底拆节点/其他组合
+    "Edit scheduled task": "编辑定时任务",
+    "Delete scheduled task": "删除定时任务",
+    "Ran scheduled task": "运行了定时任务",
+    "scheduled task": "定时任务",
+    // 删除定时任务对话框 复选框
+    "Also delete files on disk": "同时删除磁盘上的文件",
+
+    // === Excel 推广弹窗 (Claude in Excel) ===
+    "Supercharge your spreadsheets with Claude in Excel": "用 Excel 版 Claude 强化你的电子表格",
+    "Build financial models, analyze data, and create tables and charts with Claude directly in Excel": "直接在 Excel 中用 Claude 构建财务模型、分析数据、创建表格和图表",
+    "Transform complex data tasks or messy data clean-ups into simple conversations": "把复杂的数据任务和杂乱的数据清理变成简单的对话",
+    "Available with a Claude Pro, Max, Team, or Enterprise plan": "Claude Pro、Max、Team 或 Enterprise 套餐均可使用",
+    "Get Claude in Excel": "获取 Excel 版 Claude",
+    "Maybe later": "以后再说",
 
     // Quick Entry / 快捷键
     "Quickly chat to Claude in a few taps": "几下点击就能跟 Claude 聊上",
@@ -1492,6 +1766,23 @@
 
     // 设置 - 套餐
     "Max plan": "Max 套餐",
+    // === 套餐切换/降级流程 (Max↔Pro↔Max5x) ===
+    // Change/Current/Next/Confirm/Max 都是单词级条目, partial 会拆词留英文, 整短语 exact 优先
+    "Switch back to Pro plan": "切换回 Pro 套餐",
+    "Change to Max 5x plan": "更改为 Max 5x 套餐",
+    "Confirm Pro plan": "确认 Pro 套餐",
+    "Confirm changes": "确认更改",
+    "Current cycle": "当前周期",
+    "Next cycle": "下个周期",
+    "Pro plan": "Pro 套餐",
+    "Annual": "年付",
+    "Monthly": "月付",
+    // 降级横幅 lead 片段 (套餐名是富组件→拆节点; whole-string 走 dynamicPattern 兜一节点情况)
+    "Your plan will be downgraded to": "你的套餐将降级为",
+    // 计费条款 (terms 是独立链接节点, 保留英文; 按 年/月 两种 lead + 共用 trailing)
+    "You agree that Anthropic will charge your card in the amount above now and on a recurring annual basis until you cancel in accordance with our": "你同意 Anthropic 自即日起按上述金额、以年度为周期持续从你的卡扣款，直至你依据我们的",
+    "You agree that Anthropic will charge your card in the amount above now and on a recurring monthly basis until you cancel in accordance with our": "你同意 Anthropic 自即日起按上述金额、以月度为周期持续从你的卡扣款，直至你依据我们的",
+    ". You can cancel at any time in your account settings.": " 取消订阅。你可以随时在账户设置中取消。",
     "20x more usage than Pro": "用量是 Pro 的 20 倍",
     "Adjust plan": "调整套餐",
     "Subscribed via Android app": "通过 Android 应用订阅",
@@ -1504,7 +1795,263 @@
     "Sonnet only": "仅 Sonnet",
     "You haven't used Sonnet yet": "你还没用过 Sonnet",
     "Claude Design": "Claude Design",
+    // === Claude Design 首页 (claude.com/设计) ===
+    "Your designs": "你的设计",
+    "Design systems": "设计系统",
+    "Examples": "示例",
+    // === Claude Design - 设计系统流程 ===
+    "Design Systems": "设计系统",
+    "Claude Design System": "Claude 设计系统",
+    "Search design systems": "搜索设计系统",
+    "Create design system": "创建设计系统",
+    "Create new design system": "创建新设计系统",
+    "No design systems yet": "暂无设计系统",
+    "Select a design system to browse it": "选择一个设计系统进行浏览",
+    "Add a design system": "添加设计系统",
+    "Design systems teach Claude your brand. How would you like to start?": "设计系统让 Claude 了解你的品牌。你想怎么开始？",
+    "Create here": "在此创建",
+    "Connect to Figma or GitHub, or upload slides and assets.": "连接 Figma 或 GitHub，或上传幻灯片和素材。",
+    "Create using Claude Code": "用 Claude Code 创建",
+    "BEST FIDELITY": "最高保真",
+    "Best fidelity if you have React components.": "如果你有 React 组件，保真度最高。",
+    "Continue to generation": "继续生成",
+    "Set up your design system": "设置你的设计系统",
+    "Tell us about your company and attach any design resources you have.": "介绍一下你的公司，并附上你拥有的任何设计资源。",
+    "Company name and blurb (or name of design system)": "公司名称和简介（或设计系统的名称）",
+    // ↑整串命不中：Company name / blurb 是独立加粗节点，拆片段补（covers 2-node 与 4-node 两种切法）
+    "Company name": "公司名称",
+    "blurb": "简介",
+    "and blurb (or name of design system)": "和简介（或设计系统的名称）",
+    "(or name of design system)": "（或设计系统的名称）",
+    "Provide examples of your design system and products": "提供你的设计系统和产品示例",
+    "(all optional)": "（全部可选）",
+    "What works best: code and designs for your design system and your code products.": "效果最好的是：用于你设计系统的代码和设计，以及你的代码产品。",
+    "Link code from GitHub": "从 GitHub 链接代码",
+    "Link code from your computer": "从你的电脑链接代码",
+    "This doesn't upload the whole codebase; Claude will copy selected files. For large codebases, we recommend attaching a frontend-focused subfolder.": "这不会上传整个代码库；Claude 只会复制选中的文件。对于大型代码库，建议附加一个偏前端的子文件夹。",
+    "This doesn’t upload the whole codebase; Claude will copy selected files. For large codebases, we recommend attaching a frontend-focused subfolder.": "这不会上传整个代码库；Claude 只会复制选中的文件。对于大型代码库，建议附加一个偏前端的子文件夹。",
+    "Upload a .fig file": "上传 .fig 文件",
+    "Parsed locally in your browser — never uploaded.": "在你的浏览器本地解析 —— 绝不上传。",
+    "Learn how to get a .fig file": "了解如何获取 .fig 文件",
+    "Add fonts, logos and assets": "添加字体、Logo 和素材",
+    "Any other notes?": "还有其他备注吗？",
+    // 拖拽上传区 (browse 是独立链接节点；"...here or" 是 lead 片段)
+    "browse": "浏览",
+    "Drag a folder here or": "拖拽文件夹到这里，或",
+    "Drop .fig here or": "拖放 .fig 文件到这里，或",
+    "Drag files here or": "拖拽文件到这里，或",
+    // 设计系统列表 / 详情
+    "Teach Claude your brand and product": "让 Claude 了解你的品牌和产品",
+    "Design system": "设计系统",
+    "Set as default": "设为默认",
+    "Org default": "组织默认",
+    "Remove Design System": "移除设计系统",
+    "Published": "已发布",
+    "Only you can view these settings.": "只有你能查看这些设置。",
+    // 示例提示词卡片 (prompt 正文为功能性英文, 仅翻标题/按钮)
+    "Calculator construction kit": "计算器构建套件",
+    // 示例 prompt "计算器" 正文被下划线链接拆 3 段: "Create a " | "标题"(含直引号的链接) | "— 后段" (外层弯引号是 CSS ::before/::after, 不在节点内)
+    "Create a": "创建一个",
+    "\"Calculator construction kit\"": "「计算器构建套件」",
+    "— a simple calculator UI with a LOT of tweaks (do not use the normal tweaks system; keep these tweaks onscreen at all times). Use a two-column layout. Provide a ton of visual + layout options.": "—— 一个带大量微调项的简单计算器界面（不要使用常规的微调系统；让这些微调项始终显示在屏幕上）。采用两栏布局。提供大量视觉 + 布局选项。",
+    "Text particle effects": "文字粒子特效",
+    // "文字粒子" 正文单节点 (无链接; 外层 "…" 是 CSS, 内层 "Fire" 等是直引号)
+    "Create a very large editable text box, pre-filled with sample text. For certain words like \"Fire\", \"Smoke\", \"metal\", \"wind\", render visual + particle effects that match the word.": "创建一个超大的可编辑文本框，预填示例文本。对于某些词，例如「Fire」「Smoke」「metal」「wind」，渲染与该词相匹配的视觉 + 粒子特效。",
+    // 示例卡更多 (标题 + 正文均单节点纯英文, 整串 exact)
+    "App onboarding": "应用引导",
+    "Create a simple iOS signup flow for a bikesharing app. Show screens on a canvas. Blue + orange modern color scheme.": "为一个共享单车应用创建一个简单的 iOS 注册流程。在画布上展示各个界面。蓝色 + 橙色的现代配色方案。",
+    "Shader wallpapers": "着色器壁纸",
+    "Imagine you're creating a wallpaper for a futuristic operating system. We want it to feel interactive and fun to fidget with. Create five different interactive shader wallpapers that react to mouse position, and maybe clicks.": "想象你在为一个未来感的操作系统制作壁纸。我们希望它有交互感、把玩起来很有趣。创建五个不同的交互式着色器壁纸，它们会响应鼠标位置，也许还能响应点击。",
+    "Imagine you’re creating a wallpaper for a futuristic operating system. We want it to feel interactive and fun to fidget with. Create five different interactive shader wallpapers that react to mouse position, and maybe clicks.": "想象你在为一个未来感的操作系统制作壁纸。我们希望它有交互感、把玩起来很有趣。创建五个不同的交互式着色器壁纸，它们会响应鼠标位置，也许还能响应点击。",
+    "Globe loader": "地球加载动画",
+    "Prototype a loading indicator that shows the globe spinning with real country outlines, full monochrome, no text, 200×200 centered on off-white background. Add a whirl effect around it.": "做一个加载指示器原型：展示地球旋转，带真实的国家轮廓，全单色、无文字，200×200，居中于米白色背景。在其周围加一个旋转效果。",
+    "Cosmic scale animation": "宇宙尺度动画",
+    "Create a sprite-based animation that gives fun facts about the distance and sizes of celestial bodies. Mix abstract animations using circles of various sizes as celestial bodies with text-based animation. Use a monochrome, helvetica palette.": "创建一个基于精灵图的动画，讲述天体之间的距离和大小的趣味知识。用不同大小的圆作为天体，把抽象动画与基于文字的动画混合起来。采用单色、helvetica 风格的配色。",
+    "Organic loaders": "有机加载动画",
+    "Prototype 20 simple, tasteful indeterminate loading indicators that fit in a 200×200 space, on a wrapping grid. All black and white, no text. All should have an organic, blobby feeling.": "做 20 个简洁、有格调的不确定型加载指示器原型，放进 200×200 的空间，排成自动换行的网格。全部黑白、无文字。都要有一种有机、圆润流动的感觉。",
+    "Iridescent card": "虹彩卡片",
+    "Create a monochromatic playing card. Display it on the page with a rich perspective hover effect and glow. The bright areas should be iridescent; there should be a subtle noise texture and specular glow that reacts to the mouse position. Add tweaks for as many aspects of this effect as you can.": "创建一张单色扑克牌。在页面上展示它，配丰富的透视悬停效果和辉光。明亮区域应呈现虹彩；应有细微的噪点纹理，以及随鼠标位置变化的高光辉光。尽可能多地为这个效果的各个方面加上微调项。",
+    "Text streaming": "文字流式输出",
+    "On a responsive grid, animate 10 different text-streaming animations for a chat app; sample each one in a 300×300 cell; show a user question and stream a response below. Loop it. Monochrome.": "在一个响应式网格上，为聊天应用制作 10 种不同的文字流式输出动画；每种在一个 300×300 的单元格里展示；上方显示用户提问，下方流式输出回复。循环播放。单色。",
+    "Use this prompt": "使用此提示词",
+    // === Claude Design - Designs 列表 / Slides 构建 / .fig 弹窗 ===
+    "Design System": "设计系统",
+    "Last viewed": "最后查看",
+    "Owner": "所有者",
+    "Add to favorites": "添加到收藏",
+    "Drafts": "草稿",
+    "Draft": "草稿",
+    // Claude Design 输入区 - 上下文来源选择 (Start→开始 词条会拆 "开始 with context", 整串 exact 优先)
+    "Start with context": "从上下文开始",
+    "Designs grounded in real context turn out better.": "基于真实上下文的设计效果更好。",
+    "Screenshot": "截图",
+    "Codebase": "代码库",
+    // Claude Design 各模式上下文选择页 (标题 "What ...?" 是加粗拆节点, 待定; 其余整句/chip 可补)
+    "This design system is empty — finish setting it up to add tokens, components, and brand assets.": "这个设计系统还是空的 —— 完成设置以添加 token、组件和品牌素材。",
+    "Lo-fi moves fast — a screenshot or rough notes is plenty.": "低保真推进快 —— 一张截图或粗略笔记就够了。",
+    "Add a screenshot": "添加截图",
+    // 各模式标题 "What ...?" 是单节点 (DevTools 确认 <div>整串</div>, 视觉加粗是字重差非拆分), 整串 exact 即可
+    "What are we wireframing?": "我们要画什么线框？",
+    "What's the doc about?": "这个文档讲什么？",
+    "What’s the doc about?": "这个文档讲什么？",
+    "What's the story?": "讲个什么故事？",
+    "What’s the story?": "讲个什么故事？",
+    "Talking it out works great — ramble, and the doc takes shape.": "把想法说出来效果很好 —— 随便讲，文档就会成形。",
+    "Upload a PDF or notes": "上传 PDF 或笔记",
+    "A storyboard, a script, or image assets set the direction.": "一份故事板、一个脚本或图片素材就能定下方向。",
+    "Drop a storyboard or images": "拖入故事板或图片",
+    "Paste a script": "粘贴脚本",
+    // 输入区 chips
+    "Hi-fi design": "高保真设计",
+    "Interactive prototype": "交互式原型",
+    "Wireframe": "线框图",
+    "Make a doc": "制作文档",
+    "Animated video": "动画视频",
+    // Slides/Deck 构建器
+    "Untitled": "未命名",
+    "No file open": "没有打开的文件",
+    // === Claude Design 编辑器/画布 + 分享弹窗 ===
+    "Canvas": "画布",
+    "Mark up": "标注",
+    "Comments": "评论",
+    "Present": "演示",
+    "In this tab": "在当前标签页",
+    "Fullscreen": "全屏",
+    "New tab": "新标签页",
+    "Zoom level": "缩放级别",
+    "Discard": "放弃",
+    "Simple": "简单",
+    "No elements yet": "暂无元素",
+    // ↑ 被 <br> 拆两段 (DevTools 确认), 拆片段
+    "Add something with the tools above (R · F · O · T),": "用上方工具添加内容（R · F · O · T），",
+    "paste, or drop an image onto the canvas.": "或粘贴、拖入图片到画布。",
+    // 分享弹窗
+    "Nothing to export yet": "暂无可导出内容",
+    // 发送至 tab
+    "Your destinations": "你的发送目标",
+    "Hand off the project to your terminal": "把项目交给你的终端",
+    "Add a destination": "添加发送目标",
+    // 导出 tab
+    "Format": "格式",
+    "Print-ready, one page per screen.": "适合打印，每屏一页。",
+    "Editable slides for PowerPoint & Keynote.": "适用于 PowerPoint 和 Keynote 的可编辑幻灯片。",
+    "Project archive": "项目存档",
+    "Every file in this project, zipped.": "本项目的所有文件，打包成 zip。",
+    "Standalone HTML": "独立 HTML",
+    "One self-contained file that works offline.": "一个可离线工作的自包含文件。",
+    "PowerPoint options": "PowerPoint 选项",
+    "Recommended": "推荐",
+    "Editable · custom fonts": "可编辑 · 自定义字体",
+    "For computers with brand fonts installed. Best fidelity with full editability.": "适用于装有品牌字体的电脑。保真度最高且完全可编辑。",
+    "Editable · universal fonts": "可编辑 · 通用字体",
+    "Substitutes web-safe fonts everyone has. Best for sharing broadly.": "替换为人人都有的 web 安全字体。最适合广泛分享。",
+    "Editable · Google Slides fonts": "可编辑 · Google Slides 字体",
+    "Uses Google Fonts for full compatibility when uploading to Google Slides.": "上传到 Google Slides 时使用 Google Fonts 以获得完全兼容。",
+    "Screenshot-based PPTX": "基于截图的 PPTX",
+    "Pixel-perfect slides as images. Not editable, but exactly what you see.": "以图片形式呈现的像素级精确幻灯片。不可编辑，但所见即所得。",
+    // === Claude Design 文件面板 + 评论 ===
+    "All files": "所有文件",
+    "New sketch": "新建草图",
+    "Paste": "粘贴",
+    "HTML page": "HTML 页面",
+    "SCRIPTS": "脚本",
+    "Script": "脚本",
+    "Select a file to preview": "选择一个文件以预览",
+    "Drop files here": "拖放文件到这里",
+    "Images, docs, references, Figma links, or folders — Claude will use them as context.": "图片、文档、参考资料、Figma 链接或文件夹 —— Claude 会把它们用作上下文。",
+    "Delete file?": "删除文件？",
+    "Click and tell Claude what to change · drag to draw": "点击并告诉 Claude 要改什么 · 拖动以绘制",
+    "No comments yet. Leave feedback for your teammates below.": "还没有评论。在下方给你的队友留下反馈。",
+    "Add a comment...": "添加评论...",
+    "Add a comment…": "添加评论…",
+    // Claude Design 空状态 + 对话多选栏
+    "Creations will appear here": "作品会显示在这里",
+    "Start with a sketch": "从草图开始",
+    "Select all": "全选",
+    // 模型选择器 / 添加上下文菜单 / 附加代码库弹窗
+    "Currently disabled": "当前已禁用",
+    "Reference another project": "引用另一个项目",
+    "Link local code...": "链接本地代码...",
+    "Link local code…": "链接本地代码…",
+    "Upload .fig file": "上传 .fig 文件",
+    "Learn how": "了解方法",
+    "Manage connectors": "管理连接器",
+    "Attach codebase": "附加代码库",
+    "Drop your codebase here": "把你的代码库拖到这里",
+    "For large codebases, drop the frontend or design system folder": "对于大型代码库，拖入前端或设计系统文件夹",
+    "or browse...": "或浏览...",
+    "or browse…": "或浏览…",
+    "Attach": "附加",
+    "Attaching...": "附加中...",
+    "Attaching…": "附加中…",
+    "To bring another project into this chat, paste its URL directly into the composer. Claude will pick it up and can read its files.": "要把另一个项目带入此对话，直接把它的 URL 粘贴到输入框。Claude 会识别并能读取它的文件。",
+    "Got it": "知道了",
+    "Share link": "分享链接",
+    "Send to...": "发送至…",
+    "Send to…": "发送至…",
+    "Who can access": "谁可以访问",
+    "Your workspace": "你的工作区",
+    "Only you can see this design.": "只有你能看到这个设计。",
+    "Pages": "页面",
+    "New blank page": "新建空白页",
+    "All project files": "所有项目文件",
+    "What's the presentation about?": "这个演示文稿是关于什么的？",
+    "What’s the presentation about?": "这个演示文稿是关于什么的？",
+    "Upload a doc, share your notes, or an existing presentation to start from.": "上传文档、分享你的笔记，或提供一个现有演示文稿作为起点。",
+    "Upload a doc": "上传文档",
+    "Paste your notes": "粘贴你的笔记",
+    "Existing deck": "现有演示文稿",
+    "Deck options": "演示文稿选项",
+    "Optimize for Google Slides": "针对 Google 幻灯片优化",
+    "Only use Google Fonts": "仅使用 Google Fonts",
+    "Add speaker notes": "添加演讲者备注",
+    "Include talking points with each slide": "为每张幻灯片附上要点",
+    "Describe what you want to create...": "描述你想创建的内容...",
+    "Describe what you want to create…": "描述你想创建的内容…",
+    "Make a deck": "制作演示文稿",
+    // .fig 下载帮助弹窗 (step 2 含加粗 File/Save 独立节点, 整串 + 片段双保险)
+    "How to download a .fig file": "如何下载 .fig 文件",
+    "From the Figma web or desktop app:": "在 Figma 网页版或桌面应用中：",
+    "Open the file in Figma.": "在 Figma 中打开文件。",
+    "Go to File → Save local copy... (web: main menu → File).": "前往 文件 → 保存本地副本…（网页版：主菜单 → 文件）。",
+    "Save local copy...": "保存本地副本…",
+    "(web: main menu →": "（网页版：主菜单 →",
+    "Figma downloads a .fig file. Drop it onto the chat input.": "Figma 会下载一个 .fig 文件。把它拖到聊天输入框即可。",
+    "The file is parsed locally in your browser and never uploaded.": "该文件在你的浏览器本地解析，绝不上传。",
+    // 占位示例文本
+    "e.g. Mission Impastabowl: fast-casual pasta restaurant with in-store touchscreen kiosk, mobile app and website": "例如：Mission Impastabowl——一家快休闲意面餐厅，配店内触屏自助机、手机 App 和网站",
+    "e.g. We use a warm, earthy color palette with rounded corners. Our brand voice is playful but professional...": "例如：我们使用温暖的大地色调和圆角。品牌调性活泼但不失专业……",
+    "Search designs": "搜索设计",
+    "Make something new": "创建新作品",
+    "Design system:": "设计系统：",
+    "Start with a file": "从文件开始",
+    "Turn it into a design": "把它变成设计",
+    "Slides": "幻灯片",
+    "Presentations & pitch decks": "演示文稿与路演稿",
+    "Product prototype": "产品原型",
+    "Interactive app mockups": "交互式应用原型图",
+    "Product wireframe": "产品线框图",
+    "Lo-fi screens & flows": "低保真界面与流程",
+    "Document": "文档",
+    "Resumes, PDFs, etc": "简历、PDF 等",
+    "Resumes, PDFs, etc.": "简历、PDF 等",
+    "Animation": "动画",
+    "Motion graphics": "动态图形",
+    "Motion graphics & loops": "动态图形与循环",
+    "Blank canvas": "空白画布",
+    "Set up your design system so anyone can create consistent designs and assets.": "设置你的设计系统，让任何人都能创建一致的设计和素材。",
+    "Set up design system": "设置设计系统",
+    "Designs": "设计作品",
+    "Nothing here yet.": "这里还什么都没有。",
     "You haven't used Claude Design yet": "你还没用过 Claude Design",
+    // === Claude Design 推广卡 (bold 标签是独立节点保留英文, rest 片段翻译) ===
+    "Build something you can click, share, or present:": "构建可点击、可分享或可演示的成品：",
+    "you can click": "可点击",
+    "from a sketch": "来自草图",
+    "from your documents": "来自你的文档",
+    "from a script": "来自脚本",
+    "you can describe": "可描述",
+    "Skip intro": "跳过介绍",
     "Extra usage": "额外用量",
     "Turn on extra usage to keep using Claude if you hit a limit.": "开启额外用量，达到上限后仍可继续使用 Claude。",
     "Additional features": "附加功能",
@@ -1525,6 +2072,8 @@
 
     // 设置 - 工具
     "Tool access": "工具访问",
+    "Tool access set to load when needed": "工具访问已设为按需加载",
+    "Tool access set to already loaded": "工具访问已设为预先加载",
     "Tool access mode": "工具访问模式",
     "Controls how connector tools are loaded in new conversations.": "控制新对话中连接器工具如何加载。",
     "Load tools when needed": "需要时加载",
@@ -1535,9 +2084,13 @@
     // 设置 - 视觉
     "Visuals": "视觉",
     "AI-powered artifacts": "AI 驱动的 Artifacts",
+    "AI-powered artifacts enabled": "已启用 AI 驱动的 Artifacts",
+    "AI-powered artifacts disabled": "已禁用 AI 驱动的 Artifacts",
     "Generate code, documents, and designs in a dedicated window alongside your conversation.": "在对话旁边的专用窗口里生成代码、文档和设计。",
     "Build apps and interactive documents that use Claude inside the artifact.": "构建在 artifact 中使用 Claude 的应用和交互式文档。",
     "Inline visualizations": "内联可视化",
+    "Inline visualizations enabled": "已启用内联可视化",
+    "Inline visualizations disabled": "已禁用内联可视化",
     "Allow Claude to generate interactive visualizations, charts, and diagrams directly in the conversation.": "允许 Claude 在对话中直接生成交互式可视化、图表和图示。",
     "Code execution and file creation": "代码执行和文件创建",
     "Cloud code execution and file creation": "云端代码执行和文件创建",
@@ -1638,11 +2191,24 @@
     "Claude in Chrome settings": "Chrome 中的 Claude 设置",
     "Loading extensions...": "加载扩展中……",
     "Allow Claude to directly interact with apps, data, and tools on your computer.": "允许 Claude 直接与你电脑上的应用、数据和工具交互。",
+    "Site permissions": "网站权限",
+    "Failed to install unpacked extension": "安装未打包的扩展失败",
     "Default for all sites": "对所有网站的默认设置",
     "Choose whether Claude in Chrome works on all sites by default": "选择 Chrome 中的 Claude 是否默认对所有网站生效",
     "Select default policy": "选择默认策略",
     "Allow extension": "允许扩展",
     "Block extension": "屏蔽扩展",
+    // 浏览器扩展 - 网站权限列表
+    "Browser extension settings updated.": "浏览器扩展设置已更新。",
+    "Claude in Chrome works everywhere except sites you block below": "Claude in Chrome 在所有网站生效，但你在下方屏蔽的网站除外",
+    "Claude in Chrome only works on sites you allow below": "Claude in Chrome 仅在你下方允许的网站生效",
+    "Blocked sites": "已屏蔽的网站",
+    "Allowed sites": "已允许的网站",
+    "Claude in Chrome cannot be used on these sites": "Claude in Chrome 无法在这些网站上使用",
+    "Claude in Chrome can be used on these websites.": "Claude in Chrome 可在这些网站上使用。",
+    "Add site": "添加网站",
+    "Domain": "域名",
+    "No sites added yet.": "尚未添加任何网站。",
 
     // 设置 - 高级
     "Advanced settings": "高级设置",
@@ -1927,6 +2493,9 @@
 
     // 对话列表
     "Mark as unread": "标为未读",
+    // 右键菜单：Mark as read 缺条目 → read 被 partial 翻成 "读取了"；Copy link 同理留 "link"
+    "Mark as read": "标为已读",
+    "Copy link": "复制链接",
     "Last activity": "最后活动",
     "Group by": "分组方式",
     "All projects": "所有项目",
@@ -1996,6 +2565,7 @@
     "Need more usage?": "需要更多用量？",
     "Need more usage": "需要更多用量",
     "more usage": "更多用量",
+    "Starts when a message is sent": "发送消息后开始",
     "You've reached your plan's limit. To keep working before it resets:": "你已达到套餐上限。在重置前要继续使用：",
     "You’ve reached your plan’s limit. To keep working before it resets:": "你已达到套餐上限。在重置前要继续使用：",
     "You've reached your plan's limit": "你已达到套餐上限",
@@ -2075,6 +2645,8 @@
     "with email": "用邮箱登录",
     "with Apple": "用 Apple 登录",
     "Enter your email": "输入你的邮箱",
+    "Last used": "上次使用",
+    "Sign out": "退出登录",
     "OR": "或",
     "By continuing, you acknowledge Anthropic's privacy policy and agree to get occasional promotional emails and notifications.": "继续即表示你同意 Anthropic 的隐私政策，并接收偶发的推广邮件与通知。",
     "By continuing, you acknowledge Anthropic’s privacy policy and agree to get occasional promotional emails and notifications.": "继续即表示你同意 Anthropic 的隐私政策，并接收偶发的推广邮件与通知。",
@@ -3548,6 +4120,30 @@
     "No model training on your content by default": "默认不使用你的内容训练模型",
     "Work email address required.": "需要工作邮箱地址。",
     "Work email address required": "需要工作邮箱地址",
+    // === 企业版/团队版 onboarding ===
+    // Enterprise→企业版 / Team→团队版 / More→更多 / None→无 词条会 partial 拆词, 整短语 exact 优先
+    "Set up your Enterprise plan": "设置你的企业版套餐",
+    "Set up your Team plan": "设置你的团队版套餐",
+    "Work email": "工作邮箱",
+    "Enter your work email to get started. We'll send you a sign-in link.": "输入你的工作邮箱即可开始。我们会给你发送一个登录链接。",
+    "Enter your work email to get started. We’ll send you a sign-in link.": "输入你的工作邮箱即可开始。我们会给你发送一个登录链接。",
+    "Enterprise plans require a work email. Try your company address.": "企业版套餐需要工作邮箱。请改用你的公司邮箱地址。",
+    "Team plans require a work email. Try your company address.": "团队版套餐需要工作邮箱。请改用你的公司邮箱地址。",
+    // 团队需求勾选页
+    "Does your team need any of these?": "你的团队需要以下任何一项吗？",
+    "If yes, you'll need to contact our sales team to get started.": "如果需要，你得联系我们的销售团队才能开始。",
+    "If yes, you’ll need to contact our sales team to get started.": "如果需要，你得联系我们的销售团队才能开始。",
+    "More than 500 seats": "超过 500 个席位",
+    "HIPAA-ready offering": "支持 HIPAA 的方案",
+    "Tailored contract (usage commitments, product bundling)": "定制合同（用量承诺、产品打包）",
+    "None of the above": "以上都不需要",
+    // 邮箱验证链接已发送页 (email 是加粗独立节点 → lead + trailing 片段; Enterprise/Team 两版 trailing)
+    "We sent a link to": "我们已向",
+    ". Close this tab and click the link in your email to continue setting up your Enterprise plan.": " 发送了链接。关闭此标签页并点击邮件中的链接，以继续设置你的企业版套餐。",
+    ". Close this tab and click the link in your email to continue setting up your Team plan.": " 发送了链接。关闭此标签页并点击邮件中的链接，以继续设置你的团队版套餐。",
+    ". Close this tab and click the link in your email to continue setting up your team.": " 发送了链接。关闭此标签页并点击邮件中的链接，以继续设置你的团队。",
+    "Not seeing the email?": "没看到邮件？",
+    "Try sending again": "重新发送",
     "Seat price + usage at API rates": "席位价格 + 按 API 费率计费用量",
     "API rates": "API 费率",
     "USD 20/seat. Usage cost scales with model and task.": "USD 20/席位。使用成本随模型和任务而变。",
@@ -3776,7 +4372,6 @@
     "Last activity": "最后活动",
     "Alphabetical": "按字母顺序",
     "Most recent": "按最近",
-    "Recent": "按最近",
     "Date": "日期",
     "Project": "项目",
     "None": "无",
@@ -3871,6 +4466,45 @@
     ". These are visible to anyone using this environment — don't add secrets or credentials": "。本环境的所有使用者都能看到 — 不要放密钥或凭据",
     ". These are visible to anyone using this environment — don’t add secrets or credentials.": "。本环境的所有使用者都能看到 — 不要放密钥或凭据。",
     ". These are visible to anyone using this environment — don’t add secrets or credentials": "。本环境的所有使用者都能看到 — 不要放密钥或凭据",
+
+    // === 账户封禁 / 审核(hold) 流程 + FAQ ===
+    "account_banned": "账号已封禁",
+    "We got your request": "我们已收到你的请求",
+    "We'll email you after we review your account. Until then, you won't be able to use Claude, but you can come back to this page to check the status.": "我们会在审核你的账户后邮件通知你。在此之前你将无法使用 Claude，但可以随时回到此页面查看状态。",
+    "We’ll email you after we review your account. Until then, you won’t be able to use Claude, but you can come back to this page to check the status.": "我们会在审核你的账户后邮件通知你。在此之前你将无法使用 Claude，但可以随时回到此页面查看状态。",
+    "Request received": "已收到请求",
+    "We'll review your account": "我们将审核你的账户",
+    "We’ll review your account": "我们将审核你的账户",
+    "You're next in line for review": "你是下一个待审核的",
+    "You’re next in line for review": "你是下一个待审核的",
+    "We'll email you the outcome": "我们会把结果邮件通知你",
+    "We’ll email you the outcome": "我们会把结果邮件通知你",
+    "Taking a little longer than expected": "比预期稍久",
+    "Need urgent help?": "需要紧急帮助？",
+    "Contact support": "联系支持",
+    "What you can do": "你可以做什么",
+    "Export your data": "导出你的数据",
+    "We'll package up all your conversations, projects, and settings for download. This might take some time to complete.": "我们会把你所有的对话、项目和设置打包供下载。这可能需要一些时间完成。",
+    "We’ll package up all your conversations, projects, and settings for download. This might take some time to complete.": "我们会把你所有的对话、项目和设置打包供下载。这可能需要一些时间完成。",
+    "Delete your account": "删除你的账户",
+    "Delete your account?": "删除你的账户？",
+    "This permanently removes your account and all data. This can't be undone.": "这将永久删除你的账户和所有数据。此操作无法撤销。",
+    "This permanently removes your account and all data. This can’t be undone.": "这将永久删除你的账户和所有数据。此操作无法撤销。",
+    "You can permanently remove your account and data. This can't be undone.": "你可以永久删除你的账户和数据。此操作无法撤销。",
+    "You can permanently remove your account and data. This can’t be undone.": "你可以永久删除你的账户和数据。此操作无法撤销。",
+    // FAQ (账户被暂停)
+    "Frequently asked questions": "常见问题",
+    "Why was my account put on hold?": "为什么我的账户被暂停？",
+    "We put your account on hold because of unusual activity. We can't share the specifics—that would help bad actors get around the same checks—but the review is your chance to share context so a team member can review.": "我们因检测到异常活动而暂停了你的账户。我们无法透露具体细节——那会帮助恶意行为者绕过同样的检查——但这次审核正是你说明情况、让团队成员复核的机会。",
+    "We put your account on hold because of unusual activity. We can’t share the specifics—that would help bad actors get around the same checks—but the review is your chance to share context so a team member can review.": "我们因检测到异常活动而暂停了你的账户。我们无法透露具体细节——那会帮助恶意行为者绕过同样的检查——但这次审核正是你说明情况、让团队成员复核的机会。",
+    "What can I still do with my account?": "我的账户还能做什么？",
+    "You can't use Claude right now, but your chats, projects, and data are safe and waiting for you.": "你现在无法使用 Claude，但你的对话、项目和数据都安全保存着，等你回来。",
+    "You can’t use Claude right now, but your chats, projects, and data are safe and waiting for you.": "你现在无法使用 Claude，但你的对话、项目和数据都安全保存着，等你回来。",
+    "How long will the review take?": "审核需要多久？",
+    "Will my billing be affected?": "我的账单会受影响吗？",
+    "When your account was put on hold, we cancelled your subscription and refunded your most recent payment in full.": "在你的账户被暂停时，我们已取消你的订阅并全额退还了你最近一次付款。",
+    "What if I think this is a mistake?": "如果我认为这是误判怎么办？",
+    "Request a review and our team will look over your account. The more specific you are about what you were working on, the better we can match it against the signal that triggered the hold.": "申请审核，我们的团队会复核你的账户。你对自己所做工作的描述越具体，我们就越能将其与触发暂停的信号比对。",
   };
 
   // 把字典 keys 按长度倒序排——长的先匹配，避免 "Run" 覆盖 "Run code"
@@ -3879,7 +4513,11 @@
   // 性能优化 1: 把 sortedKeys 中适合做 partial match 的合并成一个大 alternation 正则,
   // 一次 replace 替代几百次循环。RegExp alternation 默认按"先到先匹配", 而 sortedKeys
   // 已按长度倒序排列，长串排前——满足"长优先"语义。
-  const partialKeys = sortedKeys.filter(k => k.length >= 3 && k.length <= 30 && !/[{}]/.test(k));
+  // 这些词作整词 exact 仍翻, 但不进 partialRegex——避免在代码/路径/命令里词内替换
+  // (如 "/design-sync"→"/设计-sync"、"path/to/your-design-system"→"路径/to/your-设计-system")。
+  // styled-components 的 sc-xxx class 是哈希、每次构建会变, 故不用 class skip, 改用词级排除 (构建无关)。
+  const PARTIAL_EXCLUDE = new Set(["design", "Design", "path", "Path", "system", "System"]);
+  const partialKeys = sortedKeys.filter(k => k.length >= 3 && k.length <= 30 && !/[{}]/.test(k) && !PARTIAL_EXCLUDE.has(k));
   const partialPattern = partialKeys
     .map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
     .join("|");
@@ -4021,6 +4659,12 @@
           )) {
         return true;
       }
+      // Claude Design 产品入口 "Design" 保持英文 (与职业 "Design"→设计 解耦;
+      // 职业那个在 onboarding 网格, 不在 data-row-main-button 行按钮内, 故零误伤)。
+      if (selfText === "Design" && el.hasAttribute
+          && el.hasAttribute("data-row-main-button")) {
+        return true;
+      }
       // 会话标题 / 项目名: 面包屑里可点击改名的 button (class 含 cursor-text) 属于用户内容,
       // 整段跳过, 避免 "Project review" 被 Project→项目 partial 误翻成 "项目 review"。
       if (el.tagName === "BUTTON" && cls.indexOf("cursor-text") !== -1) {
@@ -4089,6 +4733,14 @@
 
     const orig = node.textContent;
     if (!orig || orig.length < 2) return;
+
+    // 文件名/路径/命令整体不翻 (无空格 + 带扩展名或 / 或 ~ 开头)，避免词内替换污染
+    // 如 "style.css"→"风格.css"、"/design-sync"、"main.py"; 字典里有显式条目的仍翻。
+    const _fp = orig.trim();
+    if (_fp && !translations[_fp] && !/\s/.test(_fp) && /^[\w./~@\-]+$/.test(_fp) &&
+        (/\.\w{1,8}$/.test(_fp) || _fp.indexOf("/") !== -1 || _fp.charCodeAt(0) === 126)) {
+      return;
+    }
 
     // 性能优化 4：文本级缓存
     if (textCache.has(orig)) {
@@ -4192,6 +4844,19 @@
       .is-empty.is-editor-empty[data-placeholder="Check my Google Calendar for today’s meetings and summarize my unread emails. Highlight anything urgent."]::before {
         content: "查看我今天的 Google Calendar 会议，总结未读邮件。指出紧急事项。" !important;
       }
+      /* Claude Design composer 的 <p> 只有 is-empty (无 is-editor-empty)，选择器放宽到单 class */
+      .is-empty[data-placeholder="Describe what you want to create..."]::before {
+        content: "描述你想创建的内容..." !important;
+      }
+      .is-empty[data-placeholder="Describe what you want to create…"]::before {
+        content: "描述你想创建的内容…" !important;
+      }
+      .is-empty[data-placeholder="Describe a tweak…"]::before {
+        content: "描述一个微调…" !important;
+      }
+      .is-empty[data-placeholder="Describe a tweak..."]::before {
+        content: "描述一个微调..." !important;
+      }
     `;
     (document.head || document.documentElement).appendChild(style);
   }
@@ -4206,12 +4871,45 @@
     [/^\s*(.+?)\s+is currently unavailable\.?\s*$/i, "$1 当前不可用。"],
     // 取消套餐对话框正文 (含日期变量)
     [/^\s*Cancel to stop recurring billing\.\s+You can still use Claude Max until\s+(.+?)\.?\s*$/i, "取消以停止周期性扣费。在 $1 之前你仍可使用 Claude Max。"],
+    // 套餐价格 "USD 20.00/month + tax" / "USD 200.00/year + tax"
+    [/^\s*USD\s+([\d.]+)\/month\s*\+\s*tax\s*$/i, "USD $1/月 + 税"],
+    [/^\s*USD\s+([\d.]+)\/year\s*\+\s*tax\s*$/i, "USD $1/年 + 税"],
+    // 降级横幅: 整串一节点时走这条; 套餐名是富组件拆节点时, lead 走 exact + trailing 走下一条
+    [/^\s*Your plan will be downgraded to\s+(.+?)\s+on your next billing cycle\s*\((.+?)\)\.\s*$/i, "你的套餐将于下个账单周期（$2）降级为 $1。"],
+    [/^\s*on your next billing cycle\s*\((.+?)\)\.\s*$/i, "（将于下个账单周期 $1 生效）。"],
+    // 降级说明 (套餐名变量, you'll/won't 直弯撇号兼容)
+    [/^\s*Switching to\s+(.+?)\s+means you['’]ll have less usage, lose early access to new features, and won['’]t get priority at busy times\.\s*$/i, "切换到 $1 意味着你的用量会减少、失去新功能的抢先体验，且在繁忙时段不再享有优先级。"],
+    [/^\s*Switching to\s+(.+?)\s+means you['’]ll have less usage and may hit your limits faster\.\s*$/i, "切换到 $1 意味着你的用量会减少，并可能更快触及上限。"],
     // 预览链接拦截 toast (含 URL 变量)
     [/^\s*Link to\s+(.+?)\s+was blocked\.\s+Preview only supports localhost URLs\.\s*$/i, "已拦截指向 $1 的链接。预览仅支持 localhost URL。"],
     // 预览链接被拦截提示 (含域名变量)
     [/^\s*Link to\s+(.+?)\s+was blocked\.\s+Preview only supports localhost URLs\.\s*$/i, "已拦截指向 $1 的链接。预览仅支持 localhost 网址。"],
     // 状态行: "N running task(s)"
     [/^\s*(\d+)\s+running tasks?\s*$/i, "$1 个任务运行中"],
+    // 画布 "2 pages"
+    [/^\s*(\d+)\s+pages?\s*$/i, "$1 页"],
+    // 文件 tooltip "support.js · Modified just now"
+    [/^\s*(.+?)\s+·\s+Modified just now\s*$/i, "$1 · 刚刚修改"],
+    // 文件元数据 "X · Modified <time>" (tooltip) / "Modified <time> · <size> · <type>" (详情面板)
+    // 时间部分由上方 "X minutes ago" /g pattern 翻, 这里只处理 "Modified" 前缀, 顺序无关
+    [/^\s*(.+?)\s+·\s+Modified\s+(.+?)\s*$/i, "$1 · $2修改"],
+    [/^\s*Modified\s+(.+?)\s+·\s+(.+)$/i, "$1修改 · $2"],
+    // 对话 "0 turns" (须有数字前缀, 不误伤动词 turns; just now 由词条接力)
+    [/\b(\d+)\s+turns?\b/gi, "$1 轮"],
+    // "Download <设计名> (standalone HTML)" (设计名为变量保留)
+    [/^\s*Download\s+(.+?)\s+\(standalone HTML\)\s*$/i, "下载 $1（独立 HTML）"],
+    // 文件操作状态行 (文件名为变量; 限定以 .ext 结尾, 避免误伤 Reading/Editing 短语)
+    [/^\s*Reading\s+(.+\.\w+)\s*$/i, "正在读取 $1"],
+    [/^\s*Editing\s+(.+\.\w+)\s*$/i, "正在编辑 $1"],
+    [/^\s*Generating HTML:\s*(.+)$/i, "正在生成 HTML：$1"],
+    [/^\s*Set project title:\s*(.+)$/i, "设置项目标题：$1"],
+    // 生成设计系统 (分钟数变量)
+    [/^\s*It will take about (\d+) minutes to generate your design system\.\s*$/i, "生成你的设计系统大约需要 $1 分钟。"],
+    [/^\s*Keep this tab open and come back in (\d+) minutes?\s*$/i, "让标签页开着，$1 分钟后回来"],
+    [/^\s*Screenshot\s+(.+\.\w+)\s*$/i, "正在截图 $1"],
+    [/^\s*Finishing up\s+(.+\.\w+)\s*$/i, "即将完成 $1"],
+    // 删除 toast "Deleted 'X'" (文件名变量, 直/弯单引号)
+    [/^\s*Deleted\s+['‘](.+?)['’]\s*$/i, "已删除「$1」"],
     // 安全切换模型提示(含模型名变量)
     [/^\s*Switched to\s+(.+?)\s*$/i, "已切换到 $1"],
     [/^\s*Try again with\s+(.+?)\s*$/i, "用 $1 再试一次"],
@@ -4335,6 +5033,13 @@
       return `${M[mon] || mon}${day}日 ${W[wd] || wd} ${apz}${h}:${min} 重置`;
     }],
     [/Resets\s+(\S+)\s+(\d+):(\d+)\s+([AP]M)/g, "$1 $2:$3 $4 重置"],
+    // "Resets 4:09 AM" 纯时间 (无日期; 4430 需两段 token, 这里兜单段)
+    [/Resets\s+(\d+):(\d+)\s+([AP]M)/g, (m, h, mi, ap) => `${ap.toUpperCase() === "AM" ? "上午" : "下午"}${h}:${mi} 重置`],
+    // "Resets Jun 18" 纯日期 (无时间; 月份白名单避免误吃任意 3 字母词)
+    [/Resets\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d+)/g, (m, mon, day) => {
+      const M = { Jan: "1月", Feb: "2月", Mar: "3月", Apr: "4月", May: "5月", Jun: "6月", Jul: "7月", Aug: "8月", Sep: "9月", Oct: "10月", Nov: "11月", Dec: "12月" };
+      return `${M[mon]}${day}日 重置`;
+    }],
     // first/last/next + 数字
     [/\bfirst\s+(\d+)/gi, "前 $1"],
     [/\blast\s+(\d+)/gi, "后 $1"],
@@ -4395,6 +5100,8 @@
     // Cowork 用量推广 banner (截止日期是变量，捕获后保留原样)
     [/^\s*Do more with a higher session limit, now through\s+(.+?)\.?\s*$/i, "更高的会话上限，做得更多，即日起至 $1。"],
     [/^\s*Do more with double the usage in Cowork, now until\s+(.+?)\s*$/i, "在 Cowork 用双倍用量做更多事，即日起至 $1"],
+    // 用量推广 badge "2× more usage until July 5" (倍数 + 截止日期变量; × 或 x)
+    [/^\s*(\d+)\s*[×x]\s+more usage until\s+(.+?)\s*$/i, "$1× 更多用量，至 $2"],
     // 上传图片限制
     [/Maximum of (\d+) images? allowed\.?/gi, "最多允许 $1 张图片。"],
     // 用量限额
@@ -4437,6 +5144,13 @@
     // === 主页问候语 (Back at it, X) ===
     // "Back at it, X" → "回来继续干吧，X"
     [/^\s*Back at it,\s+(.+?)\s*$/i, "回来继续干吧，$1"],
+    // "Sehier returns!" / "<名字> returns!" 欢迎回来问候
+    [/^\s*(.+?)\s+returns!\s*$/i, "$1 回来了！"],
+    // 用户菜单组织名 "<email>'s Organization" → "<email> 的组织"
+    [/^\s*(.+?)['’]s Organization\s*$/i, "$1 的组织"],
+    // onboarding "Here are 6 quick tips picked for you. Tap or arrow through." (整句 + 拆句两版)
+    [/^\s*Here are (\d+) quick tips picked for you\.\s+Tap or arrow through\.\s*$/i, "为你挑选了 $1 条快速提示。点击或用方向键浏览。"],
+    [/^\s*Here are (\d+) quick tips picked for you\.\s*$/i, "为你挑选了 $1 条快速提示。"],
 
     // === Set 项目指令 弹窗描述 (AAA 是项目名变量) ===
     [/^\s*Provide Claude with relevant instructions and information for chats within (.+?)\.\s*$/i, "为 $1 中的对话提供相关指令和信息。"],
@@ -4488,6 +5202,24 @@
     [/^Write SQL, explore datasets, and generate insights faster\.\s*Build visualizations and dashboards, and turn raw\s*(.*)$/i, "更快地写 SQL、探索数据集、生成洞察。构建可视化和仪表盘，把原始 $1"],
     [/^Triage tickets, draft responses, escalate issues, and build your knowledge base\.\s*Research customer context\s*(.*)$/i, "分诊工单、起草回复、升级问题、构建知识库。调研客户上下文 $1"],
     [/^Social media automation CLI for scheduling posts, managing integrations, uploading media, and tracking\s*(.*)$/i, "社交媒体自动化 CLI，用于排期发帖、管理集成、上传媒体、追踪 $1"],
+
+    // === 定时任务 toast / 相对时间 (任务名 + 时间为变量) ===
+    // "test" created.  →  已创建「test」。
+    [/^\s*[“"'](.+?)["”']\s+created\.?\s*$/i, "已创建「$1」。"],
+    // Scheduled task "Test" started.  →  定时任务「Test」已启动。
+    [/^\s*Scheduled task\s+[“"'](.+?)["”']\s+started\.?\s*$/i, "定时任务「$1」已启动。"],
+    // History 时间戳 "today at 23:18" / "yesterday at 09:05"
+    [/^\s*today at\s+(.+?)\s*$/i, "今天 $1"],
+    [/^\s*yesterday at\s+(.+?)\s*$/i, "昨天 $1"],
+    // 账户审核状态 (日期/天数变量, 撇号直弯兼容)
+    [/^\s*Submitted on\s+(.+?)\s*$/i, "提交于 $1"],
+    [/^\s*Reviews take about\s+(\d+)\s+days?\.\s+We['’]ll email you when there['’]s a decision, and you can come back to this page anytime to check your status\.\s*$/i, "审核大约需要 $1 天。有结果时我们会邮件通知你，你也可以随时回到此页面查看状态。"],
+    // Delete "Test"? Any sessions from this task will be archived.
+    [/^\s*Delete\s+[“"'](.+?)["”']\?\s+Any sessions from this task will be archived\.\s*$/i, "确认删除「$1」？此任务的所有会话将被归档。"],
+    // Delete "X"? This cannot be undone. (项目删除, 名字为变量; "Untitled" 默认名走 exact 显示「未命名」)
+    [/^\s*Delete\s+[“"'](.+?)["”']\?\s+This cannot be undone\.\s*$/i, "确认删除「$1」？此操作无法撤销。"],
+    // "Actions for X" 行操作 tooltip
+    [/^\s*Actions for\s+(.+?)\s*$/i, "$1 的操作"],
 
     // === 删除/归档/移除 确认对话框 ===
     // "Are you sure you want to delete AAA?" → "确认删除 AAA?"

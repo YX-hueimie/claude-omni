@@ -242,18 +242,28 @@ def make_append_js():
     if (!electron || !electron.app) return;
     var WEBVIEW_SCRIPT = {webview_js};
 
+    // 注入到该 web-contents 下所有 claude.ai frame（含 iframe，如 Claude Design /desktop-design）。
+    // 页内幂等由脚本里的 window.__CLAUDE_I18N_INSTALLED__ 守卫保证，重复注入安全（直接 return）。
     var injectI18n = function(wc) {{
       if (!wc || wc.isDestroyed()) return;
-      if (wc.__i18nInjected) return;
       try {{
-        var url = wc.getURL();
-        if (!url || url.indexOf('claude.ai') === -1) return;
-        wc.__i18nInjected = true;
-        wc.executeJavaScript(WEBVIEW_SCRIPT, true)
-          .catch(function(e) {{
-            wc.__i18nInjected = false;
-            console.error('[I18N exec err]', e && e.message);
+        var frames = null;
+        try {{
+          if (wc.mainFrame && wc.mainFrame.framesInSubtree) frames = wc.mainFrame.framesInSubtree;
+        }} catch(e) {{}}
+        if (frames && frames.length) {{
+          frames.forEach(function(frame) {{
+            try {{
+              if (!frame || !frame.url || frame.url.indexOf('claude.ai') === -1) return;
+              frame.executeJavaScript(WEBVIEW_SCRIPT, true).catch(function(){{}});
+            }} catch(e) {{}}
           }});
+        }} else {{
+          // 老 Electron 无 WebFrameMain：退回仅顶层 frame
+          var url = wc.getURL();
+          if (!url || url.indexOf('claude.ai') === -1) return;
+          wc.executeJavaScript(WEBVIEW_SCRIPT, true).catch(function(){{}});
+        }}
       }} catch(e) {{
         console.error('[I18N hook err]', e);
       }}
@@ -262,8 +272,9 @@ def make_append_js():
     electron.app.on('web-contents-created', function(event, wc) {{
       wc.on('dom-ready', function() {{ injectI18n(wc); }});
       wc.on('did-finish-load', function() {{ injectI18n(wc); }});
-      wc.on('did-navigate', function() {{ wc.__i18nInjected = false; }});
-      wc.on('did-navigate-in-page', function() {{ wc.__i18nInjected = false; }});
+      wc.on('did-frame-finish-load', function() {{ injectI18n(wc); }});
+      wc.on('did-navigate', function() {{ injectI18n(wc); }});
+      wc.on('did-navigate-in-page', function() {{ injectI18n(wc); }});
     }});
     console.log('[I18N_PATCH] hook installed');
   }} catch(err) {{

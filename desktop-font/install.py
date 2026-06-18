@@ -271,6 +271,15 @@ def find_claude_app():
 
 def make_append_js():
     css_js = json.dumps(CSS)
+    # 子 frame 注入用的 <style> 注入片段（顶层 frame 仍走特权 insertCSS）
+    style_inject = (
+        "(function(){try{var id='__claude_font_patch__';"
+        "var s=document.getElementById(id);"
+        "if(!s){s=document.createElement('style');s.id=id;"
+        "(document.head||document.documentElement).appendChild(s);}"
+        "s.textContent=" + css_js + ";}catch(e){}})()"
+    )
+    style_js = json.dumps(style_inject)
     return f"""
 {PATCH_START}
 ;(function(){{
@@ -278,9 +287,22 @@ def make_append_js():
     var electron = require('electron');
     if (!electron || !electron.app) return;
     var CSS = {css_js};
+    var STYLE_JS = {style_js};
     var injectCSS = function(wc) {{
       if (!wc || wc.isDestroyed()) return;
+      // 顶层 frame: 特权 insertCSS（绕过 CSP）
       try {{ wc.insertCSS(CSS); }} catch(e) {{}}
+      // 子 frame（如 Claude Design /desktop-design iframe）: insertCSS 到不了, 用 executeJavaScript 注 <style>
+      try {{
+        var frames = (wc.mainFrame && wc.mainFrame.framesInSubtree) ? wc.mainFrame.framesInSubtree : null;
+        if (frames) frames.forEach(function(frame) {{
+          try {{
+            if (!frame || frame === wc.mainFrame) return;
+            if (!frame.url || frame.url.indexOf('claude.ai') === -1) return;
+            frame.executeJavaScript(STYLE_JS, true).catch(function(){{}});
+          }} catch(e) {{}}
+        }});
+      }} catch(e) {{}}
     }};
     electron.app.on('web-contents-created', function(event, wc) {{
       wc.on('dom-ready', function() {{ injectCSS(wc); }});
