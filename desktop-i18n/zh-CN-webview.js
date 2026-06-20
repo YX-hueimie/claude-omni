@@ -76,6 +76,21 @@
     // 后台任务空状态
     "Background work appears here": "后台任务会显示在这里",
     "Background work appears here.": "后台任务会显示在这里。",
+    // changelog 2026-06-18 (1.14271.0)
+    // 改进
+    "Changed routines to count against your regular usage limits instead of a separate daily included-run limit, and removed the included-runs indicator.": "将定时任务改为计入你的常规用量上限，而非单独的每日包含运行次数上限，并移除了包含运行次数指示器。",
+    "Updated the model picker to show restricted models as non-selectable with an explanatory badge, and to reflect your organization's allowed default model.": "更新了模型选择器：受限模型显示为不可选并带说明徽标，同时反映你所在组织允许的默认模型。",
+    "Updated the model picker to show restricted models as non-selectable with an explanatory badge, and to reflect your organization’s allowed default model.": "更新了模型选择器：受限模型显示为不可选并带说明徽标，同时反映你所在组织允许的默认模型。",
+    // 修复
+    "Fixed the app prompting you to sign in again every day when your claude.ai session was more than a day old.": "修复了当你的 claude.ai 会话存在超过一天后，应用每天都提示你重新登录的问题。",
+    "Fixed Claude Design links in chat navigating the app in place instead of opening Claude Design.": "修复了聊天中的 Claude Design 链接在原地跳转应用、而非打开 Claude Design 的问题。",
+    "Fixed the app showing a blank window when a network proxy redirects the connection to Claude.": "修复了网络代理重定向到 Claude 的连接时应用显示空白窗口的问题。",
+    "Fixed HTML and SVG file previews showing black text on a dark background in dark mode.": "修复了深色模式下 HTML 和 SVG 文件预览在深色背景上显示黑色文字的问题。",
+    "Fixed menus and popovers opening behind the preview panel.": "修复了菜单和弹出框打开时被预览面板遮挡的问题。",
+    "Fixed Claude in Chrome file uploads failing for files in the session's shared folders and outputs.": "修复了 Claude in Chrome 上传会话共享文件夹和输出中的文件时失败的问题。",
+    "Fixed Claude in Chrome file uploads failing for files in the session’s shared folders and outputs.": "修复了 Claude in Chrome 上传会话共享文件夹和输出中的文件时失败的问题。",
+    "Fixed scheduled tasks leaving earlier processes running after each scheduled run.": "修复了定时任务在每次计划运行后仍残留先前进程的问题。",
+    "Fixed Windows file paths showing garbled characters in the folder access approval card, and reduced unnecessary folder access denials when allowed workspace folders are configured.": "修复了 Windows 文件路径在文件夹访问授权卡中显示乱码的问题，并在已配置允许的工作区文件夹时减少了不必要的文件夹访问拒绝。",
     // changelog 2026-06-16 (1.13576.0)
     // 新
     "Added a unified Artifacts view that lists your chat, Code, and Cowork artifacts in one searchable place, with a \"New artifact\" menu and a \"Filter by\" control to narrow the list by source.": "新增了统一的 Artifacts 视图，把你的 Chat、Code 和 Cowork artifact 集中到一个可搜索的位置，并带有「新建 artifact」菜单和「筛选方式」控件，可按来源缩小列表范围。",
@@ -606,7 +621,7 @@
     "Starting a session on a branch works with macOS's built-in git": "在某个分支上开始会话现在可配合 macOS 自带的 git 使用",
     "Split view now tiles into an adaptive grid — fit more sessions on a wide screen": "分屏视图现在会铺成自适应网格——宽屏上可容纳更多会话",
     "/compact now shows a marker in the transcript where context was compacted": "/compact 现在会在记录中标出上下文被压缩的位置",
-    "Get a desktop notification when a routine run fails": "例程运行失败时收到桌面通知",
+    "Get a desktop notification when a routine run fails": "定时任务运行失败时收到桌面通知",
     "Remote Control shows as a badge in the title bar — click it to turn on or off": "远程控制现在在标题栏显示为徽标——点击即可开关",
     "Click an image path in a response to preview it, even when it's outside your project folder": "点击回复中的图片路径即可预览，即使它在项目文件夹之外",
     "Files you reference with @ show as chips in the transcript, not just videos": "你用 @ 引用的文件现在在记录中显示为 chip，不只是视频",
@@ -654,12 +669,12 @@
     "Scroll the transcript with arrow and page keys": "用方向键和翻页键滚动记录",
     "Claude's suggested follow-up tasks appear as a notification in the top right — click to spin one off or handle it here": "Claude 建议的后续任务以通知形式出现在右上角——点击可拆出或就地处理",
     "See what each background agent was asked and what it returned by expanding its row": "展开每个后台 agent 的行，查看它收到的请求和返回的内容",
-    "Set up Routines to run a prompt on a schedule — find them in the sidebar": "设置例程以按计划运行提示词——在侧边栏中找到它们",
+    "Set up Routines to run a prompt on a schedule — find them in the sidebar": "设置定时任务以按计划运行提示词——在侧边栏中找到它们",
     "See a one-line recap of Claude's thinking above each tool group in thinking view": "在思考视图中，每个工具组上方显示 Claude 思考的一行摘要",
 
-    // === 头像 / 例程额度 / 用量额度对话框 ===
+    // === 头像 / 定时任务额度 / 用量额度对话框 ===
     "Clear avatar": "清空头像",
-    "Included routine runs per rolling 24 hours. Additional runs use usage credits when turned on.": "每滚动 24 小时内含的例程运行额度。开启后，额外运行将消耗用量额度。",
+    "Included routine runs per rolling 24 hours. Additional runs use usage credits when turned on.": "每滚动 24 小时内含的定时任务运行额度。开启后，额外运行将消耗用量额度。",
     "Turn on usage credits": "开启用量额度",
     "Help Center article": "帮助中心文章",
     "AI-powered Artifacts disabled": "AI 驱动的 Artifacts 已禁用",
@@ -1011,14 +1026,14 @@
     "Browse plugins": "浏览插件",
     "Browse plugin": "浏览插件",
     "Customize Claude": "个性化 Claude",
-    "Routine": "工作流",
-    "routine": "工作流",
-    "routines": "工作流",
-    "New routine": "新建工作流",
-    "New Routine": "新建工作流",
-    "No routines yet.": "还没有工作流。",
-    "No routines yet": "还没有工作流",
-    "Create templated routines that can be kicked off on schedule, by API, or webhook.": "创建模板化的工作流，可按时间表、API 或 webhook 触发。",
+    "Routine": "定时任务",
+    "routine": "定时任务",
+    "routines": "定时任务",
+    "New routine": "新建定时任务",
+    "New Routine": "新建定时任务",
+    "No routines yet.": "还没有定时任务。",
+    "No routines yet": "还没有定时任务",
+    "Create templated routines that can be kicked off on schedule, by API, or webhook.": "创建模板化的定时任务，可按时间表、API 或 webhook 触发。",
     "Remote": "远程",
     "Remote Control": "远程控制",
     "Set up remote control": "设置远程控制",
@@ -1361,7 +1376,7 @@
     "Customize sidebar": "自定义侧边栏",
     "Choose which items appear in your sidebar.": "选择侧边栏显示哪些项目。",
     "sidebar": "侧边栏",
-    "Routines": "工作流",
+    "Routines": "定时任务",
     "Pinned": "置顶",
     "Drag to pin": "拖动以置顶",
     "Code": "Code",
@@ -1483,6 +1498,45 @@
     "Loading design system": "正在加载设计系统",
     "design system": "设计系统",
     "Add usage notes": "添加使用说明",
+    // === 工作区启动失败 / 定时任务页 / 创建定时任务表单 ===
+    "share your debug logs": "分享你的调试日志",
+    "to help us improve.": "以帮助我们改进。",
+    "Dismiss question": "忽略问题",
+    "What do you want automated?": "你想自动化什么？",
+    "Summarize my open PRs every weekday morning": "每个工作日早上汇总我打开的 PR",
+    "Triage new issues and flag duplicates each morning": "每天早上分类新 issue 并标记重复项",
+    "Draft release notes whenever a PR merges": "每当 PR 合并时起草发布说明",
+    "Draft routine": "起草定时任务",
+    "Notify me when this routine finishes": "这个定时任务完成时通知我",
+    "Scheduled tasks use a randomized delay of several minutes for server performance.": "为提升服务器性能，定时任务会使用几分钟的随机延迟。",
+    "Claude works, uses connectors, browses the web, and controls apps on your computer without pausing for approval. You can turn off individual connectors in the Add menu.": "Claude 会直接工作、使用连接器、浏览网页并控制你电脑上的应用，不再暂停等待批准。你可以在「添加」菜单中关闭单个连接器。",
+    "Local routines only run while your computer is awake.": "本地定时任务仅在电脑唤醒时运行。",
+    "Review yesterday's commits and flag anything concerning": "审查昨天的提交并标记任何值得注意的地方",
+    "Review yesterday’s commits and flag anything concerning": "审查昨天的提交并标记任何值得注意的地方",
+    "Look at the commits from the last 24 hours. Summarize what changed, call out any risky patterns or missing tests, and note anything worth following up on.": "查看过去 24 小时的提交。总结改动，指出任何有风险的模式或缺失的测试，并记下任何值得跟进的内容。",
+    "Schedule": "时间表",
+    "Run on a recurring cron schedule or once at a future time": "按周期性 cron 计划运行，或在未来某个时间运行一次",
+    "New local routine": "新建本地定时任务",
+    "No more connectors available": "没有更多可用的连接器",
+    "No repositories found": "未找到仓库",
+    // 网络访问级别
+    "Blocks internet access for maximum security.": "屏蔽互联网访问以获得最高安全性。",
+    "Downloads packages from verified sources.": "从已验证的来源下载软件包。",
+    "Full": "完全",
+    "Unrestricted internet access for maximum flexibility.": "不受限的互联网访问以获得最大灵活性。",
+    "Create a list of allowed domains.": "创建允许访问的域名列表。",
+    "Runs every hour": "每小时运行",
+    "Once": "一次",
+    "At minute": "在第几分钟",
+    "Run at": "运行时间",
+    "Runs are staggered by a few minutes to spread server load.": "为分散服务器负载，各次运行会错开几分钟。",
+    "Claude will send you a one-line summary when each run completes — only when there's something worth telling you for routines that watch for a condition.": "每次运行完成时，Claude 会给你发一行摘要——对于监测条件的定时任务，仅在有值得告诉你的内容时才发。",
+    "Claude will send you a one-line summary when each run completes — only when there’s something worth telling you for routines that watch for a condition.": "每次运行完成时，Claude 会给你发一行摘要——对于监测条件的定时任务，仅在有值得告诉你的内容时才发。",
+    "Push notification": "推送通知",
+    "Sent to the Claude mobile and desktop apps.": "发送到 Claude 手机和桌面应用。",
+    "Email": "邮件",
+    "Sent to the email address on your account.": "发送到你账户的邮箱地址。",
+    "Sent as a direct message by the Claude app in your Slack workspace, matched by your account email. Takes effect the next time the routine runs.": "由 Claude 应用在你的 Slack 工作区以私信发送，按你的账户邮箱匹配。下次定时任务运行时生效。",
     "Check design system, Listing files": "检查设计系统、列出文件",
     "A rubber band over a stripped screw head gives enough grip to turn it.": "在拧花的螺丝头上套一根橡皮筋，就能有足够的摩擦力把它拧动。",
     "Run walnuts over scratched wood furniture. The oils fill the scratches.": "用核桃仁擦拭刮花的木家具，核桃油会填平划痕。",
@@ -2055,8 +2109,8 @@
     "Extra usage": "额外用量",
     "Turn on extra usage to keep using Claude if you hit a limit.": "开启额外用量，达到上限后仍可继续使用 Claude。",
     "Additional features": "附加功能",
-    "Daily included routine runs": "每日例程运行额度",
-    "You haven't run any routines yet": "你还没运行过例程",
+    "Daily included routine runs": "每日定时任务运行额度",
+    "You haven't run any routines yet": "你还没运行过定时任务",
 
     // 设置 - 记忆
     "Memory": "记忆",
@@ -4446,8 +4500,8 @@
 
     // === 行为 / 权限 tab ===
     "Auto-fix pull requests": "自动修复 pull request",
-    "Watch CI and review comments on PRs this routine opens, and let Claude push fixes.": "监控这个例程开的 PR 的 CI 和评审评论，让 Claude 推送修复。",
-    "Watch CI and review comments on PRs this routine opens, and let Claude push fixes": "监控这个例程开的 PR 的 CI 和评审评论，让 Claude 推送修复",
+    "Watch CI and review comments on PRs this routine opens, and let Claude push fixes.": "监控这个定时任务开的 PR 的 CI 和评审评论，让 Claude 推送修复。",
+    "Watch CI and review comments on PRs this routine opens, and let Claude push fixes": "监控这个定时任务开的 PR 的 CI 和评审评论，让 Claude 推送修复",
     "Add a repository to configure permissions.": "添加仓库后配置权限。",
     "Add a repository to configure permissions": "添加仓库后配置权限",
 
@@ -4696,18 +4750,20 @@
     if (translations[trimmed]) {
       return orig.replace(trimmed, translations[trimmed]);
     }
-    if (/[一-鿿]{2,}/.test(orig)) return null;  // 已是中文
 
     let text = orig;
     let changed = false;
-    // dynamic 先跑——动态模式(如 "What's up next, X?")比 partial 更具体,
-    // 必须优先于 partial,否则 partial 会把模式开头的 "What" 提前替换成 "什么",
-    // 让 dynamic regex 失效。
+    // dynamic 先跑——anchored pattern 只命中自己的目标; 即使节点含 app i18n 格式化的中文
+    // (如 "Runs every 星期二 at 2:30 GMT+8"，weekday 是 zh-CN locale 下 app 自己渲染的) 也能翻其中
+    // 的英文部分; 纯中文节点无 pattern 命中、不受影响。必须先于下面的 CJK-skip 与 partial。
     const dynText = translateDynamic(text);
     if (dynText !== text) {
       text = dynText;
       changed = true;
     }
+    // 原文含中文 → 只跳过 partial(词级替换易误伤已是中文的内容); dynamic 已跑完
+    if (/[一-鿿]{2,}/.test(orig)) return changed ? text : null;
+
     // partial 后跑——处理剩余的英文小词
     if (text.length < 30 && partialRegex) {
       const newText = text.replace(partialRegex, (m) => translations[m] || m);
@@ -4853,6 +4909,9 @@
       }
       .is-empty[data-placeholder="Describe a tweak…"]::before {
         content: "描述一个微调…" !important;
+      }
+      .is-empty[data-placeholder="What do you want automated?"]::before {
+        content: "你想自动化什么？" !important;
       }
       .is-empty[data-placeholder="Describe a tweak..."]::before {
         content: "描述一个微调..." !important;
@@ -5272,6 +5331,8 @@
     // "Runs weekdays at 20:30 GMT+8" → "工作日 20:30 GMT+8 运行"
     [/^\s*Runs weekdays at (\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, "工作日 $1 $2 运行"],
     [/^\s*Runs daily at (\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, "每日 $1 $2 运行"],
+    // "Runs once on Jun 20, 2026, 7:59 PM GMT+8" (日期英文格式, 作变量保留)
+    [/^\s*Runs once on\s+(.+?)\s*$/i, "在 $1 运行一次"],
     // "Runs every Tuesday at 2:30 GMT+8" — Tuesday 已被翻译成 "星期二" 等 → "Runs every 星期二 at ..."
     [/^\s*Runs every\s+(星期[一二三四五六日天])\s+at\s+(\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, "每$1 $2 $3 运行"],
     [/^\s*Runs every\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s+at\s+(\d{1,2}:\d{2})\s+(GMT[+\-]\d+)\s*$/i, (m, day, t, tz) => {
