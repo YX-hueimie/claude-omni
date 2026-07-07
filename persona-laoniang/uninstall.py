@@ -2,15 +2,16 @@
 claude-omni · persona-laoniang · uninstall
 
 撤销 persona-laoniang 安装:
-- 删 ~/.claude/CLAUDE.md (本档写入的 laoniang 版)
-- 如果存在 .persona-bak 备份, 还原回 ~/.claude/CLAUDE.md
-  (备份内容可能是: 用户自己的 / tier-1 装的 core / tier-2.5 装的 core
-   都不重要, install 时无脑备份了, 还原就行)
-- 删 persona marker
+- 正常路径(新式追加安装): 从 ~/.claude/CLAUDE.md 里剥掉 BEGIN/END marker 之间的
+  人设块, 前面内容(tier core / 用户自己的全局 CLAUDE.md / 期间手改的部分)原样保留。
+  剥完若整个文件空了(原本就只有人设块)则删掉文件。
+- 兜底路径(旧式覆盖安装遗留, 没有 marker): 用 .persona-bak 全量还原。
+- 删 persona marker; 清理一次性安全备份 .persona-bak。
 
 注意: 不动 tier 装的别的东西 (asar patch / skills 文件 / tier marker 不变)。
 """
 import os
+import re
 import sys
 import shutil
 from pathlib import Path
@@ -27,6 +28,12 @@ PERSONA_MARKER = CLAUDE_DIR / ".claude-omni-persona"
 TIER_MARKER = CLAUDE_DIR / ".claude-omni-tier"
 
 PERSONA_NAME = "laoniang"
+
+# 跟 install.py 同款: 剥离任意 claude-omni persona 块
+BLOCK_RE = re.compile(
+    r"\n*<!-- BEGIN claude-omni persona-\S+.*?-->.*?<!-- END claude-omni persona-\S+ -->\n*",
+    re.DOTALL,
+)
 
 
 def main():
@@ -46,21 +53,35 @@ def main():
         input("\n按回车退出...")
         sys.exit(1)
 
-    # 删本脚本写入的 laoniang 版 CLAUDE.md
     if DST.exists():
-        DST.unlink()
-        print(f"  删除 {DST}")
-
-    # 还原 install 时备份的原 CLAUDE.md (无论原内容是 core / 用户自定义 / 其他 tier 装的)
-    if BACKUP.exists():
+        content = DST.read_text(encoding="utf-8")
+        if BLOCK_RE.search(content):
+            # 新式: 剥掉人设块, 保留前面内容
+            base = BLOCK_RE.sub("\n", content).rstrip()
+            if base:
+                DST.write_text(base + "\n", encoding="utf-8")
+                print(f"  剥掉人设块, 保留前面 {len(base)} 字原内容 → {DST.name}")
+            else:
+                DST.unlink()
+                print(f"  CLAUDE.md 原本只有人设块, 删掉整个文件")
+        elif BACKUP.exists():
+            # 兜底: 旧式覆盖安装遗留(无 marker), 用全量备份还原
+            shutil.move(str(BACKUP), str(DST))
+            print(f"  旧式安装(无 marker): 从 {BACKUP.name} 全量还原 → CLAUDE.md")
+        else:
+            print(f"  未找到人设块也无备份 — 不动 CLAUDE.md(可能已手动清过)")
+    elif BACKUP.exists():
         shutil.move(str(BACKUP), str(DST))
-        print(f"  恢复 {BACKUP.name} → CLAUDE.md")
-    else:
-        print(f"  无 .persona-bak, install 前 ~/.claude/CLAUDE.md 是空的")
+        print(f"  CLAUDE.md 不在, 从 {BACKUP.name} 还原")
 
     # 删 persona marker
     PERSONA_MARKER.unlink()
     print(f"  删除 persona marker")
+
+    # 清理一次性安全备份(若还在)
+    if BACKUP.exists():
+        BACKUP.unlink()
+        print(f"  清理安全备份 {BACKUP.name}")
 
     # 检测残留的 tier 状态 (只是打印提示)
     if TIER_MARKER.exists():
