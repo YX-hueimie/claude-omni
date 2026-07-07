@@ -242,8 +242,15 @@ def make_append_js():
     if (!electron || !electron.app) return;
     var WEBVIEW_SCRIPT = {webview_js};
 
-    // 注入到该 web-contents 下所有 claude.ai frame（含 iframe，如 Claude Design /desktop-design）。
+    // 注入范围: claude.ai + 本地/localhost 页面 (含开发者设置等独立 BrowserWindow)，
+    // 只跳过外部 http(s) 站点 (OAuth / 嵌入的第三方页面不碰)。
     // 页内幂等由脚本里的 window.__CLAUDE_I18N_INSTALLED__ 守卫保证，重复注入安全（直接 return）。
+    var shouldInject = function(u) {{
+      if (!u) return false;
+      if (u.indexOf('claude.ai') !== -1) return true;
+      if (u.indexOf('localhost') !== -1 || u.indexOf('127.0.0.1') !== -1) return true;
+      return !/^https?:\\/\\//i.test(u);   // 外部 http(s) → 不注; 本地 scheme (file:/app:/自定义) → 注
+    }};
     var injectI18n = function(wc) {{
       if (!wc || wc.isDestroyed()) return;
       try {{
@@ -254,14 +261,13 @@ def make_append_js():
         if (frames && frames.length) {{
           frames.forEach(function(frame) {{
             try {{
-              if (!frame || !frame.url || frame.url.indexOf('claude.ai') === -1) return;
+              if (!frame || !shouldInject(frame.url)) return;
               frame.executeJavaScript(WEBVIEW_SCRIPT, true).catch(function(){{}});
             }} catch(e) {{}}
           }});
         }} else {{
           // 老 Electron 无 WebFrameMain：退回仅顶层 frame
-          var url = wc.getURL();
-          if (!url || url.indexOf('claude.ai') === -1) return;
+          if (!shouldInject(wc.getURL())) return;
           wc.executeJavaScript(WEBVIEW_SCRIPT, true).catch(function(){{}});
         }}
       }} catch(e) {{
@@ -288,9 +294,13 @@ def make_append_js():
 def patch_index_js(extracted_dir: Path):
     """
     1. patch jyt(locale) 函数：强制 locale = "zh-CN"——让外壳所有 i18n 调用都加载 zh-CN.json
-    2. 末尾追加 web-contents-created 钩子注入 webview 汉化脚本
+       1.19367+ 起真代码在 index.chunk-XXXX.js, jyt 也在那; 兼容策略是先在 index.js
+       找不到就扫 .vite/build/*.js 找含锚点的入口 chunk。
+    2. 末尾追加 web-contents-created 钩子注入 webview 汉化脚本 (始终追加到 index.js —
+       loader shim 依然会执行 index.js 末尾的代码, 且 electron require 在这里能拿到)
     """
-    index_js = extracted_dir / ".vite" / "build" / "index.js"
+    build_dir = extracted_dir / ".vite" / "build"
+    index_js = build_dir / "index.js"
     if not index_js.exists():
         raise SystemExit(f"找不到 {index_js}")
     text = index_js.read_text(encoding="utf-8")
@@ -325,26 +335,54 @@ def patch_index_js(extracted_dir: Path):
         else:
             text = text[:idx]
 
-    # 还原已 patched 的 jyt（处理重复运行）
-    text = re.sub(
-        r'(function\s+\w+\s*\(\s*(\w+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+\w+\(\{locale:\2,messages:JSON\.parse)',
-        r'\1\3', text
-    )
-
-    # 关键 patch：jyt(locale) 函数体强制 locale = "zh-CN"
-    pat = re.compile(
+    # --- jyt(locale) 强制 zh-CN patch: 定位含锚点的 target 文件 ------------------------
+    jyt_pat = re.compile(
         r'(function\s+(\w+)\s*\(\s*(\w+)\s*\)\s*\{)(return\s+\w+\(\{locale:\3,messages:JSON\.parse)'
     )
-    matches = pat.findall(text)
-    if matches:
-        text = pat.sub(
-            lambda m: f'{m.group(1)}try{{{m.group(3)}="zh-CN";}}catch(_e){{}}{m.group(4)}',
-            text, count=1
-        )
-        print(f"  patch jyt 成功（强制加载 zh-CN.json，{len(matches)} 个匹配）")
-    else:
-        print("  [警告] 没找到 jyt(locale) 函数模式——版本变了？外壳汉化可能不生效")
+    jyt_patched_pat = re.compile(
+        r'(function\s+\w+\s*\(\s*(\w+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+\w+\(\{locale:\2,messages:JSON\.parse)'
+    )
 
+    jyt_target = None
+    jyt_text = None
+    # 先看 index.js (旧版本布局, 真代码在 index.js 里)
+    if jyt_pat.search(text) or jyt_patched_pat.search(text):
+        jyt_target = index_js
+        jyt_text = text
+    else:
+        # 1.19367+ loader shim → 扫 chunks 找入口
+        for f in sorted(build_dir.glob("*.js")):
+            if f.name == "index.js":
+                continue
+            try:
+                t = f.read_text(encoding="utf-8", errors="replace")
+            except Exception:
+                continue
+            if jyt_pat.search(t) or jyt_patched_pat.search(t):
+                jyt_target = f
+                jyt_text = t
+                break
+
+    if jyt_target is None:
+        print("  [警告] 没找到 jyt(locale) 函数模式——版本变了？外壳汉化可能不生效")
+    else:
+        # 还原已 patched 的 jyt (处理重复运行, 剥掉旧 try{}catch{} 包壳)
+        jyt_text = jyt_patched_pat.sub(r'\1\3', jyt_text)
+        matches = jyt_pat.findall(jyt_text)
+        if matches:
+            jyt_text = jyt_pat.sub(
+                lambda m: f'{m.group(1)}try{{{m.group(3)}="zh-CN";}}catch(_e){{}}{m.group(4)}',
+                jyt_text, count=1
+            )
+            where = "index.js" if jyt_target == index_js else jyt_target.name
+            print(f"  patch jyt 成功（强制加载 zh-CN.json, {len(matches)} 个匹配 @ {where}）")
+        # 写回目标文件
+        if jyt_target == index_js:
+            text = jyt_text  # index.js 后面还要末尾追加, 把变量同步好
+        else:
+            jyt_target.write_text(jyt_text, encoding="utf-8")
+
+    # 末尾追加 web-contents-created 钩子: 始终打在 index.js (loader shim 也会执行末尾)
     new = text.rstrip() + make_append_js()
     index_js.write_text(new, encoding="utf-8")
 

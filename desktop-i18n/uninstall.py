@@ -102,29 +102,39 @@ def extract_asar(asar_path: Path) -> Path:
 
 
 def index_js_has_i18n_marker(extracted_dir: Path) -> bool:
-    """看 index.js 里是否还有 I18N_PATCH 相关 marker (含 jyt 注入特征)。"""
-    index_js = extracted_dir / ".vite" / "build" / "index.js"
+    """看 index.js / chunks 里是否还有 I18N_PATCH 相关 marker (含 jyt 注入特征)。
+    1.19367+ 起 jyt 在 index.chunk-XXXX.js, 所以要扫 build 目录下所有 JS。"""
+    build_dir = extracted_dir / ".vite" / "build"
+    index_js = build_dir / "index.js"
     if not index_js.exists():
         return False
     text = index_js.read_text(encoding="utf-8")
     if PATCH_START in text or OLD_PATCH_MARKER in text or LOCALE_MARKER in text:
         return True
-    # jyt 注入特征: try{xxx="zh-CN";}catch(_e){}
-    if re.search(r'try\{\w+="zh-CN";\}catch\(_e\)\{\}', text):
-        return True
+    # jyt 注入特征: try{xxx="zh-CN";}catch(_e){} —— 扫 index.js + 所有 chunks
+    jyt_re = re.compile(r'try\{\w+="zh-CN";\}catch\(_e\)\{\}')
+    for jf in [index_js] + sorted(f for f in build_dir.glob("*.js") if f.name != "index.js"):
+        try:
+            t = jf.read_text(encoding="utf-8", errors="replace")
+        except Exception:
+            continue
+        if jyt_re.search(t):
+            return True
     return False
 
 
 def strip_i18n_marker_and_jyt(extracted_dir: Path):
-    """从 index.js 里:
-    1. 剥 I18N_PATCH START/END 配对段 + 单标记残留 + 早期 LOCALE_MARKER
-    2. 还原已 patched 的 jyt() 函数（去掉强制 zh-CN 那段）
+    """从 index.js + chunks 里:
+    1. 剥 I18N_PATCH START/END 配对段 + 单标记残留 + 早期 LOCALE_MARKER (都在 index.js 末尾)
+    2. 还原已 patched 的 jyt() 函数（去掉强制 zh-CN 那段）—— 1.19367+ 在 chunk 里, 旧版在 index.js
     """
-    index_js = extracted_dir / ".vite" / "build" / "index.js"
+    build_dir = extracted_dir / ".vite" / "build"
+    index_js = build_dir / "index.js"
     text = index_js.read_text(encoding="utf-8")
     original = text
+    any_change = False
 
-    # 1) 剥 START/END 配对块
+    # 1) 剥 START/END 配对块 (只在 index.js)
     text = re.sub(
         re.escape(PATCH_START) + r'.*?' + re.escape(PATCH_END) + r'\s*',
         '', text, flags=re.DOTALL
@@ -152,15 +162,39 @@ def strip_i18n_marker_and_jyt(extracted_dir: Path):
             text = text[:idx]
 
     # 4) 还原 jyt() 函数：去掉 try{locale="zh-CN";}catch(_e){} 那段
-    text = re.sub(
-        r'(function\s+\w+\s*\(\s*(\w+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+\w+\(\{locale:\2,messages:JSON\.parse)',
-        r'\1\3', text
+    # 扫 index.js 和所有 chunks, 谁含 jyt 注入特征就在谁上剥
+    jyt_restore = re.compile(
+        r'(function\s+\w+\s*\(\s*(\w+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+\w+\(\{locale:\2,messages:JSON\.parse)'
     )
 
-    if text == original:
+    # index.js 上先跑一次 (旧版本布局)
+    text_after_jyt = jyt_restore.sub(r'\1\3', text)
+    if text_after_jyt != text:
+        text = text_after_jyt
+        print("  还原 jyt() @ index.js")
+
+    # 检查 index.js 的整体变化 (marker 剥 + jyt 还原)
+    if text != original:
+        index_js.write_text(text.rstrip() + "\n", encoding="utf-8")
+        any_change = True
+
+    # 扫 chunks (1.19367+ jyt 在 chunk 里)
+    for jf in sorted(build_dir.glob("*.js")):
+        if jf.name == "index.js":
+            continue
+        try:
+            t = jf.read_text(encoding="utf-8", errors="replace")
+        except Exception:
+            continue
+        t2 = jyt_restore.sub(r'\1\3', t)
+        if t2 != t:
+            jf.write_text(t2, encoding="utf-8")
+            print(f"  还原 jyt() @ {jf.name}")
+            any_change = True
+
+    if not any_change:
         print("  [警告] 没找到 I18N_PATCH marker / jyt 注入 —— asar 里可能压根没本补丁，或 marker 损坏")
     else:
-        index_js.write_text(text.rstrip() + "\n", encoding="utf-8")
         print("  剥 I18N_PATCH marker + 还原 jyt() 完成")
 
 

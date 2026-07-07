@@ -318,10 +318,12 @@ def apply_patches_to_text(text: str, append_v1_js: str, append_v2_js: str, appen
 
     inject_count = 0
 
-    # [A] Cowork: Rbr baseSystemPrompt prepend
+    # [A] Cowork: baseSystemPrompt prepend
+    # 锚点定位 K=K.replaceAll("{{promptCacheBoundary}}",...) —— 那句执行时 K 已经是完整
+    # baseSystemPrompt (无论走 sp_variant replace 分支还是 n??"" 分支都汇到 K)。
+    # 在这句 **前** 插入 K=<prepend>+K; 加剥离 XML 段, 语义上等价于以前追加在 K=Y??"" 之后。
     pat_cowork = re.compile(
-        r'(\w+)\s*=\s*(\w+)\s*\?\?\s*""\s*;'
-        r'(?=\s*\1\s*=\s*\1\.replaceAll\(\s*"\{\{promptCacheBoundary\}\}")'
+        r'(?<!\w)(\w+)\s*=\s*\1\.replaceAll\(\s*"\{\{promptCacheBoundary\}\}"'
     )
     m = pat_cowork.search(text)
     if m:
@@ -340,7 +342,7 @@ def apply_patches_to_text(text: str, append_v1_js: str, append_v2_js: str, appen
             + strip_calls
             + PATCH_END
         )
-        text = text[:m.end()] + inject_a + text[m.end():]
+        text = text[:m.start()] + inject_a + text[m.start():]
         inject_count += 1
         extra = f" + strip {len(sections_to_strip)} sections" if strip_calls else ""
         print(f"    [A] Cowork prepend (runtime read){extra} @ {m.start()}")
@@ -649,21 +651,46 @@ def main():
               str(asar_path), str(extracted)],
              shell=True)
 
-    print("  [b] patch index.js...")
-    index_js = extracted / ".vite" / "build" / "index.js"
+    print("  [b] patch 入口 JS...")
+    build_dir = extracted / ".vite" / "build"
+    index_js = build_dir / "index.js"
     if not index_js.exists():
         raise SystemExit(f"找不到 {index_js}")
-    text = index_js.read_text(encoding="utf-8")
+    # 1.19367+ 起 index.js 被拆成 loader shim, 真代码搬去 index.chunk-XXXX.js (hash 每次构建变)。
+    # 兼容策略: 先看 index.js 自身有没有 Code 锚点 (旧版本); 没有就扫同目录 *.js 找到含锚点的 chunk。
+    code_anchor_probe = re.compile(
+        r'systemPrompt:\w+,appendSystemPrompt:\w+,planModeInstructions:\w+\.planModeInstructions'
+    )
+    target_js = None
+    if code_anchor_probe.search(index_js.read_text(encoding="utf-8")):
+        target_js = index_js
+        print(f"    锚点在 index.js (旧版本布局)")
+    else:
+        for f in sorted(build_dir.glob("*.js")):
+            if f.name == "index.js":
+                continue
+            try:
+                t = f.read_text(encoding="utf-8", errors="replace")
+            except Exception:
+                continue
+            if code_anchor_probe.search(t):
+                target_js = f
+                break
+        if target_js is None:
+            raise SystemExit("index.js 是 loader shim 但在 .vite/build/ 下没找到含 Code 锚点的入口 chunk")
+        print(f"    index.js 是 loader shim, 真代码在 {target_js.name}")
+
+    text = target_js.read_text(encoding="utf-8")
     new_text, n = apply_patches_to_text(text, append_v1_js, append_v2_js, append_v3_js,
                                         append_v4_js,
                                         prepend_v1_js, prepend_v2_js, prepend_v3_js,
                                         prepend_v4_js, marker_js)
     if n == 0:
         raise SystemExit("两条注入路径都没找到锚点")
-    index_js.write_text(new_text, encoding="utf-8")
-    if PATCH_START not in index_js.read_text(encoding="utf-8"):
-        raise SystemExit("写入 index.js 后校验失败")
-    print(f"  ✓ 注入 {n} 处")
+    target_js.write_text(new_text, encoding="utf-8")
+    if PATCH_START not in target_js.read_text(encoding="utf-8"):
+        raise SystemExit(f"写入 {target_js.name} 后校验失败")
+    print(f"  ✓ 注入 {n} 处 → {target_js.name}")
 
     print("  [c] pack (unpack pattern: *.{node,dll})...")
     run_loud(["npx", "--yes", "@electron/asar", "pack",

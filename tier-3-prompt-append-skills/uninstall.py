@@ -253,31 +253,45 @@ def main():
                   str(asar_path), str(extracted)],
                  shell=True)
 
-        index_js = extracted / ".vite" / "build" / "index.js"
-        if not index_js.exists():
-            raise SystemExit(f"  ! 找不到 {index_js}")
+        # 1.19367+ index.js 只是 loader shim, 真代码在 index.chunk-XXXX.js。
+        # 扫 .vite/build/*.js 找含 PATCH_START marker 的所有文件, 逐个剥。
+        build_dir = extracted / ".vite" / "build"
+        if not build_dir.exists():
+            raise SystemExit(f"  ! 找不到 {build_dir}")
+        patched_files = []
+        for jf in sorted(build_dir.glob("*.js")):
+            try:
+                t = jf.read_text(encoding="utf-8", errors="replace")
+            except Exception:
+                continue
+            if PATCH_START in t:
+                patched_files.append((jf, t))
+        if not patched_files:
+            raise SystemExit(f"  ! .vite/build/ 下没找到含 PATCH_START marker 的 JS 文件")
 
-        text = index_js.read_text(encoding="utf-8")
-        new_text, n = re.subn(
-            re.escape(PATCH_START) + r'.*?' + re.escape(PATCH_END),
-            '', text, flags=re.DOTALL
-        )
-        print(f"  [b] 剥掉 {n} 处 L2_APPEND_PATCH marker")
+        total_stripped = 0
+        for jf, text in patched_files:
+            new_text, n = re.subn(
+                re.escape(PATCH_START) + r'.*?' + re.escape(PATCH_END),
+                '', text, flags=re.DOTALL
+            )
+            total_stripped += n
 
-        # Sanity check: 剥 marker 后若产生 ":," 形式空字段值 (字段值替换式注入的副作用),
-        # 重打包写回会让 Claude 启动 parse 失败。检测到 → 中止 uninstall, 提示用户改走
-        # emergency-restore (字节级还原原版备份, 不依赖剥 marker)。
-        # 当前 install.py 用的是重复 key 覆盖策略, 不会触发这条路径; 保留作为兼容性兜底。
-        if re.search(r'(?:systemPrompt|appendSystemPrompt):\s*[,)\]}]', new_text):
-            for p in [extracted, new_unpacked]:
-                if p.exists():
-                    shutil.rmtree(p, ignore_errors=True)
-            print(f"  ! 剥 marker 后检测到 `systemPrompt:` 或 `appendSystemPrompt:` 后空字段值")
-            print(f"  ! 当前 asar 注入策略与本 uninstall 不兼容, 干净卸载不可行")
-            print(f"  ! 请跑 emergency-restore.bat 还原原版 (字节级还原, 不会破坏 asar)")
-            raise SystemExit("空字段值检测命中, 强制走 emergency-restore")
+            # Sanity check: 剥 marker 后若产生 ":," 形式空字段值 (字段值替换式注入的副作用),
+            # 重打包写回会让 Claude 启动 parse 失败。检测到 → 中止 uninstall, 提示用户改走
+            # emergency-restore (字节级还原原版备份, 不依赖剥 marker)。
+            # 当前 install.py 用的是重复 key 覆盖策略, 不会触发这条路径; 保留作为兼容性兜底。
+            if re.search(r'(?:systemPrompt|appendSystemPrompt):\s*[,)\]}]', new_text):
+                for p in [extracted, new_unpacked]:
+                    if p.exists():
+                        shutil.rmtree(p, ignore_errors=True)
+                print(f"  ! 剥 marker 后 {jf.name} 检测到 `systemPrompt:` 或 `appendSystemPrompt:` 后空字段值")
+                print(f"  ! 当前 asar 注入策略与本 uninstall 不兼容, 干净卸载不可行")
+                print(f"  ! 请跑 emergency-restore.bat 还原原版 (字节级还原, 不会破坏 asar)")
+                raise SystemExit("空字段值检测命中, 强制走 emergency-restore")
 
-        index_js.write_text(new_text, encoding="utf-8")
+            jf.write_text(new_text, encoding="utf-8")
+        print(f"  [b] 剥掉 {total_stripped} 处 L2_APPEND_PATCH marker (跨 {len(patched_files)} 个 JS 文件)")
 
         print("  [c] pack...")
         run_loud(["npx", "--yes", "@electron/asar", "pack",
