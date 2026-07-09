@@ -58,6 +58,31 @@ def relaunch_as_admin():
     sys.exit(0)
 
 
+def _harden_console():
+    """提权后新开的控制台会丢掉 start.bat 设的 chcp 65001 / PYTHONIOENCODING (提权跨
+    安全边界不继承 env), 且默认开着 QuickEdit —— 客户一点黑窗口就进入"选择"模式、
+    阻塞 stdout 写入, panel 卡在第一句 print 上, 整个 Flask 进程冻住看着像死机。
+    这里: 1) 关掉 QuickEdit; 2) 把 stdout/stderr 重配成 UTF-8 行缓冲 (实时可见 + 不乱码)。"""
+    if os.name == "nt":
+        try:
+            k32 = ctypes.windll.kernel32
+            k32.GetStdHandle.restype = ctypes.c_void_p  # 64 位下必须, 否则 handle 被截断
+            h_in = k32.GetStdHandle(-10)  # STD_INPUT_HANDLE
+            mode = ctypes.c_uint32()
+            if h_in and k32.GetConsoleMode(ctypes.c_void_p(h_in), ctypes.byref(mode)):
+                ENABLE_EXTENDED_FLAGS = 0x0080
+                ENABLE_QUICK_EDIT_MODE = 0x0040
+                new_mode = (mode.value | ENABLE_EXTENDED_FLAGS) & ~ENABLE_QUICK_EDIT_MODE
+                k32.SetConsoleMode(ctypes.c_void_p(h_in), new_mode)
+        except Exception:
+            pass
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", line_buffering=True)
+        except Exception:
+            pass
+
+
 if os.name == "nt" and not is_admin():
     print("=" * 60)
     print("claude-omni · panel")
@@ -66,6 +91,10 @@ if os.name == "nt" and not is_admin():
     print("需要管理员权限 (要读 C:\\Program Files\\WindowsApps + 装/卸 asar 类补丁)")
     print("正在请求 UAC 提权...")
     relaunch_as_admin()
+
+# 到这里 = 已是管理员 (提权后的新进程, 或本来就有权限)。这个进程的控制台才是
+# 会一直开着的服务器窗口, 先加固它: 关 QuickEdit + 重配 UTF-8 行缓冲。
+_harden_console()
 
 
 # ============================================================
