@@ -298,6 +298,24 @@ def step(n, total, msg):
     print(f"\n[{n}/{total}] {msg}")
 
 
+def _prune_old_backups(keep=2):
+    """备份按版本号只留最新 keep 个 (当前 + 前一版兜底), 删更旧的。单个 claude.exe
+    ~222MB, 不清会随每次 Claude 版本更新无限累积 (曾涨到 22GB)。"""
+    import re
+    if not BACKUP_DIR.exists():
+        return
+    def _vkey(p):
+        m = re.match(r"Claude_(.+?)_x64__", p.name)
+        return tuple(int(x) for x in re.findall(r"\d+", m.group(1))) if m else ()
+    subs = sorted((p for p in BACKUP_DIR.glob("Claude_*_x64__*") if p.is_dir()), key=_vkey)
+    for old in (subs[:-keep] if keep > 0 else []):
+        try:
+            shutil.rmtree(old, ignore_errors=True)
+            print(f"  清理旧备份 (省磁盘): {old.name}")
+        except Exception:
+            pass
+
+
 def backup_originals(claude_exe: Path, asar_path: Path):
     """备份原版到本目录的 _backup/<版本号>/"""
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
@@ -316,6 +334,7 @@ def backup_originals(claude_exe: Path, asar_path: Path):
         shutil.copyfile(asar_path, asar_bak)
     else:
         print(f"  ✓ {asar_bak.name} 已备份过, 跳过")
+    _prune_old_backups(keep=2)
     return sub
 
 
