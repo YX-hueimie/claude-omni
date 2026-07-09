@@ -1306,6 +1306,9 @@
     "View attached image 1": "查看附加图片 1",
     "Filter and group recents": "筛选并分组最近项",
     "PDF Viewer": "PDF 查看器",
+    "No activity yet": "暂无活动",
+    "View transcript": "查看转录",
+    "transcript": "转录",
     "Search chats...": "搜索对话...",
     "Search chats…": "搜索对话…",
     "Select chats": "选择对话",
@@ -3863,6 +3866,10 @@
     "Add another site": "添加另一个网站",
     "another site": "另一个网站",
     "Bulk add": "批量添加",
+    // 浏览器设置区
+    "Browser": "浏览器",
+    "Browser tools": "浏览器工具",
+    "Save cookies, local storage, and login sessions for Browser tabs across app restarts. Shared uses the same data for every session in a project. Separate gives each session its own copy, so sessions never see each other's logins.": "在应用重启后为浏览器标签页保存 cookie、本地存储和登录会话。「共享」让项目内每个会话使用同一份数据；「独立」给每个会话各自的副本，因此会话之间永不共享登录状态。",
     "Claude in Chrome can't be used on these sites": "Claude in Chrome 无法在这些网站上使用",
     "Claude in Chrome can’t be used on these sites": "Claude in Chrome 无法在这些网站上使用",
     "Claude in Chrome can only be used on these sites": "Claude in Chrome 只能在这些网站上使用",
@@ -6254,7 +6261,7 @@
   // 这些词作整词 exact 仍翻, 但不进 partialRegex——避免在代码/路径/命令里词内替换
   // (如 "/design-sync"→"/设计-sync"、"path/to/your-design-system"→"路径/to/your-设计-system")。
   // styled-components 的 sc-xxx class 是哈希、每次构建会变, 故不用 class skip, 改用词级排除 (构建无关)。
-  const PARTIAL_EXCLUDE = new Set(["design", "Design", "path", "Path", "system", "System", "Explorer", "Education", "Technology", "Travel", "Nonprofit"]);
+  const PARTIAL_EXCLUDE = new Set(["design", "Design", "path", "Path", "system", "System", "Explorer", "Education", "Technology", "Travel", "Nonprofit", "Browser"]);
   const partialKeys = sortedKeys.filter(k => k.length >= 3 && k.length <= 30 && !/[{}]/.test(k) && !PARTIAL_EXCLUDE.has(k));
   const partialPattern = partialKeys
     .map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
@@ -7055,6 +7062,8 @@
     // "5-150 users" / "20+ users"
     [/^(\d+)[\-–](\d+)\s+users\s*$/i, "$1-$2 用户"],
     [/^(\d+)\+\s+users\s*$/i, "$1+ 用户"],
+    // Agent 活动行: "3 tool uses" (Agent/Bash/tokens 保留英文)
+    [/^(\d+)\s+tool uses?$/i, "$1 次工具调用"],
 
     // === DOM 收割抓到的带变量 UI (变量=用户内容, 作 $1 原样保留不翻) ===
     [/^More options for (.+)$/i, "$1 的更多选项"],
@@ -7063,6 +7072,8 @@
     [/^(\d+) artifacts?$/i, "$1 个 artifact"],
     [/^(\d+) background tasks? running$/i, "$1 个后台任务运行中"],
     [/^Usage: context (\d+%), plan (\d+%)$/i, "用量：上下文 $1，方案 $2"],
+    // 用量状态条 "Context 56.2k / 1.0M (6%) · Plan 15%" (数字为变量, 保留)
+    [/^Context\s+(.+?)\s*[·•]\s*Plan\s+(.+?)\s*$/i, "上下文 $1 · 方案 $2"],
 
     // === 连接器迁移说明 (链接打断文本节点的情形) ===
     [/^\s*\.\s+Head there to browse,\s*connect,\s*and manage them\.?\s*$/i, "。去那里浏览、连接、管理。"],
