@@ -236,11 +236,17 @@ def main():
             new_asar.unlink()
 
         # Pre-check: unpacked 完整性
-        expected_native_files = [
-            cur_unpacked / "node_modules" / "@ant" / "claude-native" / "claude-native-binding.node",
-            cur_unpacked / "node_modules" / "node-pty" / "build" / "Release" / "pty.node",
-        ]
-        missing = [f for f in expected_native_files if not f.exists()]
+        # node-pty 布局随版本变: 老版 build/Release/pty.node, 新版(~1.15962+)
+        # prebuilds/win32-x64/conpty.node —— 不写死具体文件, 只验证目录里有任意 .node
+        claude_native = (cur_unpacked / "node_modules" / "@ant" /
+                         "claude-native" / "claude-native-binding.node")
+        node_pty_dir = cur_unpacked / "node_modules" / "node-pty"
+        node_pty_ok = node_pty_dir.exists() and any(node_pty_dir.rglob("*.node"))
+        missing = []
+        if not claude_native.exists():
+            missing.append(str(claude_native))
+        if not node_pty_ok:
+            missing.append(f"{node_pty_dir} (目录不存在或无 .node 原生模块)")
         if missing:
             print(f"  ! unpacked 残缺, 缺:")
             for f in missing:
