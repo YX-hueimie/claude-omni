@@ -1461,6 +1461,8 @@
     "OK": "确定",
     "Submit": "提交",
     "Send": "发送",
+    "Send in a forked session": "在派生会话中发送",
+    "Stop this task": "停止此任务",
     "Create": "创建",
     "Update": "更新",
     "View": "查看",
