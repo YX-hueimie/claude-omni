@@ -207,4 +207,8 @@ claude-omni/
 
 ## License
 
-MIT。详见 [LICENSE](./LICENSE)。
+**PolyForm Noncommercial License 1.0.0** —— 个人、学习、研究、非营利组织等**非商业用途**可自由使用、修改、分发；**禁止任何商业用途**。详见 [LICENSE](./LICENSE)。
+
+> 说明：本许可仅约束本仓库自有代码。项目改动 Anthropic 专有的 Claude Desktop、并内含其 UI 文案与字体等，相关知识产权归 Anthropic，不在本许可授权范围内。
+>
+> 历史上以 MIT 发布过的版本，其 MIT 授权对那些版本继续有效、不可追溯撤销；本许可自变更之后的版本起生效。
