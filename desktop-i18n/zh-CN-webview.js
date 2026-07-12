@@ -1719,6 +1719,7 @@
     "Copy filename": "复制文件名",
     "filename": "文件名",
     "Session actions": "会话操作",
+    "Session actions, new activity": "会话操作，有新活动",
 
     // === Artifacts 面板空态 ===
     "Artifacts published in this session appear here.": "本次会话中发布的 Artifacts 会显示在这里。",
@@ -3871,6 +3872,20 @@
     // 浏览器设置区
     "Browser": "浏览器",
     "Browser tools": "浏览器工具",
+    // 浏览器 onboarding 提示 + 面板空状态
+    "Claude now has a browser": "Claude 现在有浏览器了",
+    "Claude can browse, click, and screenshot to get things done for you, on any site or your own app.": "Claude 能浏览、点击、截图，在任意网站或你自己的应用上替你完成任务。",
+    "type a URL": "输入网址",
+    "Browse and verify": "浏览并验证",
+    "Claude can browse, click, and screenshot in this browser. Enter a URL above, or set up your dev server to preview your app.": "Claude 能在这个浏览器里浏览、点击、截图。在上方输入网址，或设置开发服务器来预览你的应用。",
+    "Set up dev server": "设置开发服务器",
+    // 账单 / 订阅逾期
+    "Overdue": "逾期",
+    // 隐私 · 已分享 artifacts (artifact 保留英文)
+    "Shared artifacts": "已分享的 artifacts",
+    "Unpublishing removes the public link. Once an artifact is unpublished, it can't be republished.": "取消发布会移除公开链接。artifact 一旦取消发布，就无法再次发布。",
+    "Unpublishing removes the public link. Once an artifact is unpublished, it can’t be republished.": "取消发布会移除公开链接。artifact 一旦取消发布，就无法再次发布。",
+    "Your subscription is past due so your access has been paused. To restore access, please change your payment method and pay your overdue invoice.": "你的订阅已逾期，访问已暂停。要恢复访问，请更换支付方式并支付逾期账单。",
     "Save cookies, local storage, and login sessions for Browser tabs across app restarts. Shared uses the same data for every session in a project. Separate gives each session its own copy, so sessions never see each other's logins.": "在应用重启后为浏览器标签页保存 cookie、本地存储和登录会话。「共享」让项目内每个会话使用同一份数据；「独立」给每个会话各自的副本，因此会话之间永不共享登录状态。",
     "Claude in Chrome can't be used on these sites": "Claude in Chrome 无法在这些网站上使用",
     "Claude in Chrome can’t be used on these sites": "Claude in Chrome 无法在这些网站上使用",
@@ -7076,6 +7091,9 @@
     [/^Usage: context (\d+%), plan (\d+%)$/i, "用量：上下文 $1，方案 $2"],
     // 用量状态条 "Context 56.2k / 1.0M (6%) · Plan 15%" (数字为变量, 保留)
     [/^Context\s+(.+?)\s*[·•]\s*Plan\s+(.+?)\s*$/i, "上下文 $1 · 方案 $2"],
+    // 用量上限提示 "You've used 76% of your Fable 5 limit" (百分比+额度名为变量; Fable 5 等模型名保留)
+    [/^You['’]ve used (\d+)% of your weekly limit$/i, "本周已用 $1%"],
+    [/^You['’]ve used (\d+)% of your (.+?) limit$/i, "$2 额度已用 $1%"],
 
     // === 连接器迁移说明 (链接打断文本节点的情形) ===
     [/^\s*\.\s+Head there to browse,\s*connect,\s*and manage them\.?\s*$/i, "。去那里浏览、连接、管理。"],
