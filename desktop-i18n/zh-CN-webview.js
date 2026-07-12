@@ -294,6 +294,111 @@
     // === 用量额度 ===
     "Usage credits": "用量额度",
     "Get usage credits": "获取用量额度",
+    // Claude Design "What's new" 弹窗 (标题/加粗标题是拆节点, 这里先补整段描述+按钮)
+    "Work with higher usage limits": "享受更高的用量上限",
+    "Start designing": "开始设计",
+    "Import from GitHub, design files, or your local codebase so Claude can build with your real components.": "从 GitHub、设计文件或你的本地代码库导入，让 Claude 用你真实的组件来构建。",
+    "New layout controls let you drag, resize, and align elements.": "新的布局控件让你拖动、缩放、对齐元素。",
+    "Claude Design now shares limits with the rest of Claude, so you have more room to work.": "Claude Design 现在与 Claude 的其余部分共用额度，让你有更大的操作空间。",
+    "Export to PDF and PowerPoint, or hand off to the apps you already use, like Adobe, Base44, Canva, Gamma, Lovable, Miro, Replit, Vercel and Wix.": "导出为 PDF 和 PowerPoint，或交接给你已在用的应用，如 Adobe、Base44、Canva、Gamma、Lovable、Miro、Replit、Vercel 和 Wix。",
+    // 拆节点标题的片段 (加粗产品名/词组是独立节点; 头/尾各自译, 拼起来通顺)
+    "What's new in": "全新的",
+    "What’s new in": "全新的",
+    "Build in": "接入",
+    "directly on the canvas": "直接在画布上",
+    "to more tools": "到更多工具",
+    // Claude Design 主页
+    "What should we create?": "我们来创作点什么？",
+    "Make a pitch deck for a new product": "为新产品做一个推介演示",
+    "Attach a file, link your design system, or describe what you want to make": "附加文件、关联你的设计系统，或描述你想做什么",
+    "Draft a one-page project brief": "起草一页纸的项目简介",
+    "Describe an app idea": "描述一个应用创意",
+    "Sketch a landing page layout": "勾勒一个落地页布局",
+    "Animate a logo reveal": "制作一个 logo 亮相动画",
+    "Template": "模板",
+    "Templates": "模板",
+    "Use a template": "使用模板",
+    "Search templates and skills": "搜索模板和 skill",
+    "Project types": "项目类型",
+    "Start from code": "从代码开始",
+    "Base designs off what's currently in code?": "以当前代码为基础进行设计？",
+    "Base designs off what’s currently in code?": "以当前代码为基础进行设计？",
+    "Local codebase": "本地代码库",
+    "Select multiple": "多选",
+    "Multi": "多选",
+    "Built-in design systems": "内置设计系统",
+    "Clear selection": "清空选择",
+    "Open source file": "打开源文件",
+    "Open in new window": "在新窗口中打开",
+    "Open in a new window": "在新窗口中打开",
+    "Set as org default": "设为组织默认",
+    "Link copied": "链接已复制",
+    "This design system is available for your team's new projects. You can keep editing it in the chat.": "这个设计系统可用于你团队的新项目。你可以在对话中继续编辑它。",
+    "This design system is available for your team’s new projects. You can keep editing it in the chat.": "这个设计系统可用于你团队的新项目。你可以在对话中继续编辑它。",
+    "Deck": "演示",
+    "Landing": "落地页",
+    "A one-page product landing in the system's own voice — an invented product (Takt: Swiss-clockwork timetables), a ruled hero, stat row, feature rows, a grayscale photograph and a red poster close": "以设计系统自身风格打造的单页产品落地页——一个虚构产品(Takt:瑞士钟表式时刻表),含标尺主视觉、数据行、功能行、一张灰度照片,以红色海报收尾",
+    "A one-page product landing in the system’s own voice — an invented product (Takt: Swiss-clockwork timetables), a ruled hero, stat row, feature rows, a grayscale photograph and a red poster close": "以设计系统自身风格打造的单页产品落地页——一个虚构产品(Takt:瑞士钟表式时刻表),含标尺主视觉、数据行、功能行、一张灰度照片,以红色海报收尾",
+    "Prototype": "原型",
+    "All owners": "所有者",
+    "You own": "你拥有的",
+    "Learn about Claude Design": "了解 Claude Design",
+    "Quick tutorial": "快速教程",
+    "Start your design with what's in the code": "以代码中已有的内容开始设计",
+    "Start your design with what’s in the code": "以代码中已有的内容开始设计",
+    "See contents": "查看内容",
+    "Attach folder": "附加文件夹",
+    "If you're unsure what something should look like, ask Claude for a few options.": "如果你不确定某样东西该长什么样，让 Claude 给几个选项。",
+    "If you’re unsure what something should look like, ask Claude for a few options.": "如果你不确定某样东西该长什么样，让 Claude 给几个选项。",
+    "To save tokens, choose a lower effort level, or use Sonnet instead of Opus or Fable.": "想省 token，就选更低的投入等级，或用 Sonnet 而非 Opus 或 Fable。",
+    // 技能面板
+    "Attach a skill to give Claude additional context.": "附加一个 skill，给 Claude 额外的上下文。",
+    "Slide presentation in HTML": "HTML 幻灯片演示",
+    "Page-style document, printable out of the box": "页面式文档，开箱即可打印",
+    "Working app with real interactions": "带真实交互的可用应用",
+    "Explore many ideas with wireframes and storyboards": "用线框图和故事板探索多种想法",
+    "Timeline-based motion design": "基于时间轴的动效设计",
+    "Aesthetic direction for designs outside an existing brand system": "为现有品牌体系之外的设计确立美学方向",
+    "To bring another project into this design, paste its URL directly into the prompt. Claude will pick it up and can read its files.": "要把另一个项目引入这个设计，直接把它的 URL 粘贴到提示里。Claude 会识别它并能读取它的文件。",
+    // Claude Design "更新内容" changelog 条目 (加粗小标题 + 描述, 拆节点)
+    "Template actions": "模板操作",
+    "Bulk comment actions": "批量评论操作",
+    "Skill picker": "技能选择器",
+    "Dark mode": "深色模式",
+    "Paste frames": "粘贴帧",
+    "Video export": "视频导出",
+    "Unpublished": "未发布",
+    "switch themes from settings": "在设置中切换主题",
+    "edit, view the parent design system, or delete a template right from the Templates tab.": "直接在「模板」标签页编辑、查看父级设计系统或删除模板。",
+    "select comments to send them to Claude or resolve them all at once.": "选择评论，一次性发给 Claude 或全部解决。",
+    "pick a repo on the home screen and start your design from its code.": "在主屏选一个仓库，从它的代码开始设计。",
+    "search and attach skills right from the template picker.": "直接在模板选择器里搜索并附加 skill。",
+    "switch themes from settings.": "在设置中切换主题。",
+    "copy frames in your design tool and paste them straight into chat.": "在你的设计工具里复制帧，直接粘贴到对话中。",
+    "pick your own design systems, even before you publish them.": "选用你自己的设计系统，哪怕还没发布。",
+    "export animated designs as an mp4 from the share menu.": "从分享菜单把动画设计导出为 mp4。",
+    "Access": "访问权限",
+    "Copy invite": "复制邀请",
+    "Terms apply": "条款适用",
+    // Guest pass 展开面板
+    "Give Claude, get more Claude": "送 Claude，得更多 Claude",
+    "Guest pass": "访客通行证",
+    "Send a friend a free week of Claude Code. If they love it and subscribe, you'll get $10 in usage credits to keep building.": "送朋友一周免费 Claude Code。如果 TA 喜欢并订阅，你将获得 10 美元用量额度继续构建。",
+    "Send a friend a free week of Claude Code. If they love it and subscribe, you’ll get $10 in usage credits to keep building.": "送朋友一周免费 Claude Code。如果 TA 喜欢并订阅，你将获得 10 美元用量额度继续构建。",
+    "Friends can try both Cowork and Claude Code.": "朋友可以同时体验 Cowork 和 Claude Code。",
+    "They'll also get Claude in:": "TA 还能在这些里用上 Claude：",
+    // 礼品购买页
+    "Give the gift of Claude": "把 Claude 作为礼物送出",
+    "Every plan includes Claude Code, unlimited projects, and access to our latest models.": "每个套餐都包含 Claude Code、无限项目，以及使用我们最新模型的权限。",
+    "Which plan?": "选择哪个套餐？",
+    "For the curious": "适合好奇尝鲜的你",
+    "For the enthusiast": "适合爱好者",
+    "For the power user": "适合重度用户",
+    "How many months?": "买几个月？",
+    "They’ll also get Claude in:": "TA 还能在这些里用上 Claude：",
+    // Dispatch 设置
+    "Let Claude work on tasks from your phone using this computer. When off, your phone won't be able to dispatch work here.": "让 Claude 用这台电脑处理来自你手机的任务。关闭后，你的手机将无法把工作派发到这里。",
+    "Let Claude work on tasks from your phone using this computer. When off, your phone won’t be able to dispatch work here.": "让 Claude 用这台电脑处理来自你手机的任务。关闭后，你的手机将无法把工作派发到这里。",
     "You're approaching your plan's limit. To keep working without interruption:": "你即将达到套餐上限。要不间断继续使用：",
     "You’re approaching your plan’s limit. To keep working without interruption:": "你即将达到套餐上限。要不间断继续使用：",
     "Turn on usage credits to keep using Claude if you hit a limit.": "开启用量额度，达到上限后仍可继续使用 Claude。",
@@ -1613,6 +1718,7 @@
     "Feedback": "反馈",
     "Loading design system": "正在加载设计系统",
     "design system": "设计系统",
+    "design systems": "设计系统",
     "Add usage notes": "添加使用说明",
     // === 工作区启动失败 / 定时任务页 / 创建定时任务表单 ===
     "share your debug logs": "分享你的调试日志",
@@ -3892,6 +3998,15 @@
     "Unpublishing removes the public link. Once an artifact is unpublished, it can’t be republished.": "取消发布会移除公开链接。artifact 一旦取消发布，就无法再次发布。",
     "Your subscription is past due so your access has been paused. To restore access, please change your payment method and pay your overdue invoice.": "你的订阅已逾期，访问已暂停。要恢复访问，请更换支付方式并支付逾期账单。",
     "Save cookies, local storage, and login sessions for Browser tabs across app restarts. Shared uses the same data for every session in a project. Separate gives each session its own copy, so sessions never see each other's logins.": "在应用重启后为浏览器标签页保存 cookie、本地存储和登录会话。「共享」让项目内每个会话使用同一份数据；「独立」给每个会话各自的副本，因此会话之间永不共享登录状态。",
+    "Save cookies, local storage, and login sessions for Browser tabs across app restarts. Shared uses the same data for every session in a project. Separate gives each session its own copy, so sessions never see each other’s logins.": "在应用重启后为浏览器标签页保存 cookie、本地存储和登录会话。「共享」让项目内每个会话使用同一份数据；「独立」给每个会话各自的副本，因此会话之间永不共享登录状态。",
+    // 浏览器设置 (1.20186 改版新文案)
+    "Claude can start your dev servers, browse the web in an in-app browser, and verify changes with screenshots, snapshots, and DOM inspection.": "Claude 可以启动你的开发服务器、在应用内浏览器中浏览网页，并通过截图、快照和 DOM 检查来验证改动。",
+    "Open links in Browser": "在浏览器中打开链接",
+    "Links Claude shares open as tabs in Browser instead of your default browser.": "Claude 分享的链接会作为标签页在浏览器中打开，而不是用你的默认浏览器。",
+    "Sites where Claude can use its Browser tools without a permission prompt.": "Claude 无需权限提示即可使用浏览器工具的网站。",
+    "Claude can use its Browser tools on these sites without a permission prompt. Remove a site to be asked again. Only Ask and Accept edits modes, and financial sites, prompt per site.": "在这些网站上，Claude 无需权限提示即可使用其浏览器工具。移除某个网站可恢复对它的询问。仅「询问」和「接受编辑」模式以及金融类网站会逐站询问。",
+    "No allowed sites yet.": "暂无已允许的网站。",
+    "Clear all": "清空全部",
     "Claude in Chrome can't be used on these sites": "Claude in Chrome 无法在这些网站上使用",
     "Claude in Chrome can’t be used on these sites": "Claude in Chrome 无法在这些网站上使用",
     "Claude in Chrome can only be used on these sites": "Claude in Chrome 只能在这些网站上使用",
@@ -5139,6 +5254,34 @@
     "your styles": "你的风格",
     "Preset": "预设",
     "Tip": "提示",
+    "TIP": "提示",
+    "Decide for me": "帮我决定",
+    "When in doubt, ask Claude to ask you a bunch of questions.": "拿不准时，让 Claude 反过来问你一堆问题。",
+    "Change model": "更换模型",
+    "Start with a blank canvas": "从空白画布开始",
+    "Create a new sketch": "创建新草图",
+    "Annotate": "批注",
+    "Up one level": "上一级",
+    "In this window": "在此窗口",
+    "Landing pages": "落地页",
+    "Slide decks": "幻灯片",
+    "One-pagers": "单页文档",
+    "Reports & docs": "报告与文档",
+    // onboarding 卡片 (Tweak values live / Export anywhere)
+    "Tweak values live": "实时微调数值",
+    "Manually approve": "手动批准",
+    "Knobs mode lets you drag CSS values — sizes, colors, spacing — directly in the preview. Then prompt Claude to apply your adjustments.": "旋钮模式让你直接在预览里拖动 CSS 数值——尺寸、颜色、间距——然后让 Claude 应用你的调整。",
+    "Export anywhere": "随处导出",
+    "anywhere": "到任何地方",
+    "The Share menu exports to PPTX, PDF, or a self-contained HTML bundle. Share a link internally or download the whole project.": "分享菜单可导出为 PPTX、PDF，或一个自包含的 HTML 包。在内部分享链接，或下载整个项目。",
+    "Brand assets": "品牌素材",
+    "Wireframes": "线框图",
+    "Share & export": "分享与导出",
+    "How did that go? We'd love to hear.": "感觉怎么样？我们很想听听。",
+    "How did that go? We’d love to hear.": "感觉怎么样？我们很想听听。",
+    "Paste from clipboard": "从剪贴板粘贴",
+    "Delete folder?": "删除文件夹？",
+    "Claude can see and resolve comments on a design.": "Claude 能查看并解决设计上的评论。",
     "Choose from preset styles or create your own custom style to tailor elements of Claude's written responses such as tone, voice, vocabulary, detail level, and more.": "从预设风格中选，或者创建自定义风格，来定制 Claude 回答的语气、措辞、用词、详细程度等。",
     "Choose from preset styles or create your own custom style to tailor elements of Claude’s written responses such as tone, voice, vocabulary, detail level, and more.": "从预设风格中选，或者创建自定义风格，来定制 Claude 回答的语气、措辞、用词、详细程度等。",
     "Choose from preset styles or create your own custom style to tailor elements of Claude's written responses such as tone, voice, vocabulary, detail level, and more": "从预设风格中选，或者创建自定义风格，来定制 Claude 回答的语气、措辞、用词、详细程度等",
@@ -6283,7 +6426,7 @@
   // 这些词作整词 exact 仍翻, 但不进 partialRegex——避免在代码/路径/命令里词内替换
   // (如 "/design-sync"→"/设计-sync"、"path/to/your-design-system"→"路径/to/your-设计-system")。
   // styled-components 的 sc-xxx class 是哈希、每次构建会变, 故不用 class skip, 改用词级排除 (构建无关)。
-  const PARTIAL_EXCLUDE = new Set(["design", "Design", "path", "Path", "system", "System", "Explorer", "Education", "Technology", "Travel", "Nonprofit", "Browser"]);
+  const PARTIAL_EXCLUDE = new Set(["design", "Design", "path", "Path", "system", "System", "Explorer", "Education", "Technology", "Travel", "Nonprofit", "Browser", "Build in", "Deck", "Landing", "anywhere"]);
   const partialKeys = sortedKeys.filter(k => k.length >= 3 && k.length <= 30 && !/[{}]/.test(k) && !PARTIAL_EXCLUDE.has(k));
   const partialPattern = partialKeys
     .map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
@@ -6372,7 +6515,9 @@
 
   // 选择器跳过: 这些 class 的元素及其后代不翻译。
   // 产品名 / 功能名所在的 UI 槽位 (Cowork "Chat"/"Code" 模式切换 pill 等)。
-  const SKIP_CLASSES = ["df-pill"];
+  // om-carousel-thumb: 设计系统预览缩略图, 里面是渲染的设计样例内容 (假排版文案),
+  // 不是 UI, 整块跳过 (否则 partial 会把 "Plan"/"new" 等词漏进样例里, 如 "计划 on it")。
+  const SKIP_CLASSES = ["df-pill", "om-carousel-thumb"];
 
   // 子串匹配跳过 (针对 Tailwind arbitrary value class 如 [mask-image:linear-gradient(...)])。
   // 用户内容文本槽位 (会话标题 / 对话名 / 任务标题) 用 mask-image 做右边淡出截断,
@@ -7036,6 +7181,7 @@
     [/^\s*Delete\s+[“"'](.+?)["”']\?\s+Any sessions from this task will be archived\.\s*$/i, "确认删除「$1」？此任务的所有会话将被归档。"],
     // Delete "X"? This cannot be undone. (项目删除, 名字为变量; "Untitled" 默认名走 exact 显示「未命名」)
     [/^\s*Delete\s+[“"'](.+?)["”']\?\s+This cannot be undone\.\s*$/i, "确认删除「$1」？此操作无法撤销。"],
+    [/^\s*Delete folder\s+[“"'](.+?)["”']\s+and everything inside it\?\s+This cannot be undone\.?\s*$/i, "确认删除文件夹「$1」及其中全部内容？此操作无法撤销。"],
     // "Actions for X" 行操作 tooltip
     [/^\s*Actions for\s+(.+?)\s*$/i, "$1 的操作"],
 
@@ -7103,6 +7249,20 @@
     // 尾巴 " of your X limit" 单独一个节点 → 片段 pattern (weekly 特例; 模型名作 $1 保留)
     [/^\s*of your weekly limit\s*$/i, " · 本周额度"],
     [/^\s*of your (.+?) limit\s*$/i, " · $1 额度"],
+    // Claude Design 访客通行证 promo (张数/金额为变量; "3 guest passes" 加粗独立节点)
+    // 用不带锚点的子串匹配 —— 不管前面 "3 guest passes ·" 怎么拆/什么分隔符, 只替换这段
+    [/^\s*(\d+)\s+guest passes\s*$/i, "$1 张访客通行证"],
+    [/^(\d+)\/(\d+) left$/i, "剩余 $1/$2"],
+    [/^(\d+) pages?$/i, "$1 页"],
+    [/^Week of (.+)$/i, "$1 当周"],
+    // 设计系统作者 "Made by X" (X=用户名, 保留; 只翻到 · 分隔符前)
+    [/^\s*Made by\s+([^·\n]+?)\s*$/i, "由 $1 制作"],
+    // 空白全用 \s+ (吸收 nbsp 等); 三条覆盖: 整段 / 拆在 $10 处的头 / 尾
+    [/Send\s+a\s+friend\s+a\s+free\s+week\s+of\s+Claude\.\s*If\s+they\s+subscribe,\s*you['’]ll\s+get\s+\$(\d+)\s+of\s+usage\s+credits/i, "送朋友一周免费 Claude。TA 订阅后可得 $1 美元用量额度"],
+    [/Send\s+a\s+friend\s+a\s+free\s+week\s+of\s+Claude\.\s*If\s+they\s+subscribe,\s*you['’]ll\s+get/i, "送朋友一周免费 Claude。TA 订阅后可得"],
+    [/^\s*of\s+usage\s+credits\.?\s*$/i, " 用量额度"],
+    // Guest pass 面板推荐语 (Claude Code / Claude Cowork 变体; 金额为变量)
+    [/Send\s+a\s+friend\s+a\s+free\s+week\s+of\s+(Claude(?:\s+\w+)?)\.\s*If\s+they\s+love\s+it\s+and\s+subscribe,\s*you['’]ll\s+get\s+\$(\d+)\s+in\s+usage\s+credits\s+to\s+keep\s+building/i, "送朋友一周免费 $1。如果 TA 喜欢并订阅，你将获得 $2 美元用量额度继续构建"],
 
     // === 连接器迁移说明 (链接打断文本节点的情形) ===
     [/^\s*\.\s+Head there to browse,\s*connect,\s*and manage them\.?\s*$/i, "。去那里浏览、连接、管理。"],
