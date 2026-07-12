@@ -336,11 +336,13 @@ def patch_index_js(extracted_dir: Path):
             text = text[:idx]
 
     # --- jyt(locale) 强制 zh-CN patch: 定位含锚点的 target 文件 ------------------------
+    # 标识符用 [\w$]+ 而非 \w+ —— 最小化后函数/变量名可能以 $ 开头 (如 1.20186 的 `$3e`),
+    # \w 不含 $ 会导致匹配失败、外壳汉化不生效。
     jyt_pat = re.compile(
-        r'(function\s+(\w+)\s*\(\s*(\w+)\s*\)\s*\{)(return\s+\w+\(\{locale:\3,messages:JSON\.parse)'
+        r'(function\s+([\w$]+)\s*\(\s*([\w$]+)\s*\)\s*\{)(return\s+[\w$]+\(\{locale:\3,messages:JSON\.parse)'
     )
     jyt_patched_pat = re.compile(
-        r'(function\s+\w+\s*\(\s*(\w+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+\w+\(\{locale:\2,messages:JSON\.parse)'
+        r'(function\s+[\w$]+\s*\(\s*([\w$]+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+[\w$]+\(\{locale:\2,messages:JSON\.parse)'
     )
 
     jyt_target = None

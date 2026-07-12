@@ -163,8 +163,9 @@ def strip_i18n_marker_and_jyt(extracted_dir: Path):
 
     # 4) 还原 jyt() 函数：去掉 try{locale="zh-CN";}catch(_e){} 那段
     # 扫 index.js 和所有 chunks, 谁含 jyt 注入特征就在谁上剥
+    # 标识符用 [\w$]+ —— 最小化后名字可能以 $ 开头 (如 1.20186 的 `$3e`), \w 不含 $
     jyt_restore = re.compile(
-        r'(function\s+\w+\s*\(\s*(\w+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+\w+\(\{locale:\2,messages:JSON\.parse)'
+        r'(function\s+[\w$]+\s*\(\s*([\w$]+)\s*\)\s*\{)try\{\2="zh-CN";\}catch\(_e\)\{\}(return\s+[\w$]+\(\{locale:\2,messages:JSON\.parse)'
     )
 
     # index.js 上先跑一次 (旧版本布局)
