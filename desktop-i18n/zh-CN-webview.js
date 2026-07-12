@@ -293,6 +293,9 @@
 
     // === 用量额度 ===
     "Usage credits": "用量额度",
+    "Get usage credits": "获取用量额度",
+    "You're approaching your plan's limit. To keep working without interruption:": "你即将达到套餐上限。要不间断继续使用：",
+    "You’re approaching your plan’s limit. To keep working without interruption:": "你即将达到套餐上限。要不间断继续使用：",
     "Turn on usage credits to keep using Claude if you hit a limit.": "开启用量额度，达到上限后仍可继续使用 Claude。",
 
     // === 账单页 ===
@@ -1044,6 +1047,8 @@
     "Explore thought experiments": "探讨思想实验",
     "?text to search contents": "?text 搜索内容",
     "You've used 25% of your weekly limit": "本周已用 25%",
+    "You've used": "已使用",
+    "You’ve used": "已使用",
     "You've used 50% of your weekly limit": "本周已用 50%",
     "You've used 75% of your weekly limit": "本周已用 75%",
     "You've used 80% of your weekly limit": "本周已用 80%",
@@ -7094,6 +7099,10 @@
     // 用量上限提示 "You've used 76% of your Fable 5 limit" (百分比+额度名为变量; Fable 5 等模型名保留)
     [/^You['’]ve used (\d+)% of your weekly limit$/i, "本周已用 $1%"],
     [/^You['’]ve used (\d+)% of your (.+?) limit$/i, "$2 额度已用 $1%"],
+    // 用量条拆节点情形: 头 "You've used" 走 exact, "98%" 是独立加粗节点(数字保留),
+    // 尾巴 " of your X limit" 单独一个节点 → 片段 pattern (weekly 特例; 模型名作 $1 保留)
+    [/^\s*of your weekly limit\s*$/i, " · 本周额度"],
+    [/^\s*of your (.+?) limit\s*$/i, " · $1 额度"],
 
     // === 连接器迁移说明 (链接打断文本节点的情形) ===
     [/^\s*\.\s+Head there to browse,\s*connect,\s*and manage them\.?\s*$/i, "。去那里浏览、连接、管理。"],
