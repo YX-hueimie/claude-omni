@@ -5270,6 +5270,15 @@
     // onboarding 卡片 (Tweak values live / Export anywhere)
     "Tweak values live": "实时微调数值",
     "Manually approve": "手动批准",
+    // 定时任务页
+    "Run tasks on a schedule or whenever you need them.": "按计划或在你需要时运行任务。",
+    "Run scheduled tasks in the cloud.": "在云端运行定时任务。",
+    "Run this task": "运行此任务",
+    "In the cloud": "在云端",
+    "Keeps going even when you close the app.": "即使关闭应用也会继续运行。",
+    "Only runs while your computer is on. Use this if the task needs access to local files or desktop extensions.": "仅在你的电脑开机时运行。如果任务需要访问本地文件或桌面扩展，用这个。",
+    "Daily briefing": "每日简报",
+    "Create a task and check in from your phone or browser. Some tasks still need your computer on.": "创建任务，从手机或浏览器随时查看。部分任务仍需你的电脑保持开机。",
     "Knobs mode lets you drag CSS values — sizes, colors, spacing — directly in the preview. Then prompt Claude to apply your adjustments.": "旋钮模式让你直接在预览里拖动 CSS 数值——尺寸、颜色、间距——然后让 Claude 应用你的调整。",
     "Export anywhere": "随处导出",
     "anywhere": "到任何地方",
